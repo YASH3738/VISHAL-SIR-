@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102a3a">
+  <meta name="api-base-url" content="">
+  <title>Patient Portal | Dr. Vishal Yogi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="js/patient-dashboard.js" defer></script>
+</head>
+<body class="portal-page">
+  <header class="portal-header">
+    <a class="portal-brand" href="index.html" aria-label="Dr. Vishal Yogi home">
+      <span class="portal-brand__mark">VY</span>
+      <span><strong>Dr. Vishal Yogi</strong><small>Physiotherapy &amp; Wellness</small></span>
+    </a>
+    <a class="portal-back" href="index.html">Back to website</a>
+  </header>
+
+  <main class="portal-main">
+    <section class="portal-intro">
+      <p class="portal-eyebrow">Secure patient portal</p>
+      <h1>Your care, <span>all in one place.</span></h1>
+      <p>Sign in with the Patient ID and 4-digit PIN given to you by the clinic to track visits and treatment.</p>
+    </section>
+
+    <section class="portal-panel portal-login" id="patientLoginPanel">
+      <div class="portal-panel__heading">
+        <div>
+          <p class="portal-eyebrow">Welcome back</p>
+          <h2>Patient sign in</h2>
+        </div>
+        <span class="portal-icon" aria-hidden="true">VY</span>
+      </div>
+      <form id="patientLoginForm" class="portal-form">
+        <label for="patientId">Patient ID</label>
+        <input id="patientId" name="patient_id" autocomplete="username" placeholder="Enter your Patient ID" required>
+        <label for="patientPin">4-digit PIN</label>
+        <input id="patientPin" name="pin" type="password" inputmode="numeric" autocomplete="current-password" pattern="[0-9]{4}" maxlength="4" placeholder="Enter your 4-digit PIN" required>
+        <button class="portal-button" type="submit">Sign in to dashboard</button>
+        <p class="portal-message" id="loginMessage" role="status" aria-live="polite"></p>
+      </form>
+      <p class="portal-help">Need help signing in? Please contact the clinic.</p>
+    </section>
+
+    <section id="patientDashboard" class="portal-dashboard" hidden>
+      <div class="portal-dashboard__top">
+        <div>
+          <p class="portal-eyebrow">Patient dashboard</p>
+          <h2 id="patientGreeting">Welcome</h2>
+          <p class="portal-subtext" id="patientIdentity"></p>
+        </div>
+        <button class="portal-button portal-button--quiet" id="patientLogout" type="button">Sign out</button>
+      </div>
+
+      <p class="portal-message portal-message--wide" id="dashboardMessage" role="status" aria-live="polite"></p>
+
+      <div class="portal-stats" id="patientStats"></div>
+
+      <section class="portal-section">
+        <div class="portal-section__heading">
+          <div>
+            <p class="portal-eyebrow">Your care history</p>
+            <h3>Visits &amp; treatment</h3>
+          </div>
+        </div>
+        <div id="visitList" class="portal-list"></div>
+      </section>
+
+    </section>
+  </main>
+  <footer class="portal-footer">Dr. Vishal Yogi Physiotherapy &amp; Wellness Clinic</footer>
+</body>
+</html>
