@@ -1,0 +1,412 @@
+/* =========================================================
+   DR. VISHAL YOGI PHYSIOTHERAPY & WELLNESS CLINIC
+   RESET / NORMALIZE
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   01. BOX MODEL
+   --------------------------------------------------------- */
+
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+
+/* ---------------------------------------------------------
+   02. DOCUMENT
+   --------------------------------------------------------- */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   03. TYPOGRAPHY
+   --------------------------------------------------------- */
+
+body,
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+figure,
+figcaption,
+pre {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+p {
+  max-width: 100%;
+}
+
+
+/* ---------------------------------------------------------
+   04. LINKS
+   --------------------------------------------------------- */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:visited {
+  color: inherit;
+}
+
+
+/* ---------------------------------------------------------
+   05. LISTS
+   --------------------------------------------------------- */
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+/* ---------------------------------------------------------
+   06. MEDIA
+   --------------------------------------------------------- */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+  border-style: none;
+}
+
+video {
+  height: auto;
+}
+
+iframe {
+  border: 0;
+}
+
+
+/* ---------------------------------------------------------
+   07. FIGURES
+   --------------------------------------------------------- */
+
+figure {
+  margin: 0;
+}
+
+
+/* ---------------------------------------------------------
+   08. BUTTONS
+   --------------------------------------------------------- */
+
+button,
+input,
+textarea,
+select {
+  margin: 0;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
+
+/* ---------------------------------------------------------
+   09. FORM ELEMENTS
+   --------------------------------------------------------- */
+
+input,
+textarea,
+select {
+  border-radius: 0;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1;
+}
+
+
+/* ---------------------------------------------------------
+   10. TABLES
+   --------------------------------------------------------- */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+/* ---------------------------------------------------------
+   11. QUOTES
+   --------------------------------------------------------- */
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: "";
+  content: none;
+}
+
+
+/* ---------------------------------------------------------
+   12. CODE
+   --------------------------------------------------------- */
+
+pre,
+code,
+kbd,
+samp {
+  font-family: monospace;
+}
+
+
+/* ---------------------------------------------------------
+   13. HORIZONTAL RULE
+   --------------------------------------------------------- */
+
+hr {
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid currentColor;
+}
+
+
+/* ---------------------------------------------------------
+   14. ACCESSIBILITY
+   --------------------------------------------------------- */
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-teal-500);
+  outline-offset: 4px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* ---------------------------------------------------------
+   15. SELECTION
+   --------------------------------------------------------- */
+
+::selection {
+  background: var(--color-teal-700);
+  color: var(--color-white);
+}
+
+::-moz-selection {
+  background: var(--color-teal-700);
+  color: var(--color-white);
+}
+
+
+/* ---------------------------------------------------------
+   16. SMOOTH SCROLL
+   --------------------------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* ---------------------------------------------------------
+   17. SCROLLBAR
+   --------------------------------------------------------- */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-teal-700) var(--color-cream-100);
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--color-cream-100);
+}
+
+html::-webkit-scrollbar-thumb {
+  background: var(--color-teal-700);
+  border-radius: 999px;
+  border: 2px solid var(--color-cream-100);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: var(--color-teal-900);
+}
+
+
+/* ---------------------------------------------------------
+   18. MOBILE TAP HIGHLIGHT
+   --------------------------------------------------------- */
+
+a,
+button,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ---------------------------------------------------------
+   19. IMAGE DRAG PREVENTION
+   --------------------------------------------------------- */
+
+img,
+svg {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+
+/* ---------------------------------------------------------
+   20. SVG
+   --------------------------------------------------------- */
+
+svg {
+  overflow: visible;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   21. FORM AUTOFILL
+   --------------------------------------------------------- */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-ink-900);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+
+/* ---------------------------------------------------------
+   22. SAFARI / IOS FIXES
+   --------------------------------------------------------- */
+
+button,
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+
+/* ---------------------------------------------------------
+   23. REDUCED MOTION
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

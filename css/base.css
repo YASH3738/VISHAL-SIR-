@@ -1,0 +1,1580 @@
+/* =========================================================
+   DR. VISHAL YOGI PHYSIOTHERAPY & WELLNESS CLINIC
+   BASE STYLES
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   01. BODY
+   --------------------------------------------------------- */
+
+body {
+  position: relative;
+  background: var(--color-cream-50);
+  color: var(--color-ink-900);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+  letter-spacing: var(--tracking-normal);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ---------------------------------------------------------
+   02. MAIN DOCUMENT WRAPPER
+   --------------------------------------------------------- */
+
+.site-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: clip;
+}
+
+main {
+  position: relative;
+  width: 100%;
+  overflow: clip;
+}
+
+
+/* ---------------------------------------------------------
+   03. GLOBAL CONTAINER
+   --------------------------------------------------------- */
+
+.container {
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--container-xl)
+  );
+
+  margin-inline: auto;
+  position: relative;
+}
+
+.container--wide {
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--container-2xl)
+  );
+  margin-inline: auto;
+  position: relative;
+}
+
+.container--narrow {
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--container-lg)
+  );
+  margin-inline: auto;
+  position: relative;
+}
+
+
+/* ---------------------------------------------------------
+   04. SECTION SYSTEM
+   --------------------------------------------------------- */
+
+.section {
+  position: relative;
+  width: 100%;
+  padding-block: var(--section-padding-y);
+}
+
+.section--small {
+  padding-block: var(--section-padding-sm);
+}
+
+.section--large {
+  padding-block: var(--section-padding-lg);
+}
+
+.section--hero {
+  padding-top: 0;
+}
+
+.section--flush {
+  padding-block: 0;
+}
+
+
+/* ---------------------------------------------------------
+   05. SECTION BACKGROUNDS
+   --------------------------------------------------------- */
+
+.section--cream {
+  background: var(--color-cream-100);
+}
+
+.section--white {
+  background: var(--color-white);
+}
+
+.section--soft {
+  background: var(--color-surface-soft);
+}
+
+.section--teal {
+  background: var(--color-teal-900);
+  color: var(--color-white);
+}
+
+.section--dark {
+  background: var(--color-ink-950);
+  color: var(--color-white);
+}
+
+
+/* ---------------------------------------------------------
+   06. SECTION HEADER
+   --------------------------------------------------------- */
+
+.section-header {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: var(--space-12);
+}
+
+.section-header--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section-header--right {
+  margin-left: auto;
+  text-align: right;
+}
+
+
+/* ---------------------------------------------------------
+   07. EYEBROW
+   --------------------------------------------------------- */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  margin-bottom: var(--space-5);
+
+  color: var(--color-teal-700);
+
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 1px;
+  background: currentColor;
+}
+
+.eyebrow--gold {
+  color: var(--color-gold-600);
+}
+
+.eyebrow--light {
+  color: var(--color-teal-200);
+}
+
+
+/* ---------------------------------------------------------
+   08. HEADINGS
+   --------------------------------------------------------- */
+
+.display-title,
+.section-title,
+.hero-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+
+.hero-title {
+  font-size: var(--text-display);
+}
+
+.section-title {
+  font-size: var(--text-h2);
+}
+
+.display-title {
+  font-size: var(--text-display);
+}
+
+.heading-xl {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.heading-lg {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.heading-md {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+}
+
+.heading-sm {
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+}
+
+
+/* ---------------------------------------------------------
+   09. BODY COPY
+   --------------------------------------------------------- */
+
+.lead {
+  max-width: 720px;
+
+  color: var(--color-ink-600);
+
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+}
+
+.body-copy {
+  color: var(--color-ink-600);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+}
+
+.small-copy {
+  color: var(--color-ink-500);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.muted {
+  color: var(--color-ink-500);
+}
+
+.text-light {
+  color: var(--color-white);
+}
+
+.text-teal {
+  color: var(--color-teal-700);
+}
+
+.text-gold {
+  color: var(--color-gold-600);
+}
+
+
+/* ---------------------------------------------------------
+   10. TYPOGRAPHY WIDTHS
+   --------------------------------------------------------- */
+
+.text-width-sm {
+  max-width: 520px;
+}
+
+.text-width-md {
+  max-width: 680px;
+}
+
+.text-width-lg {
+  max-width: 820px;
+}
+
+
+/* ---------------------------------------------------------
+   11. TEXT ALIGNMENT
+   --------------------------------------------------------- */
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+
+/* ---------------------------------------------------------
+   12. FONT UTILITIES
+   --------------------------------------------------------- */
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-ui {
+  font-family: var(--font-ui);
+}
+
+.font-light {
+  font-weight: var(--weight-light);
+}
+
+.font-regular {
+  font-weight: var(--weight-regular);
+}
+
+.font-medium {
+  font-weight: var(--weight-medium);
+}
+
+.font-semibold {
+  font-weight: var(--weight-semibold);
+}
+
+.font-bold {
+  font-weight: var(--weight-bold);
+}
+
+
+/* ---------------------------------------------------------
+   13. BUTTON SYSTEM
+   --------------------------------------------------------- */
+
+.btn {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+
+  min-height: var(--button-height);
+  padding-inline: var(--button-padding-x);
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  letter-spacing: var(--tracking-wide);
+
+  white-space: nowrap;
+  text-decoration: none;
+
+  overflow: hidden;
+
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    background-color var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out),
+    color var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+
+/* ---------------------------------------------------------
+   14. PRIMARY BUTTON
+   --------------------------------------------------------- */
+
+.btn-primary {
+  background: var(--color-teal-800);
+  color: var(--color-white);
+  box-shadow: var(--shadow-button);
+}
+
+.btn-primary:hover {
+  background: var(--color-teal-900);
+  color: var(--color-white);
+  box-shadow: var(--shadow-button-hover);
+}
+
+
+/* ---------------------------------------------------------
+   15. SECONDARY BUTTON
+   --------------------------------------------------------- */
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-teal-800);
+  border-color: var(--color-teal-800);
+}
+
+.btn-secondary:hover {
+  background: var(--color-teal-800);
+  color: var(--color-white);
+}
+
+
+/* ---------------------------------------------------------
+   16. LIGHT BUTTON
+   --------------------------------------------------------- */
+
+.btn-light {
+  background: var(--color-white);
+  color: var(--color-teal-900);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-light:hover {
+  background: var(--color-cream-100);
+  color: var(--color-teal-900);
+}
+
+
+/* ---------------------------------------------------------
+   17. GOLD BUTTON
+   --------------------------------------------------------- */
+
+.btn-gold {
+  background: var(--color-gold-500);
+  color: var(--color-ink-950);
+}
+
+.btn-gold:hover {
+  background: var(--color-gold-400);
+  color: var(--color-ink-950);
+}
+
+
+/* ---------------------------------------------------------
+   18. TEXT BUTTON
+   --------------------------------------------------------- */
+
+.btn-text {
+  min-height: auto;
+  padding: 0;
+  border-radius: 0;
+
+  background: transparent;
+  color: var(--color-teal-800);
+}
+
+.btn-text:hover {
+  color: var(--color-teal-600);
+  transform: none;
+}
+
+
+/* ---------------------------------------------------------
+   19. BUTTON ICON
+   --------------------------------------------------------- */
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    background-color var(--duration-normal) var(--ease-out);
+}
+
+.btn:hover .btn-icon {
+  transform: translateX(3px);
+}
+
+
+/* ---------------------------------------------------------
+   20. DIVIDERS
+   --------------------------------------------------------- */
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.divider--dark {
+  background: var(--color-border-dark);
+}
+
+.divider--teal {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+
+/* ---------------------------------------------------------
+   21. FLEX UTILITIES
+   --------------------------------------------------------- */
+
+.flex {
+  display: flex;
+}
+
+.flex-inline {
+  display: inline-flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+
+/* ---------------------------------------------------------
+   22. GAP UTILITIES
+   --------------------------------------------------------- */
+
+.gap-1 {
+  gap: var(--space-1);
+}
+
+.gap-2 {
+  gap: var(--space-2);
+}
+
+.gap-3 {
+  gap: var(--space-3);
+}
+
+.gap-4 {
+  gap: var(--space-4);
+}
+
+.gap-5 {
+  gap: var(--space-5);
+}
+
+.gap-6 {
+  gap: var(--space-6);
+}
+
+.gap-8 {
+  gap: var(--space-8);
+}
+
+.gap-10 {
+  gap: var(--space-10);
+}
+
+.gap-12 {
+  gap: var(--space-12);
+}
+
+
+/* ---------------------------------------------------------
+   23. GRID
+   --------------------------------------------------------- */
+
+.grid {
+  display: grid;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+
+/* ---------------------------------------------------------
+   24. WIDTH UTILITIES
+   --------------------------------------------------------- */
+
+.w-full {
+  width: 100%;
+}
+
+.w-auto {
+  width: auto;
+}
+
+.max-w-none {
+  max-width: none;
+}
+
+.max-w-sm {
+  max-width: 480px;
+}
+
+.max-w-md {
+  max-width: 680px;
+}
+
+.max-w-lg {
+  max-width: 820px;
+}
+
+.max-w-xl {
+  max-width: 1100px;
+}
+
+
+/* ---------------------------------------------------------
+   25. MARGIN UTILITIES
+   --------------------------------------------------------- */
+
+.mx-auto {
+  margin-inline: auto;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+
+.mt-4 {
+  margin-top: var(--space-4);
+}
+
+.mt-6 {
+  margin-top: var(--space-6);
+}
+
+.mt-8 {
+  margin-top: var(--space-8);
+}
+
+.mt-10 {
+  margin-top: var(--space-10);
+}
+
+.mt-12 {
+  margin-top: var(--space-12);
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+
+.mb-6 {
+  margin-bottom: var(--space-6);
+}
+
+.mb-8 {
+  margin-bottom: var(--space-8);
+}
+
+.mb-10 {
+  margin-bottom: var(--space-10);
+}
+
+.mb-12 {
+  margin-bottom: var(--space-12);
+}
+
+
+/* ---------------------------------------------------------
+   26. PADDING UTILITIES
+   --------------------------------------------------------- */
+
+.p-0 {
+  padding: 0;
+}
+
+.p-4 {
+  padding: var(--space-4);
+}
+
+.p-6 {
+  padding: var(--space-6);
+}
+
+.p-8 {
+  padding: var(--space-8);
+}
+
+.p-10 {
+  padding: var(--space-10);
+}
+
+.p-12 {
+  padding: var(--space-12);
+}
+
+
+/* ---------------------------------------------------------
+   27. POSITION
+   --------------------------------------------------------- */
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.fixed {
+  position: fixed;
+}
+
+
+/* ---------------------------------------------------------
+   28. OVERFLOW
+   --------------------------------------------------------- */
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   29. VISIBILITY
+   --------------------------------------------------------- */
+
+.visible {
+  visibility: visible;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-100 {
+  opacity: 1;
+}
+
+
+/* ---------------------------------------------------------
+   30. IMAGE SYSTEM
+   --------------------------------------------------------- */
+
+.image-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-wrap img,
+.image-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+/* ---------------------------------------------------------
+   31. ASPECT RATIOS
+   --------------------------------------------------------- */
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-portrait {
+  aspect-ratio: 4 / 5;
+}
+
+.aspect-landscape {
+  aspect-ratio: 4 / 3;
+}
+
+
+/* ---------------------------------------------------------
+   32. ROUNDED CORNERS
+   --------------------------------------------------------- */
+
+.rounded-sm {
+  border-radius: var(--radius-sm);
+}
+
+.rounded-md {
+  border-radius: var(--radius-md);
+}
+
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}
+
+.rounded-xl {
+  border-radius: var(--radius-xl);
+}
+
+.rounded-2xl {
+  border-radius: var(--radius-2xl);
+}
+
+.rounded-full {
+  border-radius: 999px;
+}
+
+
+/* ---------------------------------------------------------
+   33. SURFACE
+   --------------------------------------------------------- */
+
+.surface {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+}
+
+.surface-soft {
+  background: var(--color-surface-soft);
+}
+
+.surface-dark {
+  background: var(--color-ink-950);
+  color: var(--color-white);
+}
+
+
+/* ---------------------------------------------------------
+   34. GLASS
+   --------------------------------------------------------- */
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+
+/* ---------------------------------------------------------
+   35. DECORATIVE ORBS
+   --------------------------------------------------------- */
+
+.decorative-orb {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(43, 119, 105, 0.12) 0%,
+      rgba(43, 119, 105, 0.04) 45%,
+      transparent 72%
+    );
+
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+.decorative-orb--gold {
+  background:
+    radial-gradient(
+      circle,
+      rgba(190, 149, 72, 0.14) 0%,
+      rgba(190, 149, 72, 0.04) 45%,
+      transparent 72%
+    );
+}
+
+
+/* ---------------------------------------------------------
+   36. NOISE OVERLAY
+   --------------------------------------------------------- */
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: var(--z-noise);
+
+  pointer-events: none;
+
+  opacity: var(--noise-opacity);
+
+  background-image: var(--noise-texture);
+  background-repeat: repeat;
+
+  mix-blend-mode: multiply;
+}
+
+
+/* ---------------------------------------------------------
+   37. PAGE LOADER
+   --------------------------------------------------------- */
+
+.page-loader {
+  position: fixed;
+  inset: 0;
+
+  z-index: var(--z-loader);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--color-cream-50);
+
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    visibility var(--duration-slow) var(--ease-out);
+}
+
+.page-loader.is-loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page-loader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.page-loader__mark {
+  width: 56px;
+  height: 56px;
+
+  border: 2px solid rgba(30, 91, 80, 0.12);
+  border-top-color: var(--color-teal-700);
+
+  border-radius: 50%;
+
+  animation: loader-spin 1s linear infinite;
+}
+
+.page-loader__text {
+  color: var(--color-ink-500);
+
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+}
+
+
+/* ---------------------------------------------------------
+   38. CUSTOM CURSOR
+   --------------------------------------------------------- */
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  z-index: var(--z-cursor);
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  transform: translate3d(-50%, -50%, 0);
+
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    width var(--duration-normal) var(--ease-out),
+    height var(--duration-normal) var(--ease-out),
+    background-color var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out);
+}
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--color-teal-800);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid rgba(30, 91, 80, 0.45);
+
+  border-radius: 50%;
+}
+
+body.cursor-ready .cursor-dot,
+body.cursor-ready .cursor-ring {
+  opacity: 1;
+}
+
+.cursor-hover .cursor-ring {
+  width: 54px;
+  height: 54px;
+
+  border-color: var(--color-teal-700);
+  background: rgba(30, 91, 80, 0.06);
+}
+
+
+/* ---------------------------------------------------------
+   39. SKIP LINK
+   --------------------------------------------------------- */
+
+.skip-link {
+  position: fixed;
+
+  top: 12px;
+  left: 12px;
+
+  z-index: 99999;
+
+  padding: 12px 18px;
+
+  border-radius: var(--radius-md);
+
+  background: var(--color-teal-900);
+  color: var(--color-white);
+
+  transform: translateY(-150%);
+
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+
+/* ---------------------------------------------------------
+   40. MOBILE ACTION BAR
+   --------------------------------------------------------- */
+
+.mobile-action-bar {
+  display: none;
+}
+
+
+/* ---------------------------------------------------------
+   41. LINK UNDERLINE EFFECT
+   --------------------------------------------------------- */
+
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+
+  width: 100%;
+  height: 1px;
+
+  background: currentColor;
+
+  transform: scaleX(0);
+  transform-origin: right;
+
+  transition:
+    transform var(--duration-normal) var(--ease-out);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+
+/* ---------------------------------------------------------
+   42. ARROW LINK
+   --------------------------------------------------------- */
+
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  color: var(--color-teal-800);
+
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.arrow-link i,
+.arrow-link svg {
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.arrow-link:hover i,
+.arrow-link:hover svg {
+  transform: translateX(5px);
+}
+
+
+/* ---------------------------------------------------------
+   43. BADGE
+   --------------------------------------------------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+
+  min-height: 30px;
+  padding-inline: 12px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+
+  background: var(--color-white);
+
+  color: var(--color-ink-600);
+
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+}
+
+.badge--teal {
+  background: var(--color-teal-50);
+  border-color: var(--color-teal-100);
+  color: var(--color-teal-800);
+}
+
+.badge--gold {
+  background: var(--color-gold-50);
+  border-color: var(--color-gold-100);
+  color: var(--color-gold-700);
+}
+
+
+/* ---------------------------------------------------------
+   44. STATUS DOT
+   --------------------------------------------------------- */
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: var(--color-success);
+
+  box-shadow:
+    0 0 0 5px rgba(54, 146, 91, 0.1);
+}
+
+
+/* ---------------------------------------------------------
+   45. SOCIAL ICON
+   --------------------------------------------------------- */
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+
+  background: var(--color-white);
+
+  color: var(--color-ink-700);
+
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    background-color var(--duration-normal) var(--ease-out),
+    color var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out);
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+
+  background: var(--color-teal-800);
+  border-color: var(--color-teal-800);
+  color: var(--color-white);
+}
+
+
+/* ---------------------------------------------------------
+   46. WHATSAPP FLOATING BUTTON
+   --------------------------------------------------------- */
+
+.whatsapp-float {
+  position: fixed;
+
+  right: var(--floating-action-right);
+  bottom: var(--floating-action-bottom);
+
+  z-index: var(--z-floating);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: var(--whatsapp-size);
+  height: var(--whatsapp-size);
+
+  border-radius: 50%;
+
+  background: #25d366;
+  color: #ffffff;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.16);
+
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.whatsapp-float:hover {
+  transform: translateY(-5px) scale(1.04);
+
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.2);
+}
+
+.whatsapp-float i {
+  font-size: 22px;
+}
+
+
+/* ---------------------------------------------------------
+   47. CALL FLOATING BUTTON
+   --------------------------------------------------------- */
+
+.call-float {
+  position: fixed;
+
+  right: var(--floating-action-right);
+  bottom: calc(
+    var(--floating-action-bottom) +
+    var(--whatsapp-size) +
+    14px
+  );
+
+  z-index: var(--z-floating);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+
+  background: var(--color-teal-800);
+  color: var(--color-white);
+
+  box-shadow: var(--shadow-md);
+
+  transition:
+    transform var(--duration-normal) var(--ease-out),
+    background-color var(--duration-normal) var(--ease-out);
+}
+
+.call-float:hover {
+  transform: translateY(-4px);
+  background: var(--color-teal-900);
+}
+
+
+/* ---------------------------------------------------------
+   48. ANIMATED WHATSAPP PULSE
+   --------------------------------------------------------- */
+
+.whatsapp-float::before {
+  content: "";
+
+  position: absolute;
+  inset: -6px;
+
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  border-radius: 50%;
+
+  animation: whatsapp-pulse 2.4s ease-out infinite;
+}
+
+
+/* ---------------------------------------------------------
+   49. HIDE ON TOUCH DEVICES
+   --------------------------------------------------------- */
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none !important;
+  }
+
+  body {
+    cursor: auto;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   50. KEYFRAMES
+   --------------------------------------------------------- */
+
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes whatsapp-pulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.8;
+  }
+
+  70% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   51. TABLET
+   --------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .section {
+    padding-block: var(--section-padding-md);
+  }
+
+  .section-header {
+    margin-bottom: var(--space-10);
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .container,
+  .container--wide,
+  .container--narrow {
+    width: min(
+      calc(100% - (var(--page-gutter) * 2)),
+      var(--container-xl)
+    );
+  }
+}
+
+
+/* ---------------------------------------------------------
+   52. MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .section {
+    padding-block: var(--section-padding-sm);
+  }
+
+  .section-header {
+    margin-bottom: var(--space-8);
+  }
+
+  .lead {
+    font-size: var(--text-base);
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-action-bar {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: var(--z-mobile-bar);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    padding:
+      10px
+      12px
+      calc(10px + env(safe-area-inset-bottom));
+
+    background: rgba(255, 255, 255, 0.94);
+
+    border-top: 1px solid var(--color-border);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .mobile-action-bar a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 48px;
+
+    border-radius: var(--radius-md);
+
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+  }
+
+  .mobile-action-bar a:first-child {
+    background: var(--color-teal-800);
+    color: var(--color-white);
+  }
+
+  .mobile-action-bar a:last-child {
+    background: var(--color-cream-100);
+    color: var(--color-teal-900);
+  }
+
+  body {
+    padding-bottom: 78px;
+  }
+
+  .whatsapp-float {
+    right: 16px;
+    bottom: 92px;
+  }
+
+  .call-float {
+    right: 16px;
+    bottom: 154px;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   53. SMALL MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .container,
+  .container--wide,
+  .container--narrow {
+    width: calc(100% - 32px);
+  }
+
+  .section {
+    padding-block: 72px;
+  }
+
+  .eyebrow {
+    margin-bottom: var(--space-4);
+  }
+
+  .btn {
+    min-height: 50px;
+    padding-inline: 20px;
+  }
+}

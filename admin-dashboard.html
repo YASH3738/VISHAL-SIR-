@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102a3a">
+  <meta name="api-base-url" content="">
+  <title>Clinic Admin | Dr. Vishal Yogi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="js/admin-dashboard.js" defer></script>
+</head>
+<body class="portal-page">
+  <header class="portal-header">
+    <a class="portal-brand" href="index.html" aria-label="Dr. Vishal Yogi home">
+      <span class="portal-brand__mark">VY</span>
+      <span><strong>Clinic administration</strong><small>Dr. Vishal Yogi Physiotherapy</small></span>
+    </a>
+    <a class="portal-back" href="patient-dashboard.html">Patient portal</a>
+  </header>
+
+  <main class="portal-main portal-main--admin">
+    <section class="portal-intro">
+      <p class="portal-eyebrow">Staff access</p>
+      <h1>Care coordination, <span>made simple.</span></h1>
+      <p>Review paid appointments and update the treatment information patients see in their portal.</p>
+    </section>
+
+    <section class="portal-panel portal-login" id="adminLoginPanel">
+      <div class="portal-panel__heading">
+        <div>
+          <p class="portal-eyebrow">Authorized staff only</p>
+          <h2>Admin sign in</h2>
+        </div>
+        <span class="portal-icon" aria-hidden="true">VY</span>
+      </div>
+      <form id="adminLoginForm" class="portal-form">
+        <label for="adminPassword">Admin password</label>
+        <input id="adminPassword" name="password" type="password" autocomplete="current-password" required>
+        <button class="portal-button" type="submit">Sign in</button>
+        <p class="portal-message" id="adminLoginMessage" role="status" aria-live="polite"></p>
+      </form>
+      <p class="portal-help">The admin password must be configured in the backend environment.</p>
+    </section>
+
+    <section id="adminDashboard" class="portal-dashboard" hidden>
+      <div class="portal-dashboard__top">
+        <div>
+          <p class="portal-eyebrow">Clinic workspace</p>
+          <h2>Admin dashboard</h2>
+          <p class="portal-subtext">Booking details and payment status are recorded here automatically.</p>
+        </div>
+        <button class="portal-button portal-button--quiet" id="adminLogout" type="button">Sign out</button>
+      </div>
+      <p class="portal-message portal-message--wide" id="adminMessage" role="status" aria-live="polite"></p>
+
+      <section class="portal-section admin-revenue" aria-labelledby="adminRevenueHeading">
+        <div class="portal-section__heading">
+          <div>
+            <p class="portal-eyebrow">Payments overview</p>
+            <h3 id="adminRevenueHeading">Collected revenue</h3>
+          </div>
+        </div>
+        <div class="portal-stats portal-stats--revenue">
+          <article class="portal-stat portal-stat--revenue">
+            <span>All-time paid revenue</span>
+            <strong id="adminRevenueTotal">Loading…</strong>
+          </article>
+          <article class="portal-stat">
+            <span>Successful payments</span>
+            <strong id="adminRevenueTransactions">—</strong>
+          </article>
+        </div>
+        <p class="portal-message" id="adminRevenueMessage" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="portal-section admin-create">
+        <div class="portal-section__heading">
+          <div>
+            <p class="portal-eyebrow">Patient portal</p>
+            <h3>Set up patient login</h3>
+          </div>
+        </div>
+        <p class="portal-subtext">Use this only when a patient is told their login is not configured. Existing PINs are never changed here.</p>
+        <form id="portalAccessForm" class="portal-form">
+          <label for="portalAccessPatientId">Patient ID</label>
+          <input id="portalAccessPatientId" name="patient_id" autocomplete="off" placeholder="Enter the Patient ID" required>
+          <button class="portal-button" type="submit">Configure portal login</button>
+          <p class="portal-message" id="portalAccessMessage" role="status" aria-live="polite"></p>
+        </form>
+        <div class="credential-result" id="portalAccessResult" role="status" aria-live="polite" hidden>
+          <p>One-time patient PIN: <strong id="portalAccessPin"></strong></p>
+          <p>Share this PIN securely with the patient. It is shown only now; existing PINs are not reset.</p>
+        </div>
+      </section>
+
+      <section class="portal-section">
+        <div class="portal-section__heading portal-section__heading--row">
+          <div>
+            <p class="portal-eyebrow">Appointment requests</p>
+            <h3>Bookings &amp; treatment plans</h3>
+          </div>
+          <button class="portal-button portal-button--quiet" id="refreshAppointments" type="button">Refresh</button>
+        </div>
+        <div id="adminAppointmentList" class="portal-list"></div>
+      </section>
+    </section>
+  </main>
+  <footer class="portal-footer">Authorized clinic staff only. Sign out when finished.</footer>
+</body>
+</html>

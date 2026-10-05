@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102a3a">
+  <title>Appointment confirmed | Dr. Vishal Yogi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="js/appointment-thank-you.js" defer></script>
+</head>
+<body class="portal-page">
+  <header class="portal-header">
+    <a class="portal-brand" href="index.html" aria-label="Dr. Vishal Yogi home">
+      <span class="portal-brand__mark">VY</span>
+      <span><strong>Dr. Vishal Yogi</strong><small>Physiotherapy &amp; Wellness</small></span>
+    </a>
+  </header>
+  <main class="portal-main">
+    <section class="portal-panel portal-login thank-you-panel">
+      <span class="portal-icon thank-you-check" aria-hidden="true">✓</span>
+      <p class="portal-eyebrow" id="receiptEyebrow">Appointment update</p>
+      <h1 id="receiptHeading">Thank you<span>.</span></h1>
+      <p class="thank-you-lead" id="receiptMessage">Confirming your appointment and preparing your patient login…</p>
+      <section class="thank-you-details" id="appointmentDetails" aria-label="Appointment details" hidden>
+        <div>
+          <span>Service</span>
+          <strong id="receiptService"></strong>
+        </div>
+        <div>
+          <span>Date</span>
+          <strong id="receiptDate"></strong>
+        </div>
+        <div>
+          <span>Time</span>
+          <strong id="receiptTime"></strong>
+        </div>
+        <div>
+          <span>Appointment reference</span>
+          <strong id="receiptAppointmentId"></strong>
+        </div>
+      </section>
+      <aside class="thank-you-online-note" id="onlineConsultationNote" hidden>
+        <span class="thank-you-online-note__icon" aria-hidden="true">01</span>
+        <p><strong>Your online consultation</strong><br>Your secure video-call link will be shared by the clinic about one hour before your appointment.</p>
+      </aside>
+      <p class="portal-message thank-you-whatsapp-status" id="receiptWhatsappStatus" role="status" aria-live="polite" hidden></p>
+      <div class="credential-result" id="patientLoginDetails" hidden>
+        <p>Your Patient ID</p>
+        <strong id="receiptPatientId"></strong>
+        <p class="receipt-pin-label" id="receiptPinLabel">Your one-time 4-digit dashboard PIN</p>
+        <strong id="receiptPin"></strong>
+        <p id="receiptNote"></p>
+      </div>
+      <div class="thank-you-actions" id="receiptActions" hidden>
+        <a class="portal-button" href="patient-dashboard.html">Open patient dashboard</a>
+        <a class="portal-button portal-button--quiet" id="whatsappReceipt" target="_blank" rel="noopener noreferrer">Share booking on WhatsApp</a>
+      </div>
+      <p class="portal-message" id="receiptError" role="status" aria-live="polite"></p>
+      <a class="thank-you-back" href="index.html">Back to website</a>
+    </section>
+  </main>
+  <footer class="portal-footer">Keep your Patient ID and PIN private.</footer>
+</body>
+</html>

@@ -1,0 +1,9 @@
+node_modules/
+backend/node_modules/
+backend/.env
+backend/firebase-service-account.json
+backend/*-firebase-adminsdk-*.json
+rzp-key*.csv
+.firebase/
+firebase-debug.log
+firebase-debug.*.log

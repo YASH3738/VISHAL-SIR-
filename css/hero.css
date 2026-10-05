@@ -1,0 +1,2780 @@
+/* ============================================================
+   DR. VISHAL YOGI PHYSIOTHERAPY & WELLNESS
+   HERO SYSTEM
+   File: css/hero.css
+   ============================================================ */
+
+
+/* ============================================================
+   HERO VARIABLES
+   ============================================================ */
+
+:root {
+
+    --hero-overlay-dark:
+        linear-gradient(
+            110deg,
+            rgba(5, 29, 27, 0.97) 0%,
+            rgba(8, 48, 44, 0.90) 38%,
+            rgba(8, 48, 44, 0.54) 70%,
+            rgba(8, 48, 44, 0.20) 100%
+        );
+
+    --hero-overlay-soft:
+        linear-gradient(
+            180deg,
+            rgba(5, 29, 27, 0.12) 0%,
+            rgba(5, 29, 27, 0.48) 100%
+        );
+
+    --hero-grid-line:
+        rgba(255, 255, 255, 0.055);
+
+    --hero-glow:
+        rgba(119, 193, 173, 0.18);
+
+    --hero-gold-glow:
+        rgba(205, 166, 92, 0.12);
+
+}
+
+
+/* ============================================================
+   GLOBAL HERO FOUNDATION
+   ============================================================ */
+
+.hero,
+.page-hero {
+
+    position: relative;
+
+    width: 100%;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+}
+
+
+/* ============================================================
+   HOME HERO
+   ============================================================ */
+
+.hero {
+
+    min-height: min(
+        900px,
+        calc(100vh - var(--header-height, 88px))
+    );
+
+    display: flex;
+
+    align-items: center;
+
+    background:
+        var(--hero-overlay-dark),
+        var(--color-primary-dark, #0b3d38);
+
+}
+
+
+/* ============================================================
+   HERO BACKGROUND
+   ============================================================ */
+
+.hero__background {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: -3;
+
+    overflow: hidden;
+
+}
+
+
+.hero__background::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -5%;
+
+    background:
+        radial-gradient(
+            circle at 76% 35%,
+            var(--hero-glow),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 20% 90%,
+            rgba(91, 163, 145, 0.10),
+            transparent 28%
+        );
+
+    pointer-events: none;
+
+}
+
+
+.hero__background::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.18),
+            transparent 45%,
+            rgba(0, 0, 0, 0.10)
+        );
+
+    pointer-events: none;
+
+}
+
+
+/* ============================================================
+   HERO IMAGE
+   ============================================================ */
+
+.hero__image {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center center;
+
+    opacity: 0;
+
+    transform:
+        scale(1.045)
+        translate3d(0, 0, 0);
+
+    animation:
+        heroImageReveal 1.8s
+        cubic-bezier(0.16, 1, 0.3, 1)
+        forwards;
+
+    filter:
+        saturate(0.92)
+        contrast(1.02);
+
+}
+
+
+.hero__background-image {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    opacity: 0;
+
+    transform: scale(1.06);
+
+    animation:
+        heroImageReveal 1.8s
+        cubic-bezier(0.16, 1, 0.3, 1)
+        0.1s forwards;
+
+}
+
+
+/* ============================================================
+   HERO OVERLAY
+   ============================================================ */
+
+.hero__overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    background:
+        var(--hero-overlay-dark);
+
+    pointer-events: none;
+
+}
+
+
+.hero__overlay::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 78% 48%,
+            rgba(128, 210, 190, 0.11),
+            transparent 30%
+        );
+
+}
+
+
+/* ============================================================
+   HERO GRID
+   ============================================================ */
+
+.hero__grid {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    opacity: 0.6;
+
+    background-image:
+
+        linear-gradient(
+            to right,
+            var(--hero-grid-line) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            to bottom,
+            var(--hero-grid-line) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        120px 120px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            transparent,
+            black 20%,
+            black 80%,
+            transparent
+        );
+
+}
+
+
+/* ============================================================
+   HERO GRAIN
+   ============================================================ */
+
+.hero__grain {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 4;
+
+    pointer-events: none;
+
+    opacity: 0.055;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+
+    mix-blend-mode: soft-light;
+
+}
+
+
+/* ============================================================
+   HERO CONTAINER
+   ============================================================ */
+
+.hero > .container {
+
+    position: relative;
+
+    z-index: 5;
+
+    width: 100%;
+
+}
+
+
+/* ============================================================
+   HERO CONTENT
+   ============================================================ */
+
+.hero__content {
+
+    position: relative;
+
+    width: min(
+        760px,
+        70%
+    );
+
+    padding-top: clamp(80px, 10vh, 140px);
+
+    padding-bottom: clamp(100px, 12vh, 160px);
+
+}
+
+
+/* ============================================================
+   HERO EYEBROW
+   ============================================================ */
+
+.hero__eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 28px;
+
+    color:
+        var(
+            --color-text-on-dark,
+            rgba(255,255,255,0.82)
+        );
+
+    font-family:
+        var(
+            --font-body,
+            "Manrope",
+            sans-serif
+        );
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.22em;
+
+    text-transform: uppercase;
+
+}
+
+
+.hero__eyebrow::before {
+
+    content: "";
+
+    width: 38px;
+
+    height: 1px;
+
+    background:
+        var(
+            --color-accent,
+            #bca06a
+        );
+
+    transform-origin: left center;
+
+    animation:
+        heroLineReveal 1s
+        cubic-bezier(0.16, 1, 0.3, 1)
+        0.5s both;
+
+}
+
+
+/* ============================================================
+   HERO TITLE
+   ============================================================ */
+
+.hero__title {
+
+    max-width: 900px;
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-family:
+        var(
+            --font-display,
+            "Playfair Display",
+            serif
+        );
+
+    font-size:
+        clamp(
+            56px,
+            7vw,
+            108px
+        );
+
+    font-weight: 500;
+
+    line-height: 0.98;
+
+    letter-spacing: -0.045em;
+
+    text-wrap: balance;
+
+}
+
+
+.hero__title em {
+
+    color:
+        var(
+            --color-accent,
+            #d0b57a
+        );
+
+    font-style: italic;
+
+    font-weight: 500;
+
+}
+
+
+.hero__title strong {
+
+    font-weight: 700;
+
+}
+
+
+/* ============================================================
+   HERO DESCRIPTION
+   ============================================================ */
+
+.hero__description {
+
+    max-width: 590px;
+
+    margin-top: 30px;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.72
+        );
+
+    font-family:
+        var(
+            --font-body,
+            "Manrope",
+            sans-serif
+        );
+
+    font-size:
+        clamp(
+            15px,
+            1.2vw,
+            18px
+        );
+
+    line-height: 1.75;
+
+}
+
+
+/* ============================================================
+   HERO ACTIONS
+   ============================================================ */
+
+.hero__actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: 38px;
+
+}
+
+
+.hero__actions .btn {
+
+    min-height: 56px;
+
+}
+
+
+/* ============================================================
+   HERO TRUST PANEL
+   ============================================================ */
+
+.hero__trust {
+
+    position: absolute;
+
+    right: 0;
+
+    bottom: 74px;
+
+    width: 300px;
+
+    padding: 24px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.13);
+
+    border-radius:
+        var(
+            --radius-lg,
+            22px
+        );
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.075
+        );
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 30px 70px
+        rgba(0,0,0,0.18);
+
+}
+
+
+.hero__trust-label {
+
+    display: block;
+
+    margin-bottom: 18px;
+
+    color:
+        rgba(255,255,255,0.54);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+
+}
+
+
+.hero__trust-list {
+
+    display: grid;
+
+    gap: 13px;
+
+}
+
+
+.hero__trust-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    color:
+        rgba(255,255,255,0.86);
+
+    font-size: 13px;
+
+    line-height: 1.4;
+
+}
+
+
+.hero__trust-item i {
+
+    flex: 0 0 auto;
+
+    color:
+        var(
+            --color-accent,
+            #d0b57a
+        );
+
+    font-size: 12px;
+
+}
+
+
+/* ============================================================
+   HERO SIDE DECOR
+   ============================================================ */
+
+.hero__orb {
+
+    position: absolute;
+
+    width: 420px;
+
+    aspect-ratio: 1;
+
+    right: 6%;
+
+    top: 16%;
+
+    z-index: 1;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    box-shadow:
+        inset 0 0 80px
+        rgba(143, 207, 192, 0.05);
+
+    pointer-events: none;
+
+    animation:
+        heroOrbFloat
+        12s ease-in-out
+        infinite;
+
+}
+
+
+.hero__orb::before,
+.hero__orb::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 12%;
+
+    border-radius: inherit;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.055);
+
+}
+
+
+.hero__orb::after {
+
+    inset: 25%;
+
+    border-color:
+        rgba(
+            208,
+            181,
+            122,
+            0.10
+        );
+
+}
+
+
+/* ============================================================
+   HERO SCROLL INDICATOR
+   ============================================================ */
+
+.hero__scroll {
+
+    position: absolute;
+
+    left:
+        max(
+            var(--container-gutter, 24px),
+            calc(
+                (100vw - var(--container-max-width, 1400px))
+                / 2
+            )
+        );
+
+    bottom: 30px;
+
+    z-index: 7;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    color:
+        rgba(255,255,255,0.55);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+
+}
+
+
+.hero__scroll-line {
+
+    position: relative;
+
+    width: 60px;
+
+    height: 1px;
+
+    overflow: hidden;
+
+    background:
+        rgba(255,255,255,0.20);
+
+}
+
+
+.hero__scroll-line span {
+
+    position: absolute;
+
+    left: -100%;
+
+    top: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background:
+        rgba(255,255,255,0.75);
+
+    animation:
+        heroScrollLine
+        2.2s
+        cubic-bezier(0.65,0,0.35,1)
+        infinite;
+
+}
+
+
+/* ============================================================
+   INNER PAGE HERO
+   ============================================================ */
+
+.page-hero {
+
+    min-height:
+        clamp(
+            470px,
+            62vh,
+            700px
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    background:
+        var(
+            --color-primary-dark,
+            #0b3d38
+        );
+
+    color: #fff;
+
+}
+
+
+.page-hero__background {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: -3;
+
+    background:
+
+        radial-gradient(
+            circle at 82% 20%,
+            rgba(115,190,173,0.17),
+            transparent 31%
+        ),
+
+        radial-gradient(
+            circle at 15% 90%,
+            rgba(198,162,91,0.09),
+            transparent 27%
+        ),
+
+        linear-gradient(
+            120deg,
+            #062b28 0%,
+            #0b403b 54%,
+            #123f3b 100%
+        );
+
+}
+
+
+.page-hero__background::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    opacity: 0.6;
+
+    background-image:
+
+        linear-gradient(
+            90deg,
+            transparent 49.8%,
+            rgba(255,255,255,0.045) 50%,
+            transparent 50.2%
+        ),
+
+        linear-gradient(
+            transparent 49.8%,
+            rgba(255,255,255,0.045) 50%,
+            transparent 50.2%
+        );
+
+    background-size:
+        140px 140px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            transparent,
+            black 25%,
+            black 75%,
+            transparent
+        );
+
+}
+
+
+.page-hero__background::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 520px;
+
+    aspect-ratio: 1;
+
+    right: -140px;
+
+    top: -180px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 0 100px
+        rgba(110, 192, 174, 0.08);
+
+}
+
+
+/* ============================================================
+   INNER HERO GRAIN
+   ============================================================ */
+
+.page-hero__grain {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    opacity: 0.055;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+
+    mix-blend-mode: soft-light;
+
+}
+
+
+/* ============================================================
+   INNER HERO CONTENT
+   ============================================================ */
+
+.page-hero > .container {
+
+    position: relative;
+
+    z-index: 4;
+
+    width: 100%;
+
+}
+
+
+.page-hero__content {
+
+    width: min(
+        900px,
+        78%
+    );
+
+    padding-top: 100px;
+
+    padding-bottom: 95px;
+
+}
+
+
+.page-hero__content .eyebrow {
+
+    color:
+        rgba(255,255,255,0.72);
+
+}
+
+
+.page-hero__content .eyebrow__line {
+
+    background:
+        var(
+            --color-accent,
+            #d0b57a
+        );
+
+}
+
+
+/* ============================================================
+   INNER HERO TITLE
+   ============================================================ */
+
+.page-hero__title {
+
+    max-width: 1000px;
+
+    margin: 0;
+
+    color: #fff;
+
+    font-family:
+        var(
+            --font-display,
+            "Playfair Display",
+            serif
+        );
+
+    font-size:
+        clamp(
+            54px,
+            7vw,
+            104px
+        );
+
+    font-weight: 500;
+
+    line-height: 0.99;
+
+    letter-spacing: -0.045em;
+
+    text-wrap: balance;
+
+}
+
+
+.page-hero__title em {
+
+    color:
+        var(
+            --color-accent,
+            #d0b57a
+        );
+
+    font-style: italic;
+
+}
+
+
+/* ============================================================
+   INNER HERO DESCRIPTION
+   ============================================================ */
+
+.page-hero__description {
+
+    max-width: 650px;
+
+    margin-top: 30px;
+
+    color:
+        rgba(255,255,255,0.68);
+
+    font-family:
+        var(
+            --font-body,
+            "Manrope",
+            sans-serif
+        );
+
+    font-size:
+        clamp(
+            15px,
+            1.15vw,
+            18px
+        );
+
+    line-height: 1.75;
+
+}
+
+
+/* ============================================================
+   INNER HERO SCROLL
+   ============================================================ */
+
+.page-hero__scroll {
+
+    position: absolute;
+
+    left:
+        max(
+            var(--container-gutter, 24px),
+            calc(
+                (100vw - var(--container-max-width, 1400px))
+                / 2
+            )
+        );
+
+    bottom: 32px;
+
+    z-index: 5;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    color:
+        rgba(255,255,255,0.50);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+
+}
+
+
+.page-hero__scroll-line {
+
+    position: relative;
+
+    width: 58px;
+
+    height: 1px;
+
+    overflow: hidden;
+
+    background:
+        rgba(255,255,255,0.20);
+
+}
+
+
+.page-hero__scroll-line span {
+
+    position: absolute;
+
+    left: -100%;
+
+    top: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background:
+        rgba(255,255,255,0.75);
+
+    animation:
+        heroScrollLine
+        2.2s
+        cubic-bezier(0.65,0,0.35,1)
+        infinite;
+
+}
+
+
+/* ============================================================
+   HERO PAGE VARIATIONS
+   ============================================================ */
+
+.page-hero--about .page-hero__background {
+
+    background:
+        radial-gradient(
+            circle at 80% 30%,
+            rgba(124,191,175,0.19),
+            transparent 34%
+        ),
+        linear-gradient(
+            125deg,
+            #062c29,
+            #0d4942
+        );
+
+}
+
+
+.page-hero--achievements .page-hero__background {
+
+    background:
+        radial-gradient(
+            circle at 78% 22%,
+            rgba(205,166,92,0.15),
+            transparent 30%
+        ),
+        linear-gradient(
+            125deg,
+            #082d2a,
+            #103f3b
+        );
+
+}
+
+
+.page-hero--gallery .page-hero__background {
+
+    background:
+        radial-gradient(
+            circle at 78% 25%,
+            rgba(112,191,174,0.18),
+            transparent 34%
+        ),
+        linear-gradient(
+            125deg,
+            #062d2a,
+            #10443e
+        );
+
+}
+
+
+.page-hero--appointment .page-hero__background {
+
+    background:
+        radial-gradient(
+            circle at 78% 25%,
+            rgba(132,204,185,0.18),
+            transparent 34%
+        ),
+        linear-gradient(
+            125deg,
+            #062c29,
+            #0b4540
+        );
+
+}
+
+
+.page-hero--contact .page-hero__background {
+
+    background:
+        radial-gradient(
+            circle at 78% 25%,
+            rgba(205,166,92,0.12),
+            transparent 31%
+        ),
+        linear-gradient(
+            125deg,
+            #062d2a,
+            #10413d
+        );
+
+}
+
+
+/* ============================================================
+   HERO IMAGE FRAME
+   ============================================================ */
+
+.hero-media {
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius:
+        var(
+            --radius-xl,
+            30px
+        );
+
+}
+
+
+.hero-media img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 1.2s
+        cubic-bezier(0.16,1,0.3,1);
+
+}
+
+
+.hero-media:hover img {
+
+    transform: scale(1.045);
+
+}
+
+
+/* ============================================================
+   HERO BADGE
+   ============================================================ */
+
+.hero-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+        10px
+        14px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.15);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,0.07);
+
+    backdrop-filter:
+        blur(12px);
+
+    -webkit-backdrop-filter:
+        blur(12px);
+
+    color:
+        rgba(255,255,255,0.86);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+}
+
+
+.hero-badge i {
+
+    color:
+        var(
+            --color-accent,
+            #d0b57a
+        );
+
+}
+
+
+/* ---------------------------------------------------------
+   LEGACY HERO MARKUP COMPATIBILITY
+   --------------------------------------------------------- */
+
+.hero-background,
+.hero-image-wrap {
+    position: absolute;
+    inset: 0;
+}
+
+.hero-background {
+    z-index: -1;
+    overflow: hidden;
+}
+
+.hero-image-wrap {
+    left: 34%;
+    overflow: hidden;
+}
+
+.hero-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(6, 29, 26, 0.98), rgba(6, 45, 41, 0.82) 42%, rgba(6, 45, 41, 0.26));
+}
+
+.hero-container {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    width: min(calc(100% - (var(--container-gutter) * 2)), var(--container-width));
+    min-height: inherit;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(28px, 5vw, 72px);
+    margin-inline: auto;
+    padding-block: clamp(100px, 12vh, 150px) 80px;
+}
+
+.hero-content {
+    max-width: 760px;
+}
+
+.hero-title .title-line {
+    display: block;
+}
+
+.hero-title .title-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
+}
+
+.hero-description {
+    max-width: 560px;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.75;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 26px;
+}
+
+.hero-actions .btn-primary,
+.hero-actions .btn-ghost {
+    display: inline-flex;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 20px;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.hero-actions .btn-primary {
+    color: var(--color-ink-950);
+    background: var(--color-gold-300);
+}
+
+.hero-actions .btn-ghost {
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    color: var(--color-white);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.hero-trust {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 8px;
+    background: rgba(6, 29, 26, 0.55);
+    backdrop-filter: blur(12px);
+}
+
+.hero-trust-item {
+    display: grid;
+    min-width: 70px;
+    gap: 5px;
+}
+
+.hero-trust-item strong {
+    color: var(--color-gold-300);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+}
+
+.hero-trust-item span {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.7rem;
+    line-height: 1.45;
+}
+
+.hero-trust-divider {
+    width: 1px;
+    align-self: stretch;
+    background: rgba(255, 255, 255, 0.24);
+}
+
+.page-hero-background {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: var(--gradient-dark);
+}
+
+.page-hero-glow {
+    position: absolute;
+    right: -10%;
+    bottom: -65%;
+    width: min(70vw, 760px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(67, 161, 150, 0.24), transparent 68%);
+}
+
+.page-hero-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.16;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(90deg, transparent, black);
+}
+
+.page-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    padding-block: clamp(76px, 10vw, 140px);
+    color: var(--color-white);
+}
+
+.page-hero-content .page-title {
+    margin-block: 18px;
+    color: var(--color-white);
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    line-height: 1.02;
+}
+
+.page-hero-content .page-description {
+    max-width: 620px;
+    color: rgba(255, 255, 255, 0.76);
+    line-height: 1.75;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.85rem;
+}
+
+.breadcrumb a {
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+@media (max-width: 900px) {
+    .hero-image-wrap {
+        left: 18%;
+        opacity: 0.56;
+    }
+
+    .hero-container {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
+        padding-block: 115px 64px;
+    }
+}
+
+@media (max-width: 540px) {
+    .hero-image-wrap {
+        left: 0;
+        opacity: 0.35;
+    }
+
+    .hero-container {
+        width: calc(100% - 2rem);
+        padding-block: 105px 48px;
+    }
+
+    .hero-trust {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 14px 10px;
+    }
+
+    .hero-trust-item {
+        min-width: 0;
+    }
+}
+
+
+/* ============================================================
+   HERO DIVIDER
+   ============================================================ */
+
+.hero-divider {
+
+    width: 100%;
+
+    height: 1px;
+
+    margin-top: 45px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.18),
+            transparent
+        );
+
+}
+
+
+/* ============================================================
+   HERO DECORATIVE NUMBERS
+   ============================================================ */
+
+.hero-number {
+
+    position: absolute;
+
+    right: 7%;
+
+    bottom: 8%;
+
+    z-index: 2;
+
+    color:
+        rgba(255,255,255,0.035);
+
+    font-family:
+        var(
+            --font-display,
+            "Playfair Display",
+            serif
+        );
+
+    font-size:
+        clamp(
+            180px,
+            22vw,
+            380px
+        );
+
+    line-height: 0.7;
+
+    pointer-events: none;
+
+    user-select: none;
+
+}
+
+
+/* ============================================================
+   HERO RESPONSIVE — 1200px
+   ============================================================ */
+
+@media (max-width: 1200px) {
+
+    .hero__content {
+
+        width: 72%;
+
+    }
+
+
+    .hero__trust {
+
+        right: 20px;
+
+        width: 270px;
+
+    }
+
+
+    .hero__orb {
+
+        right: -4%;
+
+        width: 360px;
+
+    }
+
+
+    .page-hero__content {
+
+        width: 82%;
+
+    }
+
+}
+
+
+/* ============================================================
+   HERO RESPONSIVE — 1024px
+   ============================================================ */
+
+@media (max-width: 1024px) {
+
+    .hero {
+
+        min-height:
+            calc(
+                100vh - 78px
+            );
+
+    }
+
+
+    .hero__content {
+
+        width: 74%;
+
+    }
+
+
+    .hero__trust {
+
+        bottom: 55px;
+
+        width: 250px;
+
+        padding: 20px;
+
+    }
+
+
+    .hero__orb {
+
+        opacity: 0.55;
+
+        width: 310px;
+
+    }
+
+
+    .hero__grid {
+
+        background-size:
+            90px 90px;
+
+    }
+
+
+    .page-hero {
+
+        min-height: 560px;
+
+    }
+
+
+    .page-hero__content {
+
+        width: 85%;
+
+    }
+
+}
+
+
+/* ============================================================
+   HERO RESPONSIVE — 900px
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .hero {
+
+        min-height: 760px;
+
+    }
+
+
+    .hero__content {
+
+        width: 100%;
+
+        padding-top: 130px;
+
+        padding-bottom: 170px;
+
+    }
+
+
+    .hero__trust {
+
+        position: relative;
+
+        right: auto;
+
+        bottom: auto;
+
+        width: min(
+            100%,
+            420px
+        );
+
+        margin-top: 40px;
+
+    }
+
+
+    .hero__orb {
+
+        right: -120px;
+
+        top: 24%;
+
+        opacity: 0.35;
+
+    }
+
+
+    .hero__scroll {
+
+        bottom: 22px;
+
+    }
+
+
+    .page-hero {
+
+        min-height: 500px;
+
+    }
+
+
+    .page-hero__content {
+
+        width: 100%;
+
+        padding-top: 120px;
+
+        padding-bottom: 110px;
+
+    }
+
+}
+
+
+/* ============================================================
+   HERO RESPONSIVE — 767px
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+    .hero {
+
+        min-height: 760px;
+
+    }
+
+
+    .hero__background-image,
+    .hero__image {
+
+        object-position:
+            62% center;
+
+    }
+
+
+    .hero__overlay {
+
+        background:
+            linear-gradient(
+                180deg,
+                rgba(4,28,26,0.82) 0%,
+                rgba(5,31,29,0.88) 55%,
+                rgba(5,31,29,0.96) 100%
+            );
+
+    }
+
+
+    .hero__content {
+
+        padding-top: 110px;
+
+        padding-bottom: 145px;
+
+    }
+
+
+    .hero__eyebrow {
+
+        margin-bottom: 20px;
+
+        font-size: 9px;
+
+    }
+
+
+    .hero__title {
+
+        font-size:
+            clamp(
+                48px,
+                13vw,
+                72px
+            );
+
+        line-height: 0.98;
+
+    }
+
+
+    .hero__description {
+
+        max-width: 100%;
+
+        margin-top: 22px;
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+    }
+
+
+    .hero__actions {
+
+        align-items: stretch;
+
+        flex-direction: column;
+
+        width: 100%;
+
+        margin-top: 30px;
+
+    }
+
+
+    .hero__actions .btn {
+
+        width: 100%;
+
+        justify-content: center;
+
+    }
+
+
+    .hero__trust {
+
+        margin-top: 32px;
+
+        width: 100%;
+
+        padding: 18px;
+
+    }
+
+
+    .hero__trust-list {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+
+    }
+
+
+    .hero__trust-item {
+
+        font-size: 11px;
+
+    }
+
+
+    .hero__orb {
+
+        width: 250px;
+
+        right: -110px;
+
+        top: 12%;
+
+        opacity: 0.25;
+
+    }
+
+
+    .hero__grid {
+
+        background-size:
+            70px 70px;
+
+        opacity: 0.5;
+
+    }
+
+
+    .hero__scroll {
+
+        display: none;
+
+    }
+
+
+    .page-hero {
+
+        min-height: 470px;
+
+    }
+
+
+    .page-hero__content {
+
+        padding-top: 105px;
+
+        padding-bottom: 100px;
+
+    }
+
+
+    .page-hero__title {
+
+        font-size:
+            clamp(
+                46px,
+                12vw,
+                68px
+            );
+
+        line-height: 1;
+
+    }
+
+
+    .page-hero__description {
+
+        margin-top: 22px;
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+    }
+
+
+    .page-hero__scroll {
+
+        display: none;
+
+    }
+
+
+    .page-hero__background::before {
+
+        background-size:
+            90px 90px;
+
+    }
+
+
+    .page-hero__background::after {
+
+        width: 360px;
+
+        right: -180px;
+
+        top: -120px;
+
+    }
+
+}
+
+
+/* ============================================================
+   HERO RESPONSIVE — 480px
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    .hero {
+
+        min-height: 720px;
+
+    }
+
+
+    .hero__content {
+
+        padding-top: 100px;
+
+        padding-bottom: 120px;
+
+    }
+
+
+    .hero__title {
+
+        font-size: 47px;
+
+        letter-spacing: -0.055em;
+
+    }
+
+
+    .hero__description {
+
+        font-size: 13.5px;
+
+    }
+
+
+    .hero__trust-list {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .hero__trust {
+
+        border-radius: 18px;
+
+    }
+
+
+    .page-hero {
+
+        min-height: 430px;
+
+    }
+
+
+    .page-hero__content {
+
+        padding-top: 90px;
+
+        padding-bottom: 90px;
+
+    }
+
+
+    .page-hero__title {
+
+        font-size: 45px;
+
+        letter-spacing: -0.055em;
+
+    }
+
+
+    .page-hero__description {
+
+        font-size: 13.5px;
+
+    }
+
+}
+
+
+/* ============================================================
+   HERO RESPONSIVE — 360px
+   ============================================================ */
+
+@media (max-width: 360px) {
+
+    .hero {
+
+        min-height: 700px;
+
+    }
+
+
+    .hero__title {
+
+        font-size: 42px;
+
+    }
+
+
+    .hero__trust {
+
+        padding: 15px;
+
+    }
+
+
+    .page-hero__title {
+
+        font-size: 40px;
+
+    }
+
+}
+
+
+/* ============================================================
+   LANDSCAPE MOBILE
+   ============================================================ */
+
+@media (
+    max-height: 600px
+) and (
+    orientation: landscape
+) {
+
+    .hero {
+
+        min-height: 680px;
+
+    }
+
+
+    .hero__content {
+
+        padding-top: 100px;
+
+        padding-bottom: 100px;
+
+    }
+
+
+    .page-hero {
+
+        min-height: 460px;
+
+    }
+
+
+    .page-hero__content {
+
+        padding-top: 90px;
+
+        padding-bottom: 80px;
+
+    }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero__image,
+    .hero__background-image {
+
+        animation: none;
+
+        opacity: 1;
+
+        transform: none;
+
+    }
+
+
+    .hero__orb {
+
+        animation: none;
+
+    }
+
+
+    .hero__scroll-line span,
+    .page-hero__scroll-line span {
+
+        animation: none;
+
+        left: 0;
+
+    }
+
+}
+
+
+/* ============================================================
+   HERO KEYFRAMES
+   ============================================================ */
+
+@keyframes heroImageReveal {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            scale(1.08)
+            translate3d(0, 18px, 0);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            scale(1)
+            translate3d(0, 0, 0);
+
+    }
+
+}
+
+
+@keyframes heroLineReveal {
+
+    from {
+
+        transform: scaleX(0);
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        transform: scaleX(1);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+@keyframes heroScrollLine {
+
+    0% {
+
+        left: -100%;
+
+    }
+
+    45% {
+
+        left: 0;
+
+    }
+
+    70% {
+
+        left: 100%;
+
+    }
+
+    100% {
+
+        left: 100%;
+
+    }
+
+}
+
+
+@keyframes heroOrbFloat {
+
+    0%,
+    100% {
+
+        transform:
+            translate3d(0,0,0)
+            rotate(0deg);
+
+    }
+
+    50% {
+
+        transform:
+            translate3d(
+                0,
+                -20px,
+                0
+            )
+            rotate(4deg);
+
+    }
+
+}
+
+.hero-title {
+    color: var(--color-white);
+}
+
+.hero-eyebrow,
+.hero-side-label,
+.hero-scroll .scroll-text {
+    color: rgba(255, 255, 255, 0.82);
+}
+
+
+/* HOME HERO — DARK SPLIT LAYOUT */
+
+.hero {
+    min-height: 100svh;
+    align-items: stretch;
+    background: #071629;
+}
+
+.hero.hero {
+    min-height: 100svh;
+    padding-block: 0;
+}
+
+.hero-background {
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero-image-wrap {
+    inset: 58px clamp(28px, 10vw, 180px) 0 auto;
+    z-index: 0;
+    width: min(40vw, 680px);
+    overflow: hidden;
+    border: 1px solid rgba(137, 190, 205, 0.16);
+    border-bottom: 0;
+    border-radius: 24px 24px 0 0;
+    background: #081629;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 42% 24%;
+    transform: scale(1.06);
+    transform-origin: center 24%;
+    filter: saturate(0.88) contrast(1.04);
+}
+
+.hero-overlay {
+    z-index: 1;
+    background:
+        linear-gradient(90deg, #071629 0%, #071629 39%, rgba(7, 22, 41, 0.94) 48%, rgba(7, 22, 41, 0.34) 66%, rgba(7, 22, 41, 0.04) 100%),
+        linear-gradient(0deg, rgba(7, 22, 41, 0.28), transparent 45%);
+}
+
+.hero > .hero-container {
+    width: min(calc(100% - (var(--container-gutter) * 2)), var(--container-width));
+    min-height: 100svh;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    margin-inline: auto;
+    padding-block: 96px 58px;
+}
+
+.hero-content {
+    width: min(58%, 700px);
+    max-width: 700px;
+}
+
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding: 10px 16px;
+    border: 1px solid rgba(120, 158, 190, 0.19);
+    border-radius: 999px;
+    background: rgba(17, 39, 65, 0.72);
+    color: #00b5ae;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.hero-eyebrow i {
+    font-size: 0.9rem;
+}
+
+.hero-title {
+    margin: 0;
+    color: #f2f5fa;
+    font-family: var(--font-heading);
+    font-size: clamp(3.15rem, 4vw, 4.8rem);
+    font-weight: 800;
+    letter-spacing: -0.065em;
+    line-height: 1.08;
+}
+
+.hero-title .title-line {
+    white-space: normal;
+}
+
+.hero-title-accent {
+    color: #00b5ae;
+}
+
+.hero-description {
+    max-width: 650px;
+    margin-top: 24px;
+    color: #a9b5c5;
+    font-size: clamp(1rem, 1.35vw, 1.2rem);
+    line-height: 1.75;
+}
+
+.hero-trust {
+    display: grid;
+    width: min(100%, 520px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 34px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    backdrop-filter: none;
+}
+
+.hero-trust-item {
+    min-height: 94px;
+    align-content: center;
+    gap: 4px;
+    padding: 13px 17px;
+    border: 1px solid rgba(0, 181, 174, 0.2);
+    border-radius: 23px;
+    background: rgba(18, 42, 68, 0.72);
+}
+
+.hero-trust-item strong {
+    color: #00b5ae;
+    font-family: var(--font-heading);
+    font-size: clamp(1.15rem, 1.75vw, 1.55rem);
+    font-weight: 800;
+}
+
+.hero-trust-item span {
+    color: #a9b5c5;
+    font-size: 0.8rem;
+}
+
+.hero-actions {
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.hero-actions .btn-primary,
+.hero-actions .btn-ghost {
+    min-height: 56px;
+    border: 0;
+    border-radius: 999px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.hero-actions .btn-primary {
+    gap: 11px;
+    padding-inline: 28px;
+    color: #062134;
+    background: #00b5ae;
+}
+
+.hero-actions .btn-primary:hover {
+    background: #15c9be;
+    transform: translateY(-2px);
+}
+
+.hero-actions .btn-ghost {
+    width: 56px;
+    min-width: 56px;
+    padding: 0;
+    color: #052b32;
+    background: #18ce70;
+    font-size: 1.45rem;
+}
+
+.hero-actions .btn-ghost span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.hero-actions .btn-ghost:hover {
+    background: #36df82;
+    transform: translateY(-2px);
+}
+
+.hero-photo-label {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 16px;
+    border-radius: 0 0 18px 18px;
+    background: rgba(5, 16, 31, 0.76);
+    color: #edf3fa;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+    backdrop-filter: blur(10px);
+}
+
+.hero-photo-label i {
+    color: #00b5ae;
+}
+
+.hero-consult-card {
+    position: absolute;
+    right: 12%;
+    bottom: 28px;
+    z-index: 2;
+    width: min(350px, 78%);
+    padding: 15px 17px 10px;
+    border: 1px solid rgba(0, 181, 174, 0.24);
+    border-radius: 24px;
+    background: rgba(14, 34, 59, 0.82);
+    color: #edf3fa;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(15px);
+}
+
+.hero-consult-heading,
+.hero-consult-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hero-consult-heading {
+    padding-bottom: 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-consult-icon {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    place-items: center;
+    border-radius: 50%;
+    background: #00b5ae;
+    color: #052532;
+}
+
+.hero-consult-heading strong,
+.hero-consult-row strong {
+    display: block;
+    font-size: 0.92rem;
+}
+
+.hero-consult-heading small,
+.hero-consult-row small {
+    display: block;
+    margin-top: 2px;
+    color: #9eacbf;
+    font-size: 0.76rem;
+}
+
+.hero-consult-heading small {
+    color: #00b5ae;
+}
+
+.hero-consult-row {
+    min-height: 49px;
+    padding-top: 9px;
+}
+
+.hero-consult-row > i {
+    width: 30px;
+    color: #00b5ae;
+    text-align: center;
+}
+
+.hero-consult-row strong {
+    font-size: 0.84rem;
+}
+
+.hero-scroll,
+.hero-side-label {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .hero-image-wrap {
+        right: 24px;
+        width: 43vw;
+        opacity: 0.82;
+    }
+
+    .hero-content {
+        width: 64%;
+    }
+
+    .hero-title {
+        font-size: clamp(2.8rem, 6.2vw, 4.3rem);
+    }
+
+}
+
+@media (max-width: 760px) {
+    .hero {
+        min-height: 100svh;
+    }
+
+    .hero-background {
+        overflow: hidden;
+    }
+
+    .hero-image-wrap {
+        inset: 126px 14px auto auto;
+        width: min(35vw, 142px);
+        height: 190px;
+        border-radius: 22px;
+        opacity: 0.96;
+    }
+
+    .hero-image {
+        object-position: 42% 24%;
+    }
+
+    .hero-overlay {
+        background:
+            linear-gradient(180deg, rgba(7, 22, 41, 0.3), rgba(7, 22, 41, 0.58)),
+            linear-gradient(90deg, #071629 0%, rgba(7, 22, 41, 0.08) 100%);
+    }
+
+    .hero > .hero-container {
+        width: calc(100% - 40px);
+        min-height: 100svh;
+        align-content: start;
+        padding-block: 112px 38px;
+    }
+
+    .hero-content {
+        width: 100%;
+        max-width: 560px;
+    }
+
+    .hero-title {
+        width: min(66%, 250px);
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        line-height: 1.05;
+    }
+
+    .hero-description {
+        max-width: 520px;
+        margin-top: 18px;
+        font-size: 1rem;
+    }
+
+    .hero-trust {
+        gap: 8px;
+        margin-top: 24px;
+    }
+
+    .hero-trust-item {
+        min-height: 80px;
+        padding: 10px;
+        border-radius: 18px;
+    }
+
+    .hero-trust-item strong {
+        font-size: clamp(1rem, 4.4vw, 1.35rem);
+    }
+
+    .hero-trust-item span {
+        font-size: 0.69rem;
+    }
+
+    .hero-consult-card {
+        display: none;
+    }
+
+    .hero-photo-label {
+        top: 0;
+        left: 0;
+        right: 0;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 6px;
+        border-radius: 22px 22px 0 0;
+        font-size: 0.62rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .hero > .hero-container {
+        width: calc(100% - 32px);
+    }
+
+    .hero-eyebrow {
+        margin-bottom: 18px;
+        padding: 9px 12px;
+        font-size: 0.68rem;
+    }
+
+    .hero-title {
+        width: min(66%, 250px);
+        font-size: clamp(2.2rem, 9.5vw, 2.7rem);
+    }
+
+    .hero-actions .btn-primary {
+        min-height: 52px;
+        padding-inline: 21px;
+        font-size: 0.9rem;
+    }
+
+    .hero-actions .btn-ghost {
+        width: 52px;
+        min-width: 52px;
+        min-height: 52px;
+    }
+}

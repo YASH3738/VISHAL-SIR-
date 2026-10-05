@@ -1,0 +1,358 @@
+/* =========================================================
+   DR. VISHAL YOGI PHYSIOTHERAPY & WELLNESS CLINIC
+   MASTER STYLESHEET
+   ========================================================= */
+
+/*
+   IMPORTANT:
+   All CSS modules are loaded here in dependency order.
+
+   After using this file, each HTML page should ideally load:
+   <link rel="stylesheet" href="css/style.css">
+
+   instead of loading every individual CSS file separately.
+*/
+
+
+/* =========================================================
+   01. DESIGN TOKENS
+   ========================================================= */
+
+@import url("./variables.css");
+
+
+/* =========================================================
+   02. RESET
+   ========================================================= */
+
+@import url("./reset.css");
+
+
+/* =========================================================
+   03. GLOBAL / BASE STYLES
+   ========================================================= */
+
+@import url("./base.css");
+
+
+/* =========================================================
+   04. NAVIGATION
+   ========================================================= */
+
+@import url("./navbar.css");
+
+
+/* =========================================================
+   05. HERO
+   ========================================================= */
+
+@import url("./hero.css");
+
+
+/* =========================================================
+   06. SECTIONS
+   ========================================================= */
+
+@import url("./sections.css");
+
+
+/* =========================================================
+   07. CARDS
+   ========================================================= */
+
+@import url("./cards.css");
+
+
+/* =========================================================
+   08. ANIMATIONS
+   ========================================================= */
+
+@import url("./animations.css");
+
+
+/* =========================================================
+   09. RESPONSIVE SYSTEM
+   ========================================================= */
+
+@import url("./responsive.css");
+
+
+/* =========================================================
+   10. GLOBAL COMPATIBILITY LAYER
+   ========================================================= */
+
+/*
+   These utilities are intentionally lightweight.
+   Component-specific styling stays inside its own module.
+*/
+
+
+/* ---------- Selection ---------- */
+
+::selection {
+    background: var(--color-primary, #0f5c55);
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background: var(--color-primary, #0f5c55);
+    color: #ffffff;
+}
+
+
+/* ---------- Smooth anchor scrolling ---------- */
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+/* ---------- Prevent accidental horizontal overflow ---------- */
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
+/* ---------- Media safety ---------- */
+
+img,
+video,
+iframe {
+    max-width: 100%;
+}
+
+
+/* ---------- Image rendering ---------- */
+
+img {
+    image-rendering: auto;
+}
+
+
+/* ---------- Buttons ---------- */
+
+button,
+a,
+input,
+textarea,
+select {
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ---------- Accessible focus ---------- */
+
+:focus-visible {
+    outline: 2px solid var(--color-gold, #b99a5b);
+    outline-offset: 4px;
+}
+
+
+/* ---------- Hidden utility ---------- */
+
+.is-hidden {
+    display: none !important;
+}
+
+
+/* ---------- Visibility utility ---------- */
+
+.is-visible {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+
+/* ---------- No scroll ---------- */
+
+.no-scroll {
+    overflow: hidden !important;
+}
+
+
+/* ---------- Text helpers ---------- */
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-left {
+    text-align: left !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+
+/* ---------- Width helpers ---------- */
+
+.full-width {
+    width: 100% !important;
+}
+
+.max-width-none {
+    max-width: none !important;
+}
+
+
+/* ---------- Accessibility ---------- */
+
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+
+/* =========================================================
+   11. PAGE STRUCTURE SAFETY
+   ========================================================= */
+
+main {
+    position: relative;
+    width: 100%;
+}
+
+section {
+    position: relative;
+    width: 100%;
+}
+
+
+/* =========================================================
+   12. LINK NORMALIZATION
+   ========================================================= */
+
+a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+a:not([class]) {
+    color: inherit;
+}
+
+
+/* =========================================================
+   13. FORM NORMALIZATION
+   ========================================================= */
+
+input,
+textarea,
+select,
+button {
+    font: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: inherit;
+    opacity: 0.55;
+}
+
+textarea {
+    resize: vertical;
+}
+
+
+/* =========================================================
+   14. VIDEO / EMBED SAFETY
+   ========================================================= */
+
+video {
+    display: block;
+    width: 100%;
+}
+
+iframe {
+    border: 0;
+    display: block;
+    width: 100%;
+}
+
+
+/* =========================================================
+   15. TABLE SAFETY
+   ========================================================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+/* =========================================================
+   16. MOBILE SAFE AREA
+   ========================================================= */
+
+@supports (padding: max(0px)) {
+
+    body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+
+}
+
+
+/* =========================================================
+   17. REDUCED MOTION GLOBAL FALLBACK
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+}
+
+
+/* =========================================================
+   18. PRINT SAFETY
+   ========================================================= */
+
+@media print {
+
+    .custom-cursor,
+    .cursor-follower,
+    .page-loader,
+    .floating-actions,
+    .mobile-bottom-bar,
+    .navbar,
+    .nav-menu,
+    .hero-video,
+    .noise-overlay {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    a {
+        color: #000000 !important;
+        text-decoration: underline;
+    }
+
+}

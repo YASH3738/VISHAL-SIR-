@@ -1,0 +1,835 @@
+/* ============================================================
+   DR. VISHAL YOGI PHYSIOTHERAPY & WELLNESS
+   GLOBAL DESIGN SYSTEM / VARIABLES
+   ============================================================ */
+
+
+/* ============================================================
+   01. ROOT
+   ============================================================ */
+
+:root {
+
+    /* --------------------------------------------------------
+       BRAND COLORS
+       -------------------------------------------------------- */
+
+    --color-primary-950: #102a3a;
+    --color-primary-900: #15394d;
+    --color-primary-850: #184a5d;
+    --color-primary-800: #17616b;
+    --color-primary-750: #1c7880;
+    --color-primary-700: #218792;
+    --color-primary-600: #2c9ca3;
+    --color-primary-500: #4eafb1;
+    --color-primary-400: #76c3bd;
+    --color-primary-300: #9bd7cc;
+    --color-primary-200: #c0e8dc;
+    --color-primary-100: #e1f3eb;
+    --color-primary-50: #f0f8f5;
+
+
+    /* --------------------------------------------------------
+       DARK / TEXT COLORS
+       -------------------------------------------------------- */
+
+    --color-ink-950: #102536;
+    --color-ink-900: #1b3545;
+    --color-ink-850: #263f4d;
+    --color-ink-800: #354d59;
+    --color-ink-700: #4a616b;
+    --color-ink-600: #61757d;
+    --color-ink-500: #7d8d93;
+    --color-ink-400: #9ba8ac;
+    --color-ink-300: #bac4c6;
+    --color-ink-200: #d4dcdd;
+    --color-ink-100: #e7edec;
+    --color-ink-50: #f3f6f5;
+
+
+    /* --------------------------------------------------------
+       WARM NEUTRALS
+       -------------------------------------------------------- */
+
+    --color-white: #ffffff;
+    --color-warm-white: #f8fbfa;
+    --color-cream: #f0f5f4;
+    --color-paper: #e8f0ef;
+    --color-sand: #dbe6e4;
+    --color-stone: #cbd9d8;
+
+
+    /* --------------------------------------------------------
+       GOLD / ACHIEVEMENT ACCENT
+       -------------------------------------------------------- */
+
+    --color-gold-900: #754514;
+    --color-gold-800: #995b1c;
+    --color-gold-700: #b87324;
+    --color-gold-600: #d28a2b;
+    --color-gold-500: #e5a23b;
+    --color-gold-400: #edb75f;
+    --color-gold-300: #f3cc8d;
+    --color-gold-200: #f7dfb9;
+    --color-gold-100: #fbf0dc;
+
+
+    /* --------------------------------------------------------
+       STATUS COLORS
+       -------------------------------------------------------- */
+
+    --color-success: #2d8a62;
+    --color-success-light: #e5f4ed;
+
+    --color-warning: #b7791f;
+    --color-warning-light: #fff5df;
+
+    --color-danger: #b94a48;
+    --color-danger-light: #fce9e8;
+
+    --color-info: #35748a;
+    --color-info-light: #e7f3f7;
+
+
+    /* --------------------------------------------------------
+       BACKGROUND SYSTEM
+       -------------------------------------------------------- */
+
+    --bg-main: var(--color-warm-white);
+    --bg-light: var(--color-white);
+    --bg-soft: var(--color-cream);
+    --bg-muted: #eeece5;
+
+    --bg-dark: var(--color-primary-950);
+    --bg-dark-soft: var(--color-primary-900);
+    --bg-charcoal: var(--color-ink-950);
+
+
+    /* --------------------------------------------------------
+       TEXT SYSTEM
+       -------------------------------------------------------- */
+
+    --text-primary: var(--color-ink-950);
+    --text-secondary: var(--color-ink-600);
+    --text-muted: var(--color-ink-500);
+    --text-light: var(--color-white);
+    --text-light-muted: rgba(255, 255, 255, 0.68);
+
+    --text-brand: var(--color-primary-800);
+    --text-gold: var(--color-gold-600);
+
+
+    /* --------------------------------------------------------
+       BORDER SYSTEM
+       -------------------------------------------------------- */
+
+    --border-light: rgba(23, 32, 31, 0.09);
+    --border-medium: rgba(23, 32, 31, 0.15);
+    --border-dark: rgba(255, 255, 255, 0.12);
+
+    --border-brand: rgba(18, 96, 87, 0.25);
+    --border-gold: rgba(184, 141, 50, 0.35);
+
+
+    /* --------------------------------------------------------
+       GRADIENTS
+       -------------------------------------------------------- */
+
+    --gradient-brand:
+        linear-gradient(
+            135deg,
+            #0b403a 0%,
+            #126057 50%,
+            #21877b 100%
+        );
+
+    --gradient-dark:
+        linear-gradient(
+            135deg,
+            #061f1d 0%,
+            #083a35 52%,
+            #0d4b44 100%
+        );
+
+    --gradient-dark-radial:
+        radial-gradient(
+            circle at 70% 20%,
+            rgba(67, 161, 150, 0.20),
+            transparent 42%
+        );
+
+    --gradient-gold:
+        linear-gradient(
+            135deg,
+            #9b7528 0%,
+            #c7a04b 50%,
+            #e1c67f 100%
+        );
+
+    --gradient-glass:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.13),
+            rgba(255, 255, 255, 0.035)
+        );
+
+    --gradient-soft:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f7f5ef 100%
+        );
+
+
+    /* --------------------------------------------------------
+       TYPOGRAPHY
+       -------------------------------------------------------- */
+
+    --font-display:
+        "Playfair Display",
+        Georgia,
+        serif;
+
+    --font-heading:
+        "Manrope",
+        Arial,
+        sans-serif;
+
+    --font-body:
+        "DM Sans",
+        Arial,
+        sans-serif;
+
+
+    /* --------------------------------------------------------
+       FONT WEIGHTS
+       -------------------------------------------------------- */
+
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+    --weight-extrabold: 800;
+
+
+    /* --------------------------------------------------------
+       FONT SIZES
+       -------------------------------------------------------- */
+
+    --text-xs: 0.7rem;
+    --text-sm: 0.78rem;
+    --text-md: 0.9rem;
+    --text-base: 0.95rem;
+    --text-lg: 1.04rem;
+    --text-xl: 1.18rem;
+    --text-2xl: 1.45rem;
+    --text-3xl: 1.85rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 2.9rem;
+    --text-6xl: 3.6rem;
+    --text-7xl: 4.4rem;
+    --text-8xl: 5.4rem;
+
+
+    /* --------------------------------------------------------
+       FLUID DISPLAY SIZES
+       -------------------------------------------------------- */
+
+    --display-hero:
+        clamp(
+            3rem,
+            6.5vw,
+            7rem
+        );
+
+    --display-xl:
+        clamp(
+            2.7rem,
+            5.2vw,
+            5.4rem
+        );
+
+    --display-lg:
+        clamp(
+            2.25rem,
+            4.2vw,
+            4.5rem
+        );
+
+    --display-md:
+        clamp(
+            1.95rem,
+            3.2vw,
+            3.4rem
+        );
+
+    --display-sm:
+        clamp(
+            1.65rem,
+            2.5vw,
+            2.5rem
+        );
+
+
+    /* --------------------------------------------------------
+       LINE HEIGHT
+       -------------------------------------------------------- */
+
+    --leading-none: 0.92;
+    --leading-tight: 1.08;
+    --leading-snug: 1.18;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.7;
+    --leading-loose: 1.9;
+
+
+    /* --------------------------------------------------------
+       LETTER SPACING
+       -------------------------------------------------------- */
+
+    --tracking-tighter: -0.045em;
+    --tracking-tight: -0.025em;
+    --tracking-normal: 0;
+    --tracking-wide: 0.045em;
+    --tracking-wider: 0.11em;
+    --tracking-widest: 0.19em;
+
+
+    /* --------------------------------------------------------
+       LAYOUT
+       -------------------------------------------------------- */
+
+    --container-max: 1440px;
+    --container-wide: 1600px;
+    --container-narrow: 1120px;
+
+    --gutter-desktop: 5vw;
+    --gutter-tablet: 4vw;
+    --gutter-mobile: 6vw;
+
+
+    /* --------------------------------------------------------
+       SECTION SPACING
+       -------------------------------------------------------- */
+
+    --section-xs: 3rem;
+    --section-sm: 5rem;
+    --section-md: 7rem;
+    --section-lg: 9rem;
+    --section-xl: 12rem;
+
+    --section-fluid:
+        clamp(
+            4.25rem,
+            7vw,
+            8rem
+        );
+
+
+    /* --------------------------------------------------------
+       SPACING SCALE
+       -------------------------------------------------------- */
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+    --space-32: 8rem;
+    --space-40: 10rem;
+
+
+    /* --------------------------------------------------------
+       BORDER RADIUS
+       -------------------------------------------------------- */
+
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --radius-xl: 32px;
+    --radius-2xl: 44px;
+    --radius-pill: 999px;
+
+
+    /* --------------------------------------------------------
+       PREMIUM SHADOWS
+       -------------------------------------------------------- */
+
+    --shadow-xs:
+        0 2px 8px rgba(7, 32, 29, 0.04);
+
+    --shadow-sm:
+        0 8px 24px rgba(7, 32, 29, 0.07);
+
+    --shadow-md:
+        0 16px 42px rgba(7, 32, 29, 0.10);
+
+    --shadow-lg:
+        0 26px 70px rgba(7, 32, 29, 0.13);
+
+    --shadow-xl:
+        0 40px 100px rgba(7, 32, 29, 0.17);
+
+    --shadow-glow:
+        0 0 60px rgba(67, 161, 150, 0.18);
+
+    --shadow-gold:
+        0 16px 45px rgba(184, 141, 50, 0.18);
+
+
+    /* --------------------------------------------------------
+       GLASSMORPHISM
+       -------------------------------------------------------- */
+
+    --glass-bg:
+        rgba(255, 255, 255, 0.08);
+
+    --glass-bg-light:
+        rgba(255, 255, 255, 0.65);
+
+    --glass-border:
+        rgba(255, 255, 255, 0.15);
+
+    --glass-blur:
+        blur(22px);
+
+    --glass-blur-heavy:
+        blur(38px);
+
+
+    /* --------------------------------------------------------
+       TRANSITIONS
+       -------------------------------------------------------- */
+
+    --ease-linear:
+        linear;
+
+    --ease-standard:
+        cubic-bezier(0.4, 0, 0.2, 1);
+
+    --ease-smooth:
+        cubic-bezier(0.22, 1, 0.36, 1);
+
+    --ease-expressive:
+        cubic-bezier(0.16, 1, 0.3, 1);
+
+    --ease-spring:
+        cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    --ease-soft:
+        cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    --transition-fast:
+        180ms var(--ease-standard);
+
+    --transition-base:
+        320ms var(--ease-standard);
+
+    --transition-smooth:
+        600ms var(--ease-smooth);
+
+    --transition-expressive:
+        900ms var(--ease-expressive);
+
+    --transition-slow:
+        1200ms var(--ease-expressive);
+
+
+    /* --------------------------------------------------------
+       ANIMATION DURATIONS
+       -------------------------------------------------------- */
+
+    --duration-instant: 120ms;
+    --duration-fast: 300ms;
+    --duration-normal: 600ms;
+    --duration-slow: 900ms;
+    --duration-long: 1400ms;
+    --duration-cinematic: 1800ms;
+
+
+    /* --------------------------------------------------------
+       Z-INDEX SYSTEM
+       -------------------------------------------------------- */
+
+    --z-base: 1;
+    --z-content: 10;
+    --z-overlay: 20;
+    --z-header: 100;
+    --z-floating: 500;
+    --z-menu: 800;
+    --z-modal: 1000;
+    --z-loader: 9999;
+
+
+    /* --------------------------------------------------------
+       HEADER
+       -------------------------------------------------------- */
+
+    --header-height: 88px;
+    --header-height-mobile: 72px;
+
+
+    /* --------------------------------------------------------
+       BUTTONS
+       -------------------------------------------------------- */
+
+    --button-height: 56px;
+    --button-height-small: 48px;
+    --button-height-large: 64px;
+
+    --button-padding-x: 1.6rem;
+    --button-padding-large: 2rem;
+
+
+    /* --------------------------------------------------------
+       CURSOR
+       -------------------------------------------------------- */
+
+    --cursor-size: 8px;
+    --cursor-outline-size: 42px;
+
+    --cursor-outline-border:
+        rgba(255, 255, 255, 0.75);
+
+
+    /* --------------------------------------------------------
+       IMAGE RATIOS
+       -------------------------------------------------------- */
+
+    --ratio-square: 1 / 1;
+    --ratio-portrait: 4 / 5;
+    --ratio-landscape: 16 / 10;
+    --ratio-wide: 16 / 9;
+    --ratio-cinematic: 21 / 9;
+
+
+    /* --------------------------------------------------------
+       NOISE / TEXTURE
+       -------------------------------------------------------- */
+
+    --noise-opacity: 0.035;
+
+
+    /* --------------------------------------------------------
+       FOCUS
+       -------------------------------------------------------- */
+
+    --focus-ring:
+        0 0 0 4px rgba(33, 135, 123, 0.18);
+
+
+    /* --------------------------------------------------------
+       WHATSAPP
+       -------------------------------------------------------- */
+
+    --whatsapp:
+        #25d366;
+
+    --whatsapp-dark:
+        #128c7e;
+
+    --whatsapp-shadow:
+        0 12px 35px rgba(37, 211, 102, 0.26);
+
+
+    /* --------------------------------------------------------
+       MOBILE BOTTOM BAR
+       -------------------------------------------------------- */
+
+    --mobile-bar-height: 72px;
+
+
+    /* --------------------------------------------------------
+       SAFE AREA
+       -------------------------------------------------------- */
+
+    --safe-bottom:
+        env(safe-area-inset-bottom, 0px);
+
+    /* Compatibility aliases for the legacy page styles. */
+    --color-accent: var(--color-gold-500);
+    --color-border: var(--border-light);
+    --color-border-dark: var(--border-dark);
+    --color-cream-50: #fbfcfb;
+    --color-cream-100: var(--color-warm-white);
+    --color-forest: var(--color-primary-950);
+    --color-gold: var(--color-gold-500);
+    --color-gold-50: #fff9ee;
+    --color-gold-dark: var(--color-gold-800);
+    --color-heading: var(--color-ink-950);
+    --color-muted: var(--color-ink-600);
+    --color-primary: var(--color-primary-700);
+    --color-primary-dark: var(--color-primary-950);
+    --color-primary-soft: var(--color-primary-50);
+    --color-surface: var(--color-white);
+    --color-surface-muted: var(--color-cream);
+    --color-surface-soft: var(--color-cream-50);
+    --color-text-on-dark: var(--color-white);
+    --color-teal-50: var(--color-primary-50);
+    --color-teal-100: var(--color-primary-100);
+    --color-teal-200: var(--color-primary-200);
+    --color-teal-300: var(--color-primary-300);
+    --color-teal-500: var(--color-primary-500);
+    --color-teal-600: var(--color-primary-600);
+    --color-teal-700: var(--color-primary-700);
+    --color-teal-800: var(--color-primary-800);
+    --color-teal-900: var(--color-primary-900);
+    --color-teal-950: var(--color-primary-950);
+    --color-cream-100: var(--color-warm-white);
+    --container-2xl: var(--container-wide);
+    --container-lg: var(--container-narrow);
+    --container-max-width: var(--container-max);
+    --container-xl: var(--container-max);
+    --container-width: var(--container-max);
+    --container-gutter: clamp(1rem, 5vw, 4rem);
+    --ease-out: var(--ease-smooth);
+    --ease-out-expo: var(--ease-expressive);
+    --floating-action-bottom: 26px;
+    --floating-action-right: 26px;
+    --font-ui: var(--font-body);
+    --glass-shadow: var(--shadow-md);
+    --header-height-mobile-scrolled: 64px;
+    --header-height-scrolled: 72px;
+    --noise-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+    --page-gutter: clamp(1rem, 5vw, 4rem);
+    --parallax-y: 0px;
+    --section-padding-lg: var(--section-lg);
+    --section-padding-md: var(--section-md);
+    --section-padding-sm: var(--section-sm);
+    --section-padding-y: var(--section-fluid);
+    --shadow-button: var(--shadow-sm);
+    --shadow-button-hover: var(--shadow-md);
+    --shadow-card: var(--shadow-sm);
+    --shadow-card-hover: var(--shadow-md);
+    --shadow-floating: var(--shadow-md);
+    --shadow-floating-hover: var(--shadow-lg);
+    --shadow-soft: var(--shadow-xs);
+    --text-display: var(--display-hero);
+    --text-h1: var(--text-5xl);
+    --text-h2: var(--text-4xl);
+    --text-h3: var(--text-3xl);
+    --text-h4: var(--text-2xl);
+    --weight-light: 300;
+    --whatsapp-size: 56px;
+    --z-cursor: 700;
+    --z-mobile-bar: 700;
+    --z-noise: -2;
+
+}
+
+
+/* ============================================================
+   RESPONSIVE VARIABLE OVERRIDES
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   LARGE DESKTOP
+   ------------------------------------------------------------ */
+
+@media (min-width: 1600px) {
+
+    :root {
+
+        --gutter-desktop: 6vw;
+
+        --section-fluid:
+            clamp(
+                5.5rem,
+                7vw,
+                9rem
+            );
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   TABLET
+   ------------------------------------------------------------ */
+
+@media (max-width: 1100px) {
+
+    :root {
+
+        --gutter-desktop: var(--gutter-tablet);
+
+        --display-hero:
+            clamp(
+                3.1rem,
+                8vw,
+                6.5rem
+            );
+
+        --section-fluid:
+            clamp(
+                4rem,
+                7.5vw,
+                7rem
+            );
+
+        --header-height:
+            80px;
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 767px) {
+
+    :root {
+
+        --gutter-desktop:
+            var(--gutter-mobile);
+
+        --header-height:
+            var(--header-height-mobile);
+
+        --display-hero:
+            clamp(
+                2.75rem,
+                12vw,
+                4.4rem
+            );
+
+        --display-xl:
+            clamp(
+                2.35rem,
+                10vw,
+                3.8rem
+            );
+
+        --display-lg:
+            clamp(
+                2rem,
+                8vw,
+                3.15rem
+            );
+
+        --display-md:
+            clamp(
+                1.75rem,
+                7vw,
+                2.7rem
+            );
+
+        --display-sm:
+            clamp(
+                1.55rem,
+                6vw,
+                2.3rem
+            );
+
+        --section-fluid:
+            clamp(
+                3.5rem,
+                13vw,
+                5.25rem
+            );
+
+        --button-height:
+            52px;
+
+        --button-height-large:
+            58px;
+
+        --space-32:
+            6rem;
+
+        --space-40:
+            7rem;
+
+    }
+
+}
+
+
+/* ------------------------------------------------------------
+   SMALL MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 420px) {
+
+    :root {
+
+        --gutter-desktop:
+            5vw;
+
+        --display-hero:
+            clamp(
+                2.4rem,
+                11vw,
+                3.5rem
+            );
+
+        --section-fluid:
+            3.25rem;
+
+    }
+
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    :root {
+
+        --transition-fast:
+            0ms linear;
+
+        --transition-base:
+            0ms linear;
+
+        --transition-smooth:
+            0ms linear;
+
+        --transition-expressive:
+            0ms linear;
+
+        --transition-slow:
+            0ms linear;
+
+        --duration-instant:
+            0ms;
+
+        --duration-fast:
+            0ms;
+
+        --duration-normal:
+            0ms;
+
+        --duration-slow:
+            0ms;
+
+        --duration-long:
+            0ms;
+
+        --duration-cinematic:
+            0ms;
+
+    }
+
+}
+
+
+/* ============================================================
+   END OF DESIGN SYSTEM
+   ============================================================ */

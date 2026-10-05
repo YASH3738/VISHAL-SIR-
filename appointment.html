@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Appointment | Dr. Vishal Yogi Physiotherapy & Wellness</title>
+    <meta name="api-base-url" content="">
+
+    <meta
+        name="description"
+        content="Book a physiotherapy consultation with Dr. Vishal Yogi in Jaipur. Choose clinic consultation, home physiotherapy or online consultation."
+    >
+
+    <meta name="theme-color" content="#0c3f3a">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+</head>
+
+<body data-page="appointment">
+
+    <!-- =========================================================
+         PAGE LOADER
+    ========================================================== -->
+
+    <div class="page-loader" aria-hidden="true">
+
+        <div class="page-loader__inner">
+
+            <div class="page-loader__logo">
+                <span>VY</span>
+            </div>
+
+            <div class="page-loader__line">
+                <span></span>
+            </div>
+
+            <p>DR. VISHAL YOGI</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         CUSTOM CURSOR
+    ========================================================== -->
+
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor-follower" aria-hidden="true"></div>
+
+
+    <!-- =========================================================
+         NAVBAR
+    ========================================================== -->
+
+    <header class="site-header" id="site-header">
+
+        <div class="container">
+
+            <nav class="navbar" aria-label="Primary navigation">
+
+                <a
+                    href="index.html"
+                    class="navbar__brand"
+                    aria-label="Dr. Vishal Yogi home"
+                >
+
+                    <span class="navbar__brand-mark">
+                        VY
+                    </span>
+
+                    <span class="navbar__brand-text">
+                        <strong>DR. VISHAL YOGI</strong>
+                        <small>PHYSIOTHERAPY & WELLNESS</small>
+                    </span>
+
+                </a>
+
+
+                <div
+                    class="navbar__links"
+                    id="primary-navigation"
+                >
+
+                    <a href="index.html" class="navbar__link">
+                        Home
+                    </a>
+
+                    <a href="about.html" class="navbar__link">
+                        About
+                    </a>
+
+                    <a href="services.html" class="navbar__link">
+                        Services
+                    </a>
+
+                    <a href="conditions.html" class="navbar__link">
+                        Conditions
+                    </a>
+
+                    <a href="achievements.html" class="navbar__link">
+                        Achievements
+                    </a>
+
+                    <a href="gallery.html" class="navbar__link">
+                        Gallery
+                    </a>
+
+                    <a href="contact.html" class="navbar__link">
+                        Contact
+                    </a>
+
+                    <a href="patient-dashboard.html" class="navbar__link">
+                        Patient Portal
+                    </a>
+
+                </div>
+
+
+                <div class="navbar__actions">
+
+                    <a
+                        href="appointment.html"
+                        class="btn btn--primary navbar__cta"
+                    >
+                        <span>Book Appointment</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+
+
+                    <button
+                        class="navbar__toggle"
+                        type="button"
+                        aria-label="Open navigation"
+                        aria-expanded="false"
+                        aria-controls="primary-navigation"
+                    >
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =====================================================
+             PAGE HERO
+        ====================================================== -->
+
+        <section class="page-hero page-hero--appointment">
+
+            <div class="page-hero__background"></div>
+
+            <div class="page-hero__grain"></div>
+
+            <div class="container">
+
+                <div class="page-hero__content">
+
+                    <div
+                        class="eyebrow reveal"
+                        data-reveal
+                    >
+
+                        <span class="eyebrow__line"></span>
+
+                        Appointment
+
+                    </div>
+
+
+                    <h1
+                        class="page-hero__title reveal"
+                        data-reveal
+                        data-reveal-delay="100"
+                    >
+
+                        Book an
+                        <em>Appointment</em>
+
+                    </h1>
+
+
+                    <p
+                        class="page-hero__description reveal"
+                        data-reveal
+                        data-reveal-delay="200"
+                    >
+                        Choose your preferred consultation type, select
+                        a suitable date and time, and share your details
+                        with the clinic.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="page-hero__scroll">
+
+                <span>Book your consultation</span>
+
+                <div class="page-hero__scroll-line">
+                    <span></span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             BOOKING SECTION
+        ====================================================== -->
+
+        <section class="section appointment-section">
+
+            <div class="container">
+
+                <div class="appointment-layout">
+
+
+                    <!-- =================================================
+                         LEFT INFORMATION PANEL
+                    ================================================== -->
+
+                    <aside
+                        class="appointment-sidebar reveal-left"
+                        data-reveal
+                    >
+
+                        <div class="appointment-sidebar__sticky">
+
+                            <span class="eyebrow">
+
+                                <span class="eyebrow__line"></span>
+
+                                Consultation
+
+                            </span>
+
+                            <div class="appointment-doctor-card">
+
+                                <img
+                                    src="assets/vishal%20yogi.jpeg"
+                                    alt="Dr. Vishal Yogi, Senior Physiotherapist"
+                                    loading="lazy"
+                                >
+
+                                <div class="appointment-doctor-card__identity">
+                                    <strong>Dr. Vishal Yogi</strong>
+                                    <span>Senior Physiotherapist · MPT</span>
+                                </div>
+
+                                <div class="appointment-doctor-card__credentials">
+                                    <span><i class="fa-solid fa-award" aria-hidden="true"></i> 10+ years' experience</span>
+                                    <span><i class="fa-solid fa-bone" aria-hidden="true"></i> Orthopaedic &amp; neurological rehabilitation</span>
+                                    <span><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i> Pain management &amp; therapeutic yoga</span>
+                                </div>
+
+                            </div>
+
+
+                            <h2>
+                                Choose the care
+                                that fits you.
+                            </h2>
+
+
+                            <p>
+                                Select between a clinic consultation,
+                                home physiotherapy or an online
+                                consultation.
+                            </p>
+
+
+                            <div class="appointment-info-list">
+
+
+                                <div class="appointment-info">
+
+                                    <div class="appointment-info__icon">
+                                        <i class="fa-solid fa-clock"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>
+                                            Clinic Hours
+                                        </span>
+
+                                        <strong>
+                                            7:00 AM – 12:00 PM
+                                        </strong>
+
+                                        <strong>
+                                            6:00 PM – 11:00 PM
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="appointment-info">
+
+                                    <div class="appointment-info__icon">
+                                        <i class="fa-solid fa-calendar-check"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>
+                                            Availability
+                                        </span>
+
+                                        <strong>
+                                            Open All Days
+                                        </strong>
+
+                                        <strong>
+                                            Online Consultation: 24/7
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="appointment-info">
+
+                                    <div class="appointment-info__icon">
+                                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>
+                                            Consultation
+                                        </span>
+
+                                        <strong class="appointment-sidebar__price">
+                                            Clinic <del>₹500</del> ₹300
+                                        </strong>
+
+                                        <strong class="appointment-sidebar__price">
+                                            Home visit <del>₹900</del> ₹700
+                                        </strong>
+
+                                        <strong class="appointment-sidebar__price">
+                                            Online <del>₹300</del> ₹200
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="appointment-sidebar__note">
+
+                                <i class="fa-solid fa-circle-info"></i>
+
+                                <p>
+                                    Appointment availability is subject
+                                    to confirmation by the clinic.
+                                </p>
+
+                            </div>
+
+
+                            <a
+                                href="tel:+917014138261"
+                                class="appointment-sidebar__call"
+                            >
+
+                                <span>
+                                    Need help booking?
+                                </span>
+
+                                <strong>
+                                    <i class="fa-solid fa-phone"></i>
+                                    070141 38261
+                                </strong>
+
+                            </a>
+
+                        </div>
+
+                    </aside>
+
+
+
+                    <!-- =================================================
+                         BOOKING FORM
+                    ================================================== -->
+
+                    <div
+                        class="appointment-form-wrapper reveal-right"
+                        data-reveal
+                    >
+
+                        <form
+                            class="appointment-form"
+                            id="appointment-form"
+                            data-appointment-form
+                            novalidate
+                        >
+                            <input type="hidden" name="appointmentTime" data-selected-time>
+
+                            <!-- =================================================
+                                 STEP INDICATOR
+                            ================================================== -->
+
+                            <div class="booking-progress">
+
+                                <div
+                                    class="booking-progress__step active"
+                                    data-booking-step-indicator="1"
+                                >
+
+                                    <span>
+                                        01
+                                    </span>
+
+                                    <small>
+                                        Consultation
+                                    </small>
+
+                                </div>
+
+
+                                <div class="booking-progress__line">
+                                    <span></span>
+                                </div>
+
+
+                                <div
+                                    class="booking-progress__step"
+                                    data-booking-step-indicator="2"
+                                >
+
+                                    <span>
+                                        02
+                                    </span>
+
+                                    <small>
+                                        Date & Time
+                                    </small>
+
+                                </div>
+
+
+                                <div class="booking-progress__line">
+                                    <span></span>
+                                </div>
+
+
+                                <div
+                                    class="booking-progress__step"
+                                    data-booking-step-indicator="3"
+                                >
+
+                                    <span>
+                                        03
+                                    </span>
+
+                                    <small>
+                                        Your Details
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 STEP 01
+                            ================================================== -->
+
+                            <div
+                                class="booking-step active"
+                                data-booking-step="1"
+                            >
+
+                                <div class="booking-step__header">
+
+                                    <span>
+                                        Step 01
+                                    </span>
+
+                                    <h2>
+                                        Choose consultation type
+                                    </h2>
+
+                                    <p>
+                                        Select how you would like to
+                                        consult with Dr. Vishal Yogi.
+                                    </p>
+
+                                </div>
+
+
+                                <div class="consultation-options">
+
+
+                                    <!-- CLINIC -->
+
+                                    <label class="consultation-option">
+
+                                        <input
+                                            type="radio"
+                                            name="serviceType"
+                                            value="Clinic Consultation"
+                                            data-service-type
+                                            data-price="300"
+                                            data-original-price="500"
+                                            checked
+                                        >
+
+                                        <span class="consultation-option__card">
+
+                                            <span class="consultation-option__icon">
+                                                <i class="fa-solid fa-hospital"></i>
+                                            </span>
+
+
+                                            <span class="consultation-option__content">
+
+                                                <strong>
+                                                    Clinic Consultation
+                                                </strong>
+
+                                                <small>
+                                                    Visit Dr. Vishal Yogi
+                                                    at the clinic.
+                                                </small>
+
+                                                <b class="consultation-option__price">
+                                                    <del>₹500</del>
+                                                    <span>₹300</span>
+                                                </b>
+
+                                            </span>
+
+
+                                            <span class="consultation-option__check">
+                                                <i class="fa-solid fa-check"></i>
+                                            </span>
+
+                                        </span>
+
+                                    </label>
+
+
+
+                                    <!-- HOME -->
+
+                                    <label class="consultation-option">
+
+                                        <input
+                                            type="radio"
+                                            name="serviceType"
+                                            value="Home Physiotherapy"
+                                            data-service-type
+                                            data-price="700"
+                                            data-original-price="900"
+                                        >
+
+                                        <span class="consultation-option__card">
+
+                                            <span class="consultation-option__icon">
+                                                <i class="fa-solid fa-house-medical"></i>
+                                            </span>
+
+
+                                            <span class="consultation-option__content">
+
+                                                <strong>
+                                                    Home Physiotherapy
+                                                </strong>
+
+                                                <small>
+                                                    Physiotherapy at your
+                                                    home in the service area.
+                                                </small>
+
+                                                <b class="consultation-option__price">
+                                                    <del>₹900</del>
+                                                    <span>₹700</span>
+                                                </b>
+
+                                            </span>
+
+
+                                            <span class="consultation-option__check">
+                                                <i class="fa-solid fa-check"></i>
+                                            </span>
+
+                                        </span>
+
+                                    </label>
+
+
+
+                                    <!-- ONLINE -->
+
+                                    <label class="consultation-option">
+
+                                        <input
+                                            type="radio"
+                                            name="serviceType"
+                                            value="Online Consultation"
+                                            data-service-type
+                                            data-price="200"
+                                            data-original-price="300"
+                                        >
+
+                                        <span class="consultation-option__card">
+
+                                            <span class="consultation-option__icon">
+                                                <i class="fa-solid fa-video"></i>
+                                            </span>
+
+
+                                            <span class="consultation-option__content">
+
+                                                <strong>
+                                                    Online Consultation
+                                                </strong>
+
+                                                <small>
+                                                    Online slots available
+                                                    24 hours, every day.
+                                                </small>
+
+                                                <b class="consultation-option__price">
+                                                    <del>₹300</del>
+                                                    <span>₹200</span>
+                                                </b>
+
+                                            </span>
+
+
+                                            <span class="consultation-option__check">
+                                                <i class="fa-solid fa-check"></i>
+                                            </span>
+
+                                        </span>
+
+                                    </label>
+
+                                </div>
+
+
+                                <!-- HOME ADDRESS -->
+
+                                <div
+                                    class="conditional-booking-field"
+                                    data-home-address-field
+                                    hidden
+                                >
+
+                                    <label
+                                        class="form-label"
+                                        for="home-address"
+                                    >
+                                        Home Visit Address
+                                    </label>
+
+                                    <textarea
+                                        id="home-address"
+                                        name="homeAddress"
+                                        class="form-control"
+                                        rows="4"
+                                        placeholder="Enter your complete home visit address"
+                                    ></textarea>
+
+                                </div>
+
+
+                                <div class="booking-step__actions booking-step__actions--right">
+
+                                    <button
+                                        type="button"
+                                        class="btn btn--primary"
+                                        data-next-step="2"
+                                    >
+                                        <span>
+                                            Continue
+                                        </span>
+
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 STEP 02
+                            ================================================== -->
+
+                            <div
+                                class="booking-step"
+                                data-booking-step="2"
+                            >
+
+                                <div class="booking-step__header">
+
+                                    <span>
+                                        Step 02
+                                    </span>
+
+                                    <h2>
+                                        Select date & time
+                                    </h2>
+
+                                    <p>
+                                        Choose your preferred appointment
+                                        date and available time.
+                                    </p>
+
+                                </div>
+
+
+                                <div class="booking-date-grid">
+
+                                    <div class="form-group">
+
+                                        <label
+                                            class="form-label"
+                                            for="appointment-date"
+                                        >
+                                            Appointment Date
+                                        </label>
+
+                                        <div class="form-input-icon">
+
+                                            <i class="fa-regular fa-calendar"></i>
+
+                                            <input
+                                                type="date"
+                                                id="appointment-date"
+                                                name="appointmentDate"
+                                                class="form-control"
+                                                required
+                                                data-appointment-date
+                                            >
+
+                                        </div>
+
+                                        <small class="form-hint">
+                                            Select today or a future date.
+                                        </small>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label
+                                            class="form-label"
+                                            for="appointment-type-summary"
+                                        >
+                                            Consultation Type
+                                        </label>
+
+                                        <div class="form-input-icon">
+
+                                            <i class="fa-solid fa-stethoscope"></i>
+
+                                            <input
+                                                type="text"
+                                                id="appointment-type-summary"
+                                                class="form-control"
+                                                value="Clinic Consultation"
+                                                readonly
+                                                data-service-summary
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- TIME RANGE -->
+
+                                <div class="time-selection">
+
+                                    <div class="time-selection__header">
+
+                                        <div>
+
+                                            <span class="form-label">
+                                                Available Time
+                                            </span>
+
+                                            <small data-slot-help>
+                                                Select a date to see available times.
+                                            </small>
+
+                                        </div>
+
+                                        <span
+                                            class="slot-status"
+                                            data-slot-status
+                                            aria-live="polite"
+                                        >
+                                            Select a date
+                                        </span>
+
+                                    </div>
+
+
+                                    <div
+                                        class="time-slots"
+                                        data-time-slots
+                                    >
+
+                                        <!-- Morning -->
+
+                                        <div class="time-group">
+
+                                            <div class="time-group__title">
+
+                                                <i class="fa-regular fa-sun"></i>
+
+                                                <span>
+                                                    Morning
+                                                </span>
+
+                                            </div>
+
+
+                                            <div class="time-slot-grid">
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="07:00 AM"
+                                                    disabled
+                                                >
+                                                    07:00 AM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="07:30 AM"
+                                                    disabled
+                                                >
+                                                    07:30 AM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="08:00 AM"
+                                                    disabled
+                                                >
+                                                    08:00 AM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="08:30 AM"
+                                                    disabled
+                                                >
+                                                    08:30 AM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="09:00 AM"
+                                                    disabled
+                                                >
+                                                    09:00 AM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="09:30 AM"
+                                                    disabled
+                                                >
+                                                    09:30 AM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="10:00 AM"
+                                                    disabled
+                                                >
+                                                    10:00 AM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="10:30 AM"
+                                                    disabled
+                                                >
+                                                    10:30 AM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="11:00 AM"
+                                                    disabled
+                                                >
+                                                    11:00 AM
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+
+
+                                        <!-- Evening -->
+
+                                        <div class="time-group">
+
+                                            <div class="time-group__title">
+
+                                                <i class="fa-regular fa-moon"></i>
+
+                                                <span>
+                                                    Evening
+                                                </span>
+
+                                            </div>
+
+
+                                            <div class="time-slot-grid">
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="08:00 PM"
+                                                    disabled
+                                                >
+                                                    08:00 PM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="08:30 PM"
+                                                    disabled
+                                                >
+                                                    08:30 PM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="09:00 PM"
+                                                    disabled
+                                                >
+                                                    09:00 PM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="09:30 PM"
+                                                    disabled
+                                                >
+                                                    09:30 PM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="10:00 PM"
+                                                    disabled
+                                                >
+                                                    10:00 PM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="10:30 PM"
+                                                    disabled
+                                                >
+                                                    10:30 PM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="11:00 PM"
+                                                    disabled
+                                                >
+                                                    11:00 PM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="11:30 PM"
+                                                    disabled
+                                                >
+                                                    11:30 PM
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    class="time-slot"
+                                                    data-time-slot="12:00 AM"
+                                                    disabled
+                                                >
+                                                    12:00 AM
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="booking-step__actions">
+
+                                    <button
+                                        type="button"
+                                        class="btn btn--outline"
+                                        data-prev-step="1"
+                                    >
+                                        <i class="fa-solid fa-arrow-left"></i>
+
+                                        <span>
+                                            Back
+                                        </span>
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="btn btn--primary"
+                                        data-next-step="3"
+                                    >
+                                        <span>
+                                            Continue
+                                        </span>
+
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 STEP 03
+                            ================================================== -->
+
+                            <div
+                                class="booking-step"
+                                data-booking-step="3"
+                            >
+
+                                <div class="booking-step__header">
+
+                                    <span>
+                                        Step 03
+                                    </span>
+
+                                    <h2>
+                                        Your details
+                                    </h2>
+
+                                    <p>
+                                        Enter your details so the clinic
+                                        can confirm your appointment.
+                                    </p>
+
+                                </div>
+
+
+                                <div class="form-grid form-grid--2">
+
+
+                                    <!-- PATIENT NAME -->
+
+                                    <div class="form-group">
+
+                                        <label
+                                            class="form-label"
+                                            for="patient-name"
+                                        >
+                                            Patient Name
+                                        </label>
+
+                                        <div class="form-input-icon">
+
+                                            <i class="fa-regular fa-user"></i>
+
+                                            <input
+                                                type="text"
+                                                id="patient-name"
+                                                name="patientName"
+                                                class="form-control"
+                                                placeholder="Enter patient name"
+                                                autocomplete="name"
+                                                required
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- PHONE -->
+
+                                    <div class="form-group">
+
+                                        <label
+                                            class="form-label"
+                                            for="patient-phone"
+                                        >
+                                            Phone Number
+                                        </label>
+
+                                        <div class="form-input-icon">
+
+                                            <i class="fa-solid fa-phone"></i>
+
+                                            <input
+                                                type="tel"
+                                                id="patient-phone"
+                                                name="patientPhone"
+                                                class="form-control"
+                                                placeholder="Enter phone number"
+                                                autocomplete="tel"
+                                                inputmode="tel"
+                                                required
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+                                    <label class="form-checkbox" for="whatsapp-confirmation-consent">
+                                        <input
+                                            type="checkbox"
+                                            id="whatsapp-confirmation-consent"
+                                            name="whatsappConfirmationConsent"
+                                            value="yes"
+                                        >
+                                        <span class="form-checkbox__box" aria-hidden="true">✓</span>
+                                        <span class="form-checkbox__text">
+                                            Send my appointment confirmation and visit details to this number on WhatsApp.
+                                        </span>
+                                    </label>
+
+
+
+                                    <!-- EMAIL -->
+
+                                    <div class="form-group">
+
+                                        <label
+                                            class="form-label"
+                                            for="patient-email"
+                                        >
+                                            Email Address
+                                            <span>(Optional)</span>
+                                        </label>
+
+                                        <div class="form-input-icon">
+
+                                            <i class="fa-regular fa-envelope"></i>
+
+                                            <input
+                                                type="email"
+                                                id="patient-email"
+                                                name="patientEmail"
+                                                class="form-control"
+                                                placeholder="Enter email address"
+                                                autocomplete="email"
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- AGE -->
+
+                                    <div class="form-group">
+
+                                        <label
+                                            class="form-label"
+                                            for="patient-age"
+                                        >
+                                            Age
+                                        </label>
+
+                                        <div class="form-input-icon">
+
+                                            <i class="fa-solid fa-calendar-days"></i>
+
+                                            <input
+                                                type="number"
+                                                id="patient-age"
+                                                name="patientAge"
+                                                class="form-control"
+                                                placeholder="Patient age"
+                                                min="1"
+                                                max="120"
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- ADDRESS -->
+
+                                <div class="form-group">
+
+                                    <label
+                                        class="form-label"
+                                        for="patient-address"
+                                    >
+                                        Address
+                                        <span>(Required for home visit)</span>
+                                    </label>
+
+                                    <textarea
+                                        id="patient-address"
+                                        name="patientAddress"
+                                        class="form-control"
+                                        rows="3"
+                                        placeholder="Enter your address"
+                                    ></textarea>
+
+                                </div>
+
+
+
+                                <!-- REASON -->
+
+                                <div class="form-group">
+
+                                    <label
+                                        class="form-label"
+                                        for="appointment-reason"
+                                    >
+                                        Reason for Consultation
+                                        <span>(Optional)</span>
+                                    </label>
+
+                                    <textarea
+                                        id="appointment-reason"
+                                        name="appointmentReason"
+                                        class="form-control"
+                                        rows="4"
+                                        placeholder="Briefly describe your concern or reason for consultation"
+                                    ></textarea>
+
+                                </div>
+
+
+
+                                <!-- SUMMARY -->
+
+                                <div class="booking-summary">
+
+                                    <div class="booking-summary__header">
+
+                                        <span>
+                                            Appointment Summary
+                                        </span>
+
+                                        <i class="fa-solid fa-clipboard-check"></i>
+
+                                    </div>
+
+
+                                    <div class="booking-summary__body">
+
+                                        <div class="booking-summary__row">
+
+                                            <span>
+                                                Patient
+                                            </span>
+
+                                            <strong data-summary-patient>
+                                                —
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="booking-summary__row">
+
+                                            <span>
+                                                Service
+                                            </span>
+
+                                            <strong data-summary-service>
+                                                Clinic Consultation
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="booking-summary__row">
+
+                                            <span>
+                                                Date
+                                            </span>
+
+                                            <strong data-summary-date>
+                                                —
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="booking-summary__row">
+
+                                            <span>
+                                                Time
+                                            </span>
+
+                                            <strong data-summary-time>
+                                                —
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="booking-summary__row booking-summary__row--total">
+
+                                            <span>Consultation Fee</span>
+
+                                            <strong class="booking-summary__price" data-summary-price>
+                                                <del data-summary-original>₹500</del>
+                                                <span data-summary-current>₹300</span>
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- CONSENT -->
+
+                                <label class="form-checkbox">
+
+                                    <input
+                                        type="checkbox"
+                                        name="bookingConsent"
+                                        required
+                                    >
+
+                                    <span class="form-checkbox__box">
+                                        <i class="fa-solid fa-check"></i>
+                                    </span>
+
+                                    <span class="form-checkbox__text">
+                                        I confirm that the information
+                                        provided above is correct and
+                                        understand that the appointment
+                                        is subject to clinic confirmation
+                                        and the selected consultation fee
+                                        is due now.
+                                    </span>
+
+                                </label>
+
+
+
+                                <div
+                                    class="form-status"
+                                    data-form-status
+                                    role="status"
+                                    aria-live="polite"
+                                ></div>
+
+
+
+                                <div class="booking-step__actions">
+
+                                    <button
+                                        type="button"
+                                        class="btn btn--outline"
+                                        data-prev-step="2"
+                                    >
+                                        <i class="fa-solid fa-arrow-left"></i>
+
+                                        <span>
+                                            Back
+                                        </span>
+                                    </button>
+
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn--primary btn--large"
+                                        data-booking-submit
+                                    >
+
+                                        <span>
+                                            Pay ₹300 &amp; Confirm
+                                        </span>
+
+                                        <i class="fa-solid fa-lock"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+
+
+
+                        <!-- =================================================
+                             SUCCESS STATE
+                        ================================================== -->
+
+                        <div
+                            class="appointment-success"
+                            data-appointment-success
+                            hidden
+                        >
+
+                            <div class="appointment-success__icon">
+
+                                <i class="fa-solid fa-check"></i>
+
+                            </div>
+
+
+                            <span class="eyebrow">
+
+                                <span class="eyebrow__line"></span>
+
+                                Request Received
+
+                            </span>
+
+
+                            <h2>
+                                Appointment request
+                                <em>submitted.</em>
+                            </h2>
+
+
+                            <p>
+                                Your appointment request has been received
+                                on this device. The clinic will confirm the
+                                appointment details.
+                            </p>
+
+
+                            <div class="appointment-success__summary">
+
+                                <div>
+
+                                    <span>
+                                        Patient
+                                    </span>
+
+                                    <strong data-success-patient>
+                                        —
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Service
+                                    </span>
+
+                                    <strong data-success-service>
+                                        —
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Date
+                                    </span>
+
+                                    <strong data-success-date>
+                                        —
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Time
+                                    </span>
+
+                                    <strong data-success-time>
+                                        —
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="appointment-success__actions">
+
+                                <a
+                                    href="https://wa.me/917014138261"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn btn--primary"
+                                    data-whatsapp
+                                >
+                                    <i class="fa-brands fa-whatsapp"></i>
+
+                                    <span>
+                                        Contact Clinic
+                                    </span>
+                                </a>
+
+
+                                <a
+                                    href="index.html"
+                                    class="btn btn--outline"
+                                >
+                                    <span>
+                                        Back to Home
+                                    </span>
+
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             APPOINTMENT INFORMATION
+        ====================================================== -->
+
+        <section class="section section--dark appointment-info-section">
+
+            <div class="container">
+
+                <div class="section-header section-header--center">
+
+                    <span
+                        class="eyebrow eyebrow--light reveal"
+                        data-reveal
+                    >
+
+                        <span class="eyebrow__line"></span>
+
+                        Before Your Visit
+
+                    </span>
+
+                    <h2
+                        class="display-title display-title--light reveal"
+                        data-reveal
+                        data-reveal-delay="100"
+                    >
+                        A smoother
+                        <em>appointment.</em>
+                    </h2>
+
+                </div>
+
+
+                <div class="appointment-guidelines">
+
+
+                    <article
+                        class="appointment-guideline reveal"
+                        data-reveal
+                    >
+
+                        <div class="appointment-guideline__number">
+                            01
+                        </div>
+
+                        <div class="appointment-guideline__icon">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+
+                        <h3>
+                            Choose Your Slot
+                        </h3>
+
+                        <p>
+                            Select your preferred date and available
+                            appointment time.
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="appointment-guideline reveal"
+                        data-reveal
+                        data-reveal-delay="100"
+                    >
+
+                        <div class="appointment-guideline__number">
+                            02
+                        </div>
+
+                        <div class="appointment-guideline__icon">
+                            <i class="fa-solid fa-id-card"></i>
+                        </div>
+
+                        <h3>
+                            Share Your Details
+                        </h3>
+
+                        <p>
+                            Provide accurate contact information so the
+                            clinic can reach you.
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="appointment-guideline reveal"
+                        data-reveal
+                        data-reveal-delay="200"
+                    >
+
+                        <div class="appointment-guideline__number">
+                            03
+                        </div>
+
+                        <div class="appointment-guideline__icon">
+                            <i class="fa-solid fa-phone-volume"></i>
+                        </div>
+
+                        <h3>
+                            Clinic Confirmation
+                        </h3>
+
+                        <p>
+                            The appointment request is subject to
+                            confirmation by the clinic.
+                        </p>
+
+                    </article>
+
+
+                    <article
+                        class="appointment-guideline reveal"
+                        data-reveal
+                        data-reveal-delay="300"
+                    >
+
+                        <div class="appointment-guideline__number">
+                            04
+                        </div>
+
+                        <div class="appointment-guideline__icon">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                        </div>
+
+                        <h3>
+                            Begin Your Care
+                        </h3>
+
+                        <p>
+                            Visit the clinic, receive a home visit or
+                            join your online consultation.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             CONTACT CTA
+        ====================================================== -->
+
+        <section class="section consultation-banner">
+
+            <div class="container">
+
+                <div
+                    class="consultation-banner__inner reveal-scale"
+                    data-reveal
+                >
+
+                    <div class="consultation-banner__glow"></div>
+
+
+                    <div class="consultation-banner__content">
+
+                        <span class="eyebrow eyebrow--light">
+
+                            <span class="eyebrow__line"></span>
+
+                            Need Assistance?
+
+                        </span>
+
+                        <h2>
+                            Prefer to speak
+                            with the
+                            <em>clinic?</em>
+                        </h2>
+
+                        <p>
+                            Call directly for appointment-related
+                            assistance.
+                        </p>
+
+                    </div>
+
+
+                    <div class="consultation-banner__actions">
+
+                        <a
+                            href="tel:+917014138261"
+                            class="btn btn--light"
+                        >
+                            <i class="fa-solid fa-phone"></i>
+
+                            <span>
+                                070141 38261
+                            </span>
+                        </a>
+
+
+                        <a
+                            href="https://wa.me/917014138261"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn btn--outline-light"
+                            data-whatsapp
+                        >
+                            <i class="fa-brands fa-whatsapp"></i>
+
+                            <span>
+                                WhatsApp
+                            </span>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer class="site-footer">
+
+            <div class="container">
+
+                <div class="footer-main">
+
+
+                    <div class="footer-brand">
+
+                        <a
+                            href="index.html"
+                            class="navbar__brand"
+                        >
+
+                            <span class="navbar__brand-mark">
+                                VY
+                            </span>
+
+                            <span class="navbar__brand-text">
+                                <strong>DR. VISHAL YOGI</strong>
+
+                                <small>
+                                    PHYSIOTHERAPY & WELLNESS
+                                </small>
+                            </span>
+
+                        </a>
+
+
+                        <p>
+                            Physiotherapy and rehabilitation care focused
+                            on helping you move better, recover stronger
+                            and live better.
+                        </p>
+
+
+                        <div class="footer-socials">
+
+                            <a
+                                href="https://www.instagram.com/physio_dr._vishal_yogi"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Instagram"
+                            >
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+
+                            <a
+                                href="https://maps.app.goo.gl/2uKHQ6nTtAYhfy7R9"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Google Maps"
+                            >
+                                <i class="fa-solid fa-location-dot"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="footer-column">
+
+                        <h4>
+                            Explore
+                        </h4>
+
+                        <a href="about.html">
+                            About
+                        </a>
+
+                        <a href="services.html">
+                            Services
+                        </a>
+
+                        <a href="conditions.html">
+                            Conditions
+                        </a>
+
+                        <a href="achievements.html">
+                            Achievements
+                        </a>
+
+                        <a href="gallery.html">
+                            Gallery
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="footer-column">
+
+                        <h4>
+                            Services
+                        </h4>
+
+                        <a href="services.html">
+                            Orthopaedic Physiotherapy
+                        </a>
+
+                        <a href="services.html">
+                            Neurological Rehabilitation
+                        </a>
+
+                        <a href="services.html">
+                            Home Physiotherapy
+                        </a>
+
+                        <a href="services.html">
+                            Online Consultation
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="footer-column footer-contact">
+
+                        <h4>
+                            Visit Clinic
+                        </h4>
+
+                        <p>
+                            P. No. 2 North Part,<br>
+                            Okay Plus Exotica,<br>
+                            Machwa, Amaltash Ln,<br>
+                            Sushant City-I,<br>
+                            Jaipur – 302012
+                        </p>
+
+                        <a href="tel:+917014138261">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            070141 38261
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="footer-bottom">
+
+                    <p>
+                        ©
+                        <span data-current-year></span>
+                        Dr. Vishal Yogi Physiotherapy & Wellness Clinic.
+                        All rights reserved.
+                    </p>
+
+
+                    <div class="footer-bottom__links">
+
+                        <a href="#">
+                            Privacy Policy
+                        </a>
+
+                        <a href="#">
+                            Terms
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+
+
+    <!-- =========================================================
+         FLOATING ACTIONS
+    ========================================================== -->
+
+    <div class="floating-actions">
+
+        <a
+            href="https://wa.me/917014138261"
+            class="floating-action floating-action--whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat on WhatsApp"
+            data-whatsapp
+        >
+
+            <i class="fa-brands fa-whatsapp"></i>
+
+            <span class="floating-action__tooltip">
+                Chat on WhatsApp
+            </span>
+
+        </a>
+
+
+        <a
+            href="tel:+917014138261"
+            class="floating-action floating-action--call"
+            aria-label="Call clinic"
+        >
+
+            <i class="fa-solid fa-phone"></i>
+
+            <span class="floating-action__tooltip">
+                Call Clinic
+            </span>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         MOBILE BOTTOM BAR
+    ========================================================== -->
+
+    <div class="mobile-bottom-bar">
+
+        <a
+            href="tel:+917014138261"
+            class="mobile-bottom-bar__item"
+        >
+
+            <i class="fa-solid fa-phone"></i>
+
+            <span>
+                Call
+            </span>
+
+        </a>
+
+
+        <a
+            href="#appointment-form"
+            class="mobile-bottom-bar__main"
+        >
+
+            <span>
+                Book Appointment
+            </span>
+
+            <i class="fa-solid fa-arrow-up"></i>
+
+        </a>
+
+
+        <a
+            href="https://wa.me/917014138261"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mobile-bottom-bar__item"
+            data-whatsapp
+        >
+
+            <i class="fa-brands fa-whatsapp"></i>
+
+            <span>
+                WhatsApp
+            </span>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         SCRIPTS
+    ========================================================== -->
+
+    <script src="js/navigation.js" defer></script>
+    <script src="js/animations.js" defer></script>
+    <script src="js/gallery.js" defer></script>
+    <script src="js/main.js" defer></script>
+
+</body>
+</html>
