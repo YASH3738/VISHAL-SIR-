@@ -117,9 +117,11 @@ environment variables in the Render dashboard; never commit credentials:
 - `NODE_ENV=production`
 - `PORT=10000` (or use Render's automatically provided `PORT`)
 - `FIREBASE_PROJECT_ID=dr-vishal-clinic`
-- `GOOGLE_APPLICATION_CREDENTIALS` set to the path of a Render Secret File
-  containing the service-account JSON, or use another securely configured
-  Application Default Credentials method. Do not commit the JSON key.
+- `GOOGLE_APPLICATION_CREDENTIALS` set either to the path of a Render Secret
+  File containing the service-account JSON or to the JSON content itself. For
+  a Secret File, use its mounted path (for example
+  `/etc/secrets/firebase-service-account.json`). Never commit or share the
+  JSON key.
 - `JWT_SECRET`, `ADMIN_PASSWORD`, and the intended Razorpay key pair
 - `FRONTEND_ORIGINS` set to the exact public origin(s) of the frontend, as a
   comma-separated list, for example `https://your-frontend.onrender.com`

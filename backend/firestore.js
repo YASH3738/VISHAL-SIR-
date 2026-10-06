@@ -1,21 +1,47 @@
-const { applicationDefault, initializeApp } = require("firebase-admin/app");
+const { applicationDefault, cert, initializeApp } = require("firebase-admin/app");
 const { FieldValue, Timestamp, getFirestore } = require("firebase-admin/firestore");
 const path = require("path");
 const fs = require("fs");
 
+let credential = applicationDefault();
+let credentialProjectId;
+
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-  const configuredPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-  const fromWorkingDirectory = path.resolve(configuredPath);
-  const fromBackendDirectory = path.resolve(__dirname, configuredPath);
-  const resolvedPath = fs.existsSync(fromWorkingDirectory)
-    ? fromWorkingDirectory
-    : fromBackendDirectory;
-  if (!fs.existsSync(resolvedPath)) {
-    throw new Error(
-      `Google application credentials file was not found: ${configuredPath}`
-    );
+  const configuredCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS.trim();
+  if (configuredCredentials.startsWith("{")) {
+    let serviceAccount;
+    try {
+      serviceAccount = JSON.parse(configuredCredentials);
+    } catch {
+      throw new Error(
+        "GOOGLE_APPLICATION_CREDENTIALS must be a file path or valid service-account JSON"
+      );
+    }
+    if (
+      serviceAccount.type !== "service_account" ||
+      typeof serviceAccount.client_email !== "string" ||
+      typeof serviceAccount.private_key !== "string"
+    ) {
+      throw new Error(
+        "GOOGLE_APPLICATION_CREDENTIALS JSON must be a service-account credential"
+      );
+    }
+    credential = cert(serviceAccount);
+    credentialProjectId = serviceAccount.project_id;
+  } else {
+    const configuredPath = configuredCredentials;
+    const fromWorkingDirectory = path.resolve(configuredPath);
+    const fromBackendDirectory = path.resolve(__dirname, configuredPath);
+    const resolvedPath = fs.existsSync(fromWorkingDirectory)
+      ? fromWorkingDirectory
+      : fromBackendDirectory;
+    if (!fs.existsSync(resolvedPath)) {
+      throw new Error(
+        `Google application credentials file was not found: ${configuredPath}`
+      );
+    }
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = resolvedPath;
   }
-  process.env.GOOGLE_APPLICATION_CREDENTIALS = resolvedPath;
 } else if (fs.existsSync(path.join(__dirname, "firebase-service-account.json"))) {
   process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(
     __dirname,
@@ -24,8 +50,11 @@ if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
 }
 
 const app = initializeApp({
-  credential: applicationDefault(),
-  projectId: process.env.FIREBASE_PROJECT_ID || "dr-vishal-clinic",
+  credential,
+  projectId:
+    process.env.FIREBASE_PROJECT_ID ||
+    credentialProjectId ||
+    "dr-vishal-clinic",
 });
 
 const db = getFirestore(app);
