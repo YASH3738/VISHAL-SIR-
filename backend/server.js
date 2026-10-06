@@ -1,6 +1,7 @@
 require("dotenv").config({
   path: require("path").join(__dirname, ".env"),
 });
+require("./load-config");
 
 const express = require("express");
 const cors = require("cors");

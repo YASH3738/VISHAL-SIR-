@@ -111,20 +111,28 @@ and one-time PIN on the payment confirmation page.
 
 Create a Render **Web Service** from the `backend` directory and a Render
 **Static Site** for the frontend from the repository root. The API service
-needs the same Firestore project as the local backend. Configure its required
-environment variables in the Render dashboard; never commit credentials:
+needs the same Firestore project as the local backend. To avoid configuring
+individual environment variables, add one Render Secret File:
 
-- `NODE_ENV=production`
-- `PORT=10000` (or use Render's automatically provided `PORT`)
-- `FIREBASE_PROJECT_ID=dr-vishal-clinic`
-- `GOOGLE_APPLICATION_CREDENTIALS` set either to the path of a Render Secret
-  File containing the service-account JSON or to the JSON content itself. For
-  a Secret File, use its mounted path (for example
-  `/etc/secrets/firebase-service-account.json`). Never commit or share the
-  JSON key.
-- `JWT_SECRET`, `ADMIN_PASSWORD`, and the intended Razorpay key pair
-- `FRONTEND_ORIGINS` set to the exact public origin(s) of the frontend, as a
-  comma-separated list, for example `https://your-frontend.onrender.com`
+Set the API service's build command to `npm install` and start command to
+`node server.js`. When using a backend-only repository, leave the service root
+directory at `.`.
+
+1. Copy `render-config.example.json` and fill in its values. Put the complete
+   service-account JSON downloaded from Google Cloud inside
+   `firebaseServiceAccount`. Generate a fresh, random `jwtSecret` with at
+   least 32 characters. Set a strong `adminPassword` with at least 12
+   characters.
+2. Add the completed file under **Environment → Secret Files**, named
+   `backend-config.json`. The app reads it from
+   `/etc/secrets/backend-config.json` automatically.
+3. Razorpay and Wuapi credentials are optional in the config; leave each pair
+   blank to disable that integration. If enabled, set both values in a pair.
+4. Never commit or share the completed config file or service-account JSON.
+   Only the placeholder `render-config.example.json` belongs in Git.
+
+Render supplies the `PORT` environment variable automatically. Set
+`frontendOrigins` to the exact public origin(s) of the frontend.
 
 Set the `api-base-url` meta tag in both `patient-dashboard.html` and
 `admin-dashboard.html` to the API Web Service's public origin, for example
