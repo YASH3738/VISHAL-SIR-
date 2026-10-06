@@ -1,5 +1,12 @@
 const fs = require("fs");
 const path = require("path");
+const dotenv = require("dotenv");
+
+const envFilePath =
+  process.env.BACKEND_ENV_FILE || "/etc/secrets/backend.env";
+if (fs.existsSync(envFilePath)) {
+  dotenv.config({ path: envFilePath });
+}
 
 const configPath =
   process.env.BACKEND_CONFIG_FILE || "/etc/secrets/backend-config.json";
@@ -80,8 +87,67 @@ if (fs.existsSync(configPath)) {
   process.env.FRONTEND_ORIGINS = Array.isArray(config.frontendOrigins)
     ? config.frontendOrigins.join(",")
     : "";
-} else if (process.env.NODE_ENV === "production") {
-  throw new Error(
-    `Backend secret config file is missing: ${path.resolve(configPath)}. Add it as a Render Secret File.`
-  );
+} else if (
+  process.env.FIREBASE_SERVICE_ACCOUNT_JSON &&
+  process.env.FIREBASE_SERVICE_ACCOUNT_JSON.trim()
+) {
+  let serviceAccount;
+  try {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+  } catch {
+    throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON must contain valid JSON");
+  }
+  if (
+    !serviceAccount ||
+    serviceAccount.type !== "service_account" ||
+    typeof serviceAccount.client_email !== "string" ||
+    typeof serviceAccount.private_key !== "string"
+  ) {
+    throw new Error(
+      "FIREBASE_SERVICE_ACCOUNT_JSON must be a service-account credential"
+    );
+  }
+  process.env.FIREBASE_PROJECT_ID =
+    process.env.FIREBASE_PROJECT_ID ||
+    serviceAccount.project_id ||
+    "dr-vishal-clinic";
+  process.env.GOOGLE_APPLICATION_CREDENTIALS =
+    process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+}
+
+if (process.env.NODE_ENV === "production" && !process.env.FIREBASE_PROJECT_ID) {
+  process.env.FIREBASE_PROJECT_ID = "dr-vishal-clinic";
+}
+
+if (process.env.NODE_ENV === "production") {
+  if (
+    !process.env.GOOGLE_APPLICATION_CREDENTIALS &&
+    !process.env.FIREBASE_SERVICE_ACCOUNT_JSON
+  ) {
+    throw new Error(
+      `Firebase credentials are missing. Add a Render Secret File at ${path.resolve(envFilePath)} containing FIREBASE_SERVICE_ACCOUNT_JSON.`
+    );
+  }
+  if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+    throw new Error("JWT_SECRET must be configured with at least 32 characters");
+  }
+  if (!process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD.length < 12) {
+    throw new Error("ADMIN_PASSWORD must be configured with at least 12 characters");
+  }
+  if (
+    Boolean(process.env.RAZORPAY_KEY_ID) !==
+    Boolean(process.env.RAZORPAY_KEY_SECRET)
+  ) {
+    throw new Error(
+      "Configure both RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET, or leave both blank"
+    );
+  }
+  if (
+    Boolean(process.env.WUAPI_API_KEY) !==
+    Boolean(process.env.WUAPI_ACCOUNT_ID)
+  ) {
+    throw new Error(
+      "Configure both WUAPI_API_KEY and WUAPI_ACCOUNT_ID, or leave both blank"
+    );
+  }
 }

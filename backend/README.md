@@ -118,21 +118,22 @@ Set the API service's build command to `npm install` and start command to
 `node server.js`. When using a backend-only repository, leave the service root
 directory at `.`.
 
-1. Copy `render-config.example.json` and fill in its values. Put the complete
-   service-account JSON downloaded from Google Cloud inside
-   `firebaseServiceAccount`. Generate a fresh, random `jwtSecret` with at
-   least 32 characters. Set a strong `adminPassword` with at least 12
-   characters.
-2. Add the completed file under **Environment → Secret Files**, named
-   `backend-config.json`. The app reads it from
-   `/etc/secrets/backend-config.json` automatically.
-3. Razorpay and Wuapi credentials are optional in the config; leave each pair
-   blank to disable that integration. If enabled, set both values in a pair.
-4. Never commit or share the completed config file or service-account JSON.
-   Only the placeholder `render-config.example.json` belongs in Git.
+1. Start with `.env.example` and set real values for `JWT_SECRET` (at least
+   32 characters) and `ADMIN_PASSWORD` (at least 12 characters).
+2. Add the complete Firebase service-account JSON as a single-quoted value of
+   `FIREBASE_SERVICE_ACCOUNT_JSON`. Keep it on one line in `.env`, with the
+   JSON's escaped `\n` sequences intact. Use a newly generated key; do not use
+   a key that has been shared or committed.
+3. Add the completed file under **Environment → Secret Files**, named
+   `backend.env`. The app reads `/etc/secrets/backend.env` automatically.
+   Render supplies `PORT`; do not add it to the secret file.
+4. Razorpay and Wuapi credentials are optional; leave both values in a pair
+   blank to disable that integration. Set `FRONTEND_ORIGINS` to the exact
+   public frontend origins.
+5. Never commit or share the completed `.env` file or service-account JSON.
+   Only `.env.example` belongs in Git.
 
-Render supplies the `PORT` environment variable automatically. Set
-`frontendOrigins` to the exact public origin(s) of the frontend.
+Render supplies the `PORT` environment variable automatically.
 
 Set the `api-base-url` meta tag in both `patient-dashboard.html` and
 `admin-dashboard.html` to the API Web Service's public origin, for example
