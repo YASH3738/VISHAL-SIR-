@@ -1,7 +1,9 @@
-require("dotenv").config({
-  path: require("path").join(__dirname, ".env"),
-});
-require("./load-config");
+const isFirebaseFunction = process.env.FIREBASE_FUNCTIONS === "true";
+if (!isFirebaseFunction) {
+  require("dotenv").config({
+    path: require("path").join(__dirname, ".env"),
+  });
+}
 
 const express = require("express");
 const cors = require("cors");
@@ -9,6 +11,7 @@ const crypto = require("crypto");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const Razorpay = require("razorpay");
+const { getAuth } = require("firebase-admin/auth");
 const {
   FieldValue,
   collections,
@@ -27,6 +30,8 @@ const allowedOrigins = new Set([
   "https://www.vishalyogi.in",
   "https://drvishalyogi.in",
   "https://www.drvishalyogi.in",
+  "https://dr-vishal-clinic.web.app",
+  "https://dr-vishal-clinic.firebaseapp.com",
 ]);
 for (const origin of (process.env.FRONTEND_ORIGINS || "")
   .split(",")
@@ -51,7 +56,13 @@ app.use(
     },
   })
 );
-app.use(express.json());
+app.use(
+  express.json({
+    verify(req, _res, buffer) {
+      req.rawBody = Buffer.from(buffer);
+    },
+  })
+);
 
 app.get("/api/health", (_req, res) => {
   return res.json({ success: true });
@@ -65,15 +76,36 @@ class HttpError extends Error {
 }
 
 function requireAdminAuth(req, res, next) {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({
-        success: false,
-        message: "Admin authentication required",
-      });
-    }
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      success: false,
+      message: "Admin authentication required",
+    });
+  }
 
+  if (isFirebaseFunction) {
+    return getAuth()
+      .verifyIdToken(authHeader.substring(7))
+      .then((decoded) => {
+        if (decoded.admin !== true) {
+          return res.status(403).json({
+            success: false,
+            message: "Admin access required",
+          });
+        }
+        req.admin = decoded;
+        return next();
+      })
+      .catch(() =>
+        res.status(401).json({
+          success: false,
+          message: "Invalid or expired admin session",
+        })
+      );
+  }
+
+  try {
     const decoded = jwt.verify(authHeader.substring(7), process.env.JWT_SECRET);
     if (decoded.role !== "admin") {
       return res.status(403).json({
@@ -93,15 +125,40 @@ function requireAdminAuth(req, res, next) {
 }
 
 function requirePatientAuth(req, res, next) {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({
-        success: false,
-        message: "Authentication required",
-      });
-    }
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      success: false,
+      message: "Authentication required",
+    });
+  }
 
+  if (isFirebaseFunction) {
+    return getAuth()
+      .verifyIdToken(authHeader.substring(7))
+      .then((decoded) => {
+        if (
+          decoded.role !== "patient" ||
+          typeof decoded.patient_uuid !== "string" ||
+          decoded.uid !== decoded.patient_uuid
+        ) {
+          return res.status(403).json({
+            success: false,
+            message: "Patient access required",
+          });
+        }
+        req.patient = decoded;
+        return next();
+      })
+      .catch(() =>
+        res.status(401).json({
+          success: false,
+          message: "Invalid or expired token",
+        })
+      );
+  }
+
+  try {
     const decoded = jwt.verify(authHeader.substring(7), process.env.JWT_SECRET);
     if (decoded.role !== "patient") {
       return res.status(403).json({
@@ -124,19 +181,69 @@ function getRazorpayClient() {
   if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
     throw new Error("Razorpay credentials are not configured");
   }
-
   return new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
 }
 
-function publicPatientId() {
-  return `VY${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
+function sendPaymentError(res, status, message) {
+  return res.status(status).json({
+    success: false,
+    error: message,
+    message,
+  });
 }
 
 function publicAppointmentId() {
   return `APT${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
+}
+
+function appointmentSlotId(appointmentDate, appointmentTime) {
+  return crypto
+    .createHash("sha256")
+    .update(`${appointmentDate}|${appointmentTime}`)
+    .digest("hex");
+}
+
+function encryptPin(pin) {
+  const key = Buffer.from(process.env.PIN_ENCRYPTION_KEY || "", "base64");
+  if (key.length !== 32) {
+    throw new Error("PIN_ENCRYPTION_KEY must encode exactly 32 random bytes");
+  }
+  const iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
+  const encrypted = Buffer.concat([cipher.update(pin, "utf8"), cipher.final()]);
+  return Buffer.concat([iv, cipher.getAuthTag(), encrypted]).toString("base64");
+}
+
+function decryptPin(encryptedPin) {
+  const key = Buffer.from(process.env.PIN_ENCRYPTION_KEY || "", "base64");
+  if (key.length !== 32) {
+    throw new Error("PIN_ENCRYPTION_KEY must encode exactly 32 random bytes");
+  }
+  const value = Buffer.from(encryptedPin, "base64");
+  if (value.length < 29) throw new Error("Encrypted PIN is invalid");
+  const decipher = crypto.createDecipheriv("aes-256-gcm", key, value.subarray(0, 12));
+  decipher.setAuthTag(value.subarray(12, 28));
+  return Buffer.concat([
+    decipher.update(value.subarray(28)),
+    decipher.final(),
+  ]).toString("utf8");
+}
+
+async function consumeBookingPin(bookingId) {
+  const bookingRef = collections.bookings.doc(bookingId);
+  return db.runTransaction(async (transaction) => {
+    const snapshot = await transaction.get(bookingRef);
+    if (!snapshot.exists || !snapshot.data().pin_ciphertext) return null;
+    const pin = decryptPin(snapshot.data().pin_ciphertext);
+    transaction.update(bookingRef, {
+      pin_ciphertext: FieldValue.delete(),
+      pin_delivered_at: FieldValue.serverTimestamp(),
+    });
+    return pin;
+  });
 }
 
 function clinicDateToday() {
@@ -211,13 +318,13 @@ async function finalizeAppointmentBooking({
   razorpayOrderId,
   razorpayPaymentId,
   pinHash,
+  pinCiphertext,
 }) {
   const bookingRef = collections.bookings.doc(bookingId);
   const paymentRef = collections.payments.doc(paymentDocumentId);
   const newPatientRef = collections.patients.doc(crypto.randomUUID());
   const newCredentialRef = collections.credentials.doc(newPatientRef.id);
   const appointmentRef = collections.appointments.doc(crypto.randomUUID());
-  const generatedPatientId = publicPatientId();
   const generatedAppointmentId = publicAppointmentId();
 
   return db.runTransaction(async (transaction) => {
@@ -243,34 +350,12 @@ async function finalizeAppointmentBooking({
       ) {
         throw new Error("Appointment payment record not found");
       }
-      let credentialSnapshot = null;
-      if (booking.pin_issued && booking.patient_doc_id) {
-        credentialSnapshot = await transaction.get(
-          collections.credentials.doc(booking.patient_doc_id)
-        );
-      }
-      if (booking.pin_issued && !credentialSnapshot?.exists) {
-        throw new Error("Patient credential record not found");
-      }
-
-      if (booking.pin_issued) {
-        transaction.update(
-          collections.credentials.doc(booking.patient_doc_id),
-          {
-            pin_hash: pinHash,
-            failed_attempts: 0,
-            locked_until: null,
-          }
-        );
-      }
-      transaction.update(paymentRef, {
-        razorpay_payment_id: razorpayPaymentId,
-        paid_at: FieldValue.serverTimestamp(),
-      });
       return {
         patient_id: booking.patient_id,
         appointment_id: booking.appointment_id,
-        pin_issued: booking.pin_issued,
+        pin_issued: false,
+        already_paid: true,
+        pin_ciphertext: booking.pin_ciphertext || null,
       };
     }
 
@@ -280,6 +365,36 @@ async function finalizeAppointmentBooking({
       booking.payment_id !== paymentDocumentId
     ) {
       throw new HttpError(409, "Booking is not awaiting payment");
+    }
+
+    const slotRef = collections.slotReservations.doc(
+      appointmentSlotId(booking.appointment_date, booking.appointment_time)
+    );
+    const slotSnapshot = await transaction.get(slotRef);
+    if (
+      !slotSnapshot.exists ||
+      slotSnapshot.data().booking_id !== bookingId
+    ) {
+      throw new HttpError(
+        409,
+        "The appointment slot is no longer reserved for this booking"
+      );
+    }
+    const conflictingAppointments = await transaction.get(
+      collections.appointments
+        .where("appointment_date", "==", booking.appointment_date)
+    );
+    if (
+      conflictingAppointments.docs.some((document) => {
+        const appointment = document.data();
+        return (
+          appointment.appointment_time === booking.appointment_time &&
+          appointment.status === "confirmed" &&
+          appointment.payment_status === "paid"
+        );
+      })
+    ) {
+      throw new HttpError(409, "The appointment slot has already been booked");
     }
 
     const patientQuery = collections.patients
@@ -292,10 +407,25 @@ async function finalizeAppointmentBooking({
     let credentialSnapshot = null;
     let patientId;
     let pinIssued = false;
+    let counterRef = null;
+    let patientNumber = 0;
 
     if (patientMatches.empty) {
       patientRef = newPatientRef;
-      patientId = generatedPatientId;
+      counterRef = db.collection("system_counters").doc("patient_ids");
+      const counterSnapshot = await transaction.get(counterRef);
+      patientNumber = Number(counterSnapshot.data()?.value || 0);
+      for (let attempt = 0; attempt < 100; attempt += 1) {
+        patientNumber += 1;
+        patientId = `VY${String(patientNumber).padStart(4, "0")}`;
+        const existingId = await transaction.get(
+          collections.patients.where("patient_id", "==", patientId).limit(1)
+        );
+        if (existingId.empty) break;
+        if (attempt === 99) {
+          throw new Error("Unable to allocate a unique patient ID");
+        }
+      }
       patient = {
         patient_id: patientId,
         full_name: booking.full_name,
@@ -342,6 +472,9 @@ async function finalizeAppointmentBooking({
         created_at: FieldValue.serverTimestamp(),
       });
     }
+    if (counterRef) {
+      transaction.set(counterRef, { value: patientNumber });
+    }
 
     transaction.create(appointmentRef, {
       appointment_id: generatedAppointmentId,
@@ -365,6 +498,9 @@ async function finalizeAppointmentBooking({
       razorpay_payment_id: razorpayPaymentId,
       payment_status: "paid",
       pin_issued: pinIssued,
+      ...(pinIssued && pinCiphertext
+        ? { pin_ciphertext: pinCiphertext }
+        : {}),
       paid_at: FieldValue.serverTimestamp(),
     });
     transaction.update(paymentRef, {
@@ -375,23 +511,101 @@ async function finalizeAppointmentBooking({
       razorpay_payment_id: razorpayPaymentId,
       paid_at: FieldValue.serverTimestamp(),
     });
+    transaction.update(slotRef, {
+      status: "confirmed",
+      appointment_id: generatedAppointmentId,
+      patient_doc_id: patientRef.id,
+      confirmed_at: FieldValue.serverTimestamp(),
+    });
 
     return {
       patient_id: patientId,
       appointment_id: generatedAppointmentId,
       pin_issued: pinIssued,
+      already_paid: false,
+      pin_ciphertext: pinIssued ? pinCiphertext || null : null,
     };
   });
 }
 
-const adminLoginFailures = new Map();
-const ADMIN_LOGIN_WINDOW_MS = 15 * 60 * 1000;
-const ADMIN_LOGIN_MAX_FAILURES = 5;
+async function completeAppointmentPayment({
+  bookingId,
+  razorpayOrderId,
+  razorpayPaymentId,
+  deliverPin,
+}) {
+  const booking = documentData(await collections.bookings.doc(bookingId).get());
+  if (!booking || booking.razorpay_order_id !== razorpayOrderId) {
+    throw new HttpError(404, "Appointment payment was not found");
+  }
+
+  const payment = await getRazorpayClient().payments.fetch(razorpayPaymentId);
+  if (
+    payment.order_id !== booking.razorpay_order_id ||
+    payment.amount !== booking.amount_paise ||
+    payment.currency !== "INR" ||
+    payment.status !== "captured"
+  ) {
+    throw new HttpError(
+      409,
+      "The appointment payment has not been confirmed as captured"
+    );
+  }
+
+  const pin = String(crypto.randomInt(0, 10000)).padStart(4, "0");
+  const pinHash = await argon2.hash(pin);
+  const pinCiphertext = isFirebaseFunction ? encryptPin(pin) : null;
+  const patientAccount = await finalizeAppointmentBooking({
+    bookingId,
+    paymentDocumentId: booking.payment_id,
+    razorpayOrderId,
+    razorpayPaymentId,
+    pinHash,
+    pinCiphertext,
+  });
+
+  let oneTimePin = null;
+  if (deliverPin) {
+    if (patientAccount.pin_ciphertext) {
+      oneTimePin = await consumeBookingPin(bookingId);
+    } else if (
+      !isFirebaseFunction &&
+      patientAccount.pin_issued &&
+      !patientAccount.already_paid
+    ) {
+      oneTimePin = pin;
+    }
+  }
+
+  return {
+    patient_name: booking.full_name,
+    patient_id: patientAccount.patient_id,
+    appointment_id: patientAccount.appointment_id,
+    appointment_date: booking.appointment_date,
+    appointment_time: booking.appointment_time,
+    service_type: booking.service_type,
+    amount: booking.amount_paise / 100,
+    currency: "INR",
+    payment_status: "PAID",
+    pin: oneTimePin,
+    existing_patient: !oneTimePin,
+  };
+}
+
 const bookingOrderAttempts = new Map();
 const BOOKING_ORDER_WINDOW_MS = 15 * 60 * 1000;
 const BOOKING_ORDER_MAX_ATTEMPTS = 10;
+const adminLoginFailures = new Map();
+const ADMIN_LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const ADMIN_LOGIN_MAX_FAILURES = 5;
 
 app.post("/api/admin/login", async (req, res) => {
+  if (isFirebaseFunction) {
+    return res.status(410).json({
+      success: false,
+      message: "Sign in with Firebase Authentication",
+    });
+  }
   const { password } = req.body || {};
   if (!process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD.length < 12) {
     return res.status(503).json({
@@ -508,9 +722,14 @@ app.get("/api/appointment/availability", async (req, res) => {
   }
 
   try {
-    const snapshot = await collections.appointments
-      .where("appointment_date", "==", appointmentDate)
-      .get();
+    const [snapshot, reservations] = await Promise.all([
+      collections.appointments
+        .where("appointment_date", "==", appointmentDate)
+        .get(),
+      collections.slotReservations
+        .where("appointment_date", "==", appointmentDate)
+        .get(),
+    ]);
     const bookedTimes = new Set(
       snapshot.docs
         .map((document) => document.data())
@@ -522,6 +741,22 @@ app.get("/api/appointment/availability", async (req, res) => {
         )
         .map((appointment) => appointment.appointment_time)
     );
+    const now = Date.now();
+    for (const reservation of reservations.docs) {
+      const value = reservation.data();
+      const expiresAt =
+        value.expires_at && typeof value.expires_at.toMillis === "function"
+          ? value.expires_at.toMillis()
+          : value.expires_at instanceof Date
+            ? value.expires_at.getTime()
+            : Number.POSITIVE_INFINITY;
+      if (
+        value.status === "confirmed" ||
+        (value.status === "pending" && expiresAt > now)
+      ) {
+        bookedTimes.add(value.appointment_time);
+      }
+    }
 
     if (serviceType !== "Online Consultation") {
       recurringBookedClinicTimes.forEach((time) => bookedTimes.add(time));
@@ -544,6 +779,7 @@ app.get("/api/appointment/availability", async (req, res) => {
 
 app.post("/api/appointment/payment-order", async (req, res) => {
   const body = req.body || {};
+  const isDevelopment = process.env.NODE_ENV !== "production";
   const servicePrices = {
     "Clinic Consultation": 200,
     "Home Physiotherapy": 500,
@@ -569,6 +805,14 @@ app.post("/api/appointment/payment-order", async (req, res) => {
     body.age === undefined || body.age === "" || body.age === null
       ? null
       : Number(body.age);
+
+  if (isDevelopment) {
+    console.info("[payments] appointment payment request received", {
+      serviceType,
+      appointmentDate,
+      appointmentTime,
+    });
+  }
 
   const validationErrors = [];
   if (!fullName || fullName.length > 120) {
@@ -600,7 +844,7 @@ app.post("/api/appointment/payment-order", async (req, res) => {
   }
 
   if (validationErrors.length) {
-    if (process.env.NODE_ENV !== "production") {
+    if (isDevelopment) {
       console.warn("[payments] appointment request validation failed", {
         serviceType,
         appointmentDate,
@@ -608,28 +852,33 @@ app.post("/api/appointment/payment-order", async (req, res) => {
         error: validationErrors[0],
       });
     }
-    return res.status(400).json({
-      success: false,
-      error: validationErrors[0],
-      message: validationErrors[0],
-    });
+    return sendPaymentError(
+      res,
+      400,
+      validationErrors[0]
+    );
   }
 
   if (
     serviceType !== "Online Consultation" &&
     recurringBookedClinicTimes.has(appointmentTime)
   ) {
-    return res.status(409).json({
-      success: false,
-      error: "That appointment time is unavailable. Please choose another slot.",
-      message: "That appointment time is unavailable. Please choose another slot.",
-    });
+    return sendPaymentError(
+      res,
+      409,
+      "That appointment time is unavailable. Please choose another slot."
+    );
   }
 
   try {
-    const appointmentSnapshot = await collections.appointments
-      .where("appointment_date", "==", appointmentDate)
-      .get();
+    const [appointmentSnapshot, slotSnapshot] = await Promise.all([
+      collections.appointments
+        .where("appointment_date", "==", appointmentDate)
+        .get(),
+      collections.slotReservations
+        .doc(appointmentSlotId(appointmentDate, appointmentTime))
+        .get(),
+    ]);
     const slotIsBooked = appointmentSnapshot.docs.some((document) => {
       const appointment = document.data();
       return (
@@ -637,19 +886,25 @@ app.post("/api/appointment/payment-order", async (req, res) => {
         appointment.status === "confirmed" &&
         appointment.payment_status === "paid"
       );
-    });
+    }) ||
+      (slotSnapshot.exists &&
+        (slotSnapshot.data().status === "confirmed" ||
+          (slotSnapshot.data().status === "pending" &&
+            slotSnapshot.data().expires_at?.toDate?.().getTime() > Date.now())));
     if (slotIsBooked) {
-      return res.status(409).json({
-        success: false,
-        message: "That appointment slot has just been booked. Please choose another time.",
-      });
+      return sendPaymentError(
+        res,
+        409,
+        "That appointment slot has just been booked. Please choose another time."
+      );
     }
   } catch (error) {
     console.error("Appointment slot validation error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Unable to confirm that appointment slot is available",
-    });
+    return sendPaymentError(
+      res,
+      500,
+      "Unable to confirm that appointment slot is available"
+    );
   }
 
   const ip = req.ip || req.socket.remoteAddress || "unknown";
@@ -659,10 +914,11 @@ app.post("/api/appointment/payment-order", async (req, res) => {
   }
   const attempts = bookingOrderAttempts.get(ip);
   if (attempts && attempts.count >= BOOKING_ORDER_MAX_ATTEMPTS) {
-    return res.status(429).json({
-      success: false,
-      message: "Too many booking attempts. Please try again in 15 minutes.",
-    });
+    return sendPaymentError(
+      res,
+      429,
+      "Too many booking attempts. Please try again in 15 minutes."
+    );
   }
   bookingOrderAttempts.set(ip, {
     count: (attempts?.count || 0) + 1,
@@ -670,15 +926,27 @@ app.post("/api/appointment/payment-order", async (req, res) => {
   });
 
   if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
-    return res.status(503).json({
-      success: false,
-      message: "Online appointment payments are not configured on the server",
-    });
+    return sendPaymentError(
+      res,
+      503,
+      "Online appointment payments are not configured on the server"
+    );
   }
 
   const amountPaise = servicePrices[serviceType] * 100;
+  if (isDevelopment) {
+    console.info("[payments] creating appointment order", {
+      serviceType,
+      amount: amountPaise / 100,
+      amountPaise,
+      currency: "INR",
+    });
+  }
   const bookingRef = collections.bookings.doc(crypto.randomUUID());
   const paymentRef = collections.payments.doc(crypto.randomUUID());
+  const slotRef = collections.slotReservations.doc(
+    appointmentSlotId(appointmentDate, appointmentTime)
+  );
   try {
     await bookingRef.create({
       full_name: fullName,
@@ -700,10 +968,11 @@ app.post("/api/appointment/payment-order", async (req, res) => {
     });
   } catch (error) {
     console.error("Appointment booking save error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Could not save the appointment details. Please try again.",
-    });
+    return sendPaymentError(
+      res,
+      500,
+      "Could not save the appointment details. Please try again."
+    );
   }
 
   let order;
@@ -715,14 +984,29 @@ app.post("/api/appointment/payment-order", async (req, res) => {
       notes: {
         booking_id: bookingRef.id,
         service_type: serviceType,
+        appointment_date: appointmentDate,
+        appointment_time: appointmentTime,
       },
     });
   } catch (error) {
-    console.error("Appointment payment order creation error:", error);
+    console.error("Appointment payment order creation error:", {
+      statusCode: error.statusCode || error.status,
+      code: error.error?.code || error.code,
+      description: error.error?.description || error.description,
+    });
     await bookingRef.delete();
-    return res.status(502).json({
-      success: false,
-      message: "Razorpay could not start the appointment payment",
+    return sendPaymentError(
+      res,
+      502,
+      "Razorpay could not start the appointment payment"
+    );
+  }
+  if (isDevelopment) {
+    console.info("[payments] Razorpay order created", {
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      status: order.status,
     });
   }
 
@@ -730,6 +1014,44 @@ app.post("/api/appointment/payment-order", async (req, res) => {
     await db.runTransaction(async (transaction) => {
       const bookingSnapshot = await transaction.get(bookingRef);
       if (!bookingSnapshot.exists) throw new Error("Appointment booking disappeared");
+      const [existingReservation, existingAppointments] = await Promise.all([
+        transaction.get(slotRef),
+        transaction.get(
+          collections.appointments.where(
+            "appointment_date",
+            "==",
+            appointmentDate
+          )
+        ),
+      ]);
+      const reservation = existingReservation.exists
+        ? existingReservation.data()
+        : null;
+      const reservationExpiresAt =
+        reservation?.expires_at &&
+        typeof reservation.expires_at.toDate === "function"
+          ? reservation.expires_at.toDate().getTime()
+          : reservation?.expires_at instanceof Date
+            ? reservation.expires_at.getTime()
+            : Number.POSITIVE_INFINITY;
+      const reservationIsActive =
+        reservation?.status === "confirmed" ||
+        (reservation?.status === "pending" &&
+          reservationExpiresAt > Date.now());
+      const appointmentIsBooked = existingAppointments.docs.some((document) => {
+        const appointment = document.data();
+        return (
+          appointment.appointment_time === appointmentTime &&
+          appointment.status === "confirmed" &&
+          appointment.payment_status === "paid"
+        );
+      });
+      if (reservationIsActive || appointmentIsBooked) {
+        throw new HttpError(
+          409,
+          "That appointment slot has just been booked. Please choose another time."
+        );
+      }
       transaction.update(bookingRef, { razorpay_order_id: order.id });
       transaction.create(paymentRef, {
         context: "appointment_booking",
@@ -744,20 +1066,39 @@ app.post("/api/appointment/payment-order", async (req, res) => {
         created_at: FieldValue.serverTimestamp(),
         paid_at: null,
       });
+      transaction.set(slotRef, {
+        booking_id: bookingRef.id,
+        appointment_date: appointmentDate,
+        appointment_time: appointmentTime,
+        service_type: serviceType,
+        status: "pending",
+        expires_at: new Date(Date.now() + BOOKING_ORDER_WINDOW_MS),
+        created_at: FieldValue.serverTimestamp(),
+      });
     });
   } catch (error) {
+    if (error instanceof HttpError) {
+      await bookingRef.delete().catch((deleteError) => {
+        console.error("Conflicting appointment cleanup failed:", deleteError);
+      });
+      return sendPaymentError(res, error.status, error.message);
+    }
     console.error("Appointment order save error:", error);
     await bookingRef.delete();
-    return res.status(500).json({
-      success: false,
-      message: "Could not save the appointment payment details",
-    });
+    return sendPaymentError(
+      res,
+      500,
+      "Could not save the appointment payment details"
+    );
   }
 
   return res.status(201).json({
     success: true,
     booking_id: bookingRef.id,
     key_id: process.env.RAZORPAY_KEY_ID,
+    orderId: order.id,
+    amount: order.amount,
+    currency: order.currency,
     order: {
       id: order.id,
       amount: order.amount,
@@ -782,25 +1123,18 @@ app.post("/api/appointment/payment-complete", async (req, res) => {
       typeof razorpay_signature !== "string" ||
       !/^[a-f\d]{64}$/i.test(razorpay_signature)
     ) {
-      return res.status(400).json({
-        success: false,
-        message: "Payment confirmation details are invalid",
-      });
+      return sendPaymentError(
+        res,
+        400,
+        "Payment confirmation details are invalid"
+      );
     }
     if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
-      return res.status(503).json({
-        success: false,
-        message: "Razorpay credentials are not configured on the server",
-      });
-    }
-
-    const bookingSnapshot = await collections.bookings.doc(booking_id).get();
-    const booking = documentData(bookingSnapshot);
-    if (!booking || booking.razorpay_order_id !== razorpay_order_id) {
-      return res.status(404).json({
-        success: false,
-        message: "Appointment payment was not found",
-      });
+      return sendPaymentError(
+        res,
+        503,
+        "Razorpay credentials are not configured on the server"
+      );
     }
 
     const expectedSignature = crypto
@@ -809,53 +1143,86 @@ app.post("/api/appointment/payment-complete", async (req, res) => {
       .digest();
     const receivedSignature = Buffer.from(razorpay_signature, "hex");
     if (!crypto.timingSafeEqual(expectedSignature, receivedSignature)) {
-      return res.status(400).json({
-        success: false,
-        message: "Razorpay payment signature is invalid",
-      });
+      return sendPaymentError(res, 400, "Razorpay payment signature is invalid");
     }
 
-    const payment = await getRazorpayClient().payments.fetch(razorpay_payment_id);
-    if (
-      payment.order_id !== booking.razorpay_order_id ||
-      payment.amount !== booking.amount_paise ||
-      payment.currency !== "INR" ||
-      payment.status !== "captured"
-    ) {
-      return res.status(409).json({
-        success: false,
-        message: "The appointment payment has not been confirmed as captured",
-      });
-    }
-
-    const pin = String(crypto.randomInt(0, 10000)).padStart(4, "0");
-    const pinHash = await argon2.hash(pin);
-    const patientAccount = await finalizeAppointmentBooking({
-      bookingId: booking.id,
-      paymentDocumentId: booking.payment_id,
+    const result = await completeAppointmentPayment({
+      bookingId: booking_id,
       razorpayOrderId: razorpay_order_id,
       razorpayPaymentId: razorpay_payment_id,
-      pinHash,
+      deliverPin: true,
     });
-    return res.json({
-      success: true,
-      patient_id: patientAccount.patient_id,
-      appointment_id: patientAccount.appointment_id,
-      pin: patientAccount.pin_issued ? pin : null,
-      existing_patient: !patientAccount.pin_issued,
-    });
+    return res.json({ success: true, ...result });
   } catch (error) {
     if (error instanceof HttpError) {
-      return res.status(error.status).json({
-        success: false,
-        message: error.message,
-      });
+      return sendPaymentError(res, error.status, error.message);
     }
     console.error("Appointment payment confirmation error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Unable to confirm the appointment payment",
+    return sendPaymentError(
+      res,
+      500,
+      "Unable to confirm the appointment payment"
+    );
+  }
+});
+
+app.post("/api/razorpay/webhook", async (req, res) => {
+  const signature = req.get("x-razorpay-signature");
+  const rawBody = req.rawBody;
+  const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+  if (
+    !Buffer.isBuffer(rawBody) ||
+    typeof signature !== "string" ||
+    !webhookSecret
+  ) {
+    return res.status(400).json({ success: false });
+  }
+
+  const expectedSignature = crypto
+    .createHmac("sha256", webhookSecret)
+    .update(rawBody)
+    .digest();
+  const receivedSignature = /^[a-f\d]{64}$/i.test(signature)
+    ? Buffer.from(signature, "hex")
+    : Buffer.alloc(0);
+  if (
+    receivedSignature.length !== expectedSignature.length ||
+    !crypto.timingSafeEqual(expectedSignature, receivedSignature)
+  ) {
+    return res.status(401).json({ success: false });
+  }
+
+  try {
+    const event = JSON.parse(rawBody.toString("utf8"));
+    if (event.event !== "payment.captured") {
+      return res.status(200).json({ received: true });
+    }
+    const payment = event.payload?.payment?.entity;
+    if (
+      !payment ||
+      typeof payment.id !== "string" ||
+      typeof payment.order_id !== "string"
+    ) {
+      return res.status(400).json({ success: false });
+    }
+    const order = await getRazorpayClient().orders.fetch(payment.order_id);
+    const bookingId = order.notes?.booking_id;
+    if (typeof bookingId !== "string") {
+      return res.status(200).json({ received: true });
+    }
+    await completeAppointmentPayment({
+      bookingId,
+      razorpayOrderId: payment.order_id,
+      razorpayPaymentId: payment.id,
+      deliverPin: false,
     });
+    return res.status(200).json({ received: true });
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      return res.status(400).json({ success: false });
+    }
+    console.error("Razorpay webhook processing failed:", error);
+    return res.status(500).json({ success: false });
   }
 });
 
@@ -1461,20 +1828,41 @@ app.post("/api/patient/login", async (req, res) => {
       });
     }
 
-    const token = jwt.sign(
-      {
-        patient_id: patient.patient_id,
+    let token;
+    if (isFirebaseFunction) {
+      const auth = getAuth();
+      try {
+        await auth.getUser(patientSnapshot.id);
+      } catch (error) {
+        if (error.code !== "auth/user-not-found") throw error;
+        await auth.createUser({ uid: patientSnapshot.id, disabled: false });
+      }
+      await auth.setCustomUserClaims(patientSnapshot.id, {
         patient_uuid: patientSnapshot.id,
+        patient_id: patient.patient_id,
         role: "patient",
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "2h" }
-    );
+      });
+      token = await auth.createCustomToken(patientSnapshot.id, {
+        patient_uuid: patientSnapshot.id,
+        patient_id: patient.patient_id,
+        role: "patient",
+      });
+    } else {
+      token = jwt.sign(
+        {
+          patient_id: patient.patient_id,
+          patient_uuid: patientSnapshot.id,
+          role: "patient",
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "2h" }
+      );
+    }
 
     return res.json({
       success: true,
       message: "Login successful",
-      token,
+      ...(isFirebaseFunction ? { custom_token: token } : { token }),
       patient: {
         patient_id: patient.patient_id,
         full_name: patient.full_name,
@@ -1789,17 +2177,32 @@ app.post(
   }
 );
 
-const PORT = process.env.PORT || 5000;
-
-collections.patients
-  .limit(1)
-  .get()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Backend running on http://localhost:${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error("Firestore startup check failed:", error);
-    process.exitCode = 1;
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Backend running on http://localhost:${PORT}`);
   });
+}
+
+app.use("/api", (_req, res) =>
+  res.status(404).json({
+    success: false,
+    error: "API endpoint not found",
+    message: "API endpoint not found",
+  })
+);
+
+app.use((error, _req, res, _next) => {
+  if (res.headersSent) return;
+  const status = Number.isInteger(error.status) ? error.status : 500;
+  if (process.env.NODE_ENV !== "production") {
+    console.error("API request failed:", error);
+  }
+  return res.status(status).json({
+    success: false,
+    error: status === 400 ? "Invalid request" : "Request could not be processed",
+    message: status === 400 ? "Invalid request" : "Request could not be processed",
+  });
+});
+
+module.exports = app;

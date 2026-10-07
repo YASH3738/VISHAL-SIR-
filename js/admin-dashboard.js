@@ -1,17 +1,22 @@
-const API_BASE_URL = (() => {
-  const configured =
-    window.__VY_API_BASE_URL__ ||
-    document.querySelector('meta[name="api-base-url"]')?.content?.trim() ||
-    "";
-  if (configured) return configured.replace(/\/+$/, "");
-  return window.location.protocol === "file:" ? "http://localhost:5000" : "";
-})();
-const ADMIN_TOKEN_KEY = "vyAdminToken";
-
-function resolveApiUrl(path) {
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return API_BASE_URL ? `${API_BASE_URL}${normalizedPath}` : normalizedPath;
-}
+import { auth, db } from "../firebase-config.js";
+import {
+  getIdToken,
+  getIdTokenResult,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import {
+  collection,
+  doc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+  where,
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 const loginPanel = document.getElementById("adminLoginPanel");
 const dashboard = document.getElementById("adminDashboard");
@@ -20,56 +25,11 @@ const loginMessage = document.getElementById("adminLoginMessage");
 const adminMessage = document.getElementById("adminMessage");
 const bookingList = document.getElementById("adminAppointmentList");
 const revenueTotal = document.getElementById("adminRevenueTotal");
-const revenueTransactions = document.getElementById(
-  "adminRevenueTransactions"
-);
+const revenueTransactions = document.getElementById("adminRevenueTransactions");
 const revenueMessage = document.getElementById("adminRevenueMessage");
 const portalAccessForm = document.getElementById("portalAccessForm");
 const portalAccessMessage = document.getElementById("portalAccessMessage");
 const portalAccessResult = document.getElementById("portalAccessResult");
-
-async function request(path, { token, method = "GET", body } = {}) {
-  const headers = {};
-  if (body !== undefined) headers["Content-Type"] = "application/json";
-  if (token) headers.Authorization = `Bearer ${token}`;
-
-  let response;
-  try {
-    response = await fetch(resolveApiUrl(path), {
-      method,
-      headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
-  } catch (error) {
-    if (error instanceof TypeError) {
-      throw new Error(
-        API_BASE_URL
-          ? "Could not connect to the clinic server. Start the local clinic backend and try again."
-          : "Could not connect to the clinic server. Please try again later or contact the clinic."
-      );
-    }
-    throw error;
-  }
-
-  const responseText = await response.text();
-  let data = {};
-  if (responseText) {
-    try {
-      data = JSON.parse(responseText);
-    } catch {
-      throw new Error(
-        `The clinic server returned an unreadable response (HTTP ${response.status}). Please contact the clinic.`
-      );
-    }
-  }
-
-  if (!response.ok || data.success === false) {
-    throw new Error(
-      data.message || data.error || `The request could not be completed (HTTP ${response.status})`
-    );
-  }
-  return data;
-}
 
 function setMessage(element, message, success = false) {
   element.textContent = message;
@@ -108,9 +68,29 @@ function emptyState(message) {
   return element;
 }
 
-function renderBookings(bookings) {
+async function loadTreatmentNotes(bookings) {
+  const ids = [...new Set(bookings.map((item) => item.appointment_id).filter(Boolean))];
+  const notes = new Map();
+  for (let offset = 0; offset < ids.length; offset += 30) {
+    const snapshot = await getDocs(
+      query(
+        collection(db, "treatments"),
+        where("appointment_id", "in", ids.slice(offset, offset + 30))
+      )
+    );
+    for (const treatment of snapshot.docs) {
+      notes.set(
+        treatment.data().appointment_id,
+        treatment.data().treatment_details || ""
+      );
+    }
+  }
+  return notes;
+}
+
+function renderBookings(bookings, treatmentNotes) {
   bookingList.replaceChildren();
-  if (bookings.length === 0) {
+  if (!bookings.length) {
     bookingList.append(emptyState("No appointment bookings have been submitted yet."));
     return;
   }
@@ -120,13 +100,13 @@ function renderBookings(bookings) {
     card.className = "portal-record";
     const top = document.createElement("div");
     top.className = "portal-record__top";
-    const patient = document.createElement("div");
+    const identity = document.createElement("div");
     const title = document.createElement("h4");
-    title.textContent = booking.full_name;
-    patient.append(title);
-    addDetail(patient, "Patient ID", booking.patient_id);
-    addDetail(patient, "Visit ID", booking.appointment_id);
-    top.append(patient);
+    title.textContent = booking.full_name || "Appointment booking";
+    identity.append(title);
+    addDetail(identity, "Patient ID", booking.patient_id);
+    addDetail(identity, "Visit ID", booking.appointment_id);
+    top.append(identity);
 
     const badge = document.createElement("span");
     badge.className = `portal-badge${booking.payment_status === "paid" ? " portal-badge--paid" : ""}`;
@@ -141,27 +121,11 @@ function renderBookings(bookings) {
     addDetail(
       card,
       "Requested visit",
-      `${formatDate(booking.appointment_date)} · ${booking.appointment_time}`
+      `${formatDate(booking.appointment_date)} · ${booking.appointment_time || ""}`
     );
-    addDetail(card, "Appointment fee", formatMoney(booking.amount_paise));
-    const whatsappStatusLabels = {
-      queued: "Queued",
-      sending: "Sending",
-      failed: "Failed",
-      not_configured: "Not configured",
-      needs_review: "Needs review",
-    };
-    addDetail(
-      card,
-      "WhatsApp confirmation",
-      booking.whatsapp_confirmation_consent
-        ? whatsappStatusLabels[booking.whatsapp_confirmation_status] ||
-            "Not sent"
-        : "Not requested"
-    );
+    addDetail(card, "Appointment fee", formatMoney(booking.amount_paise || 0));
     addDetail(card, "Address", booking.address);
     addDetail(card, "Reason for consultation", booking.appointment_reason);
-    addDetail(card, "Request received", formatDate(booking.created_at?.slice(0, 10)));
 
     const phoneDigits = String(booking.phone || "").replace(/\D/g, "");
     const whatsappNumber =
@@ -190,67 +154,65 @@ function renderBookings(bookings) {
       form.className = "portal-form";
       form.dataset.appointmentId = booking.appointment_id;
       const label = document.createElement("label");
-      const treatmentId = `treatment-${booking.id}`;
-      label.htmlFor = treatmentId;
+      const fieldId = `treatment-${booking.id}`;
+      label.htmlFor = fieldId;
       label.textContent = "Treatment details shown in the patient portal";
-      const treatment = document.createElement("textarea");
-      treatment.id = treatmentId;
-      treatment.name = "treatment_details";
-      treatment.maxLength = 2000;
-      treatment.value = booking.patient_note || "";
-      treatment.placeholder = "Add the treatment plan or visit notes for this patient";
-      const save = document.createElement("button");
-      save.className = "portal-button";
-      save.type = "submit";
-      save.textContent = "Save treatment details";
-      form.append(label, treatment, save);
+      const textarea = document.createElement("textarea");
+      textarea.id = fieldId;
+      textarea.name = "treatment_details";
+      textarea.maxLength = 2000;
+      textarea.value = treatmentNotes.get(booking.appointment_id) || "";
+      textarea.placeholder = "Add the treatment plan or visit notes for this patient";
+      const button = document.createElement("button");
+      button.className = "portal-button";
+      button.type = "submit";
+      button.textContent = "Save treatment details";
+      form.append(label, textarea, button);
       form.addEventListener("submit", saveTreatment);
       card.append(form);
     }
-
     bookingList.append(card);
   }
 }
 
 async function loadBookings() {
-  const token = sessionStorage.getItem(ADMIN_TOKEN_KEY);
-  if (!token) return;
+  if (!auth.currentUser) return;
   setMessage(adminMessage, "Loading bookings…");
   try {
-    const result = await request("/api/admin/bookings", { token });
-    renderBookings(result.bookings || []);
+    const snapshot = await getDocs(
+      query(
+        collection(db, "appointment_bookings"),
+        orderBy("created_at", "desc"),
+        limit(200)
+      )
+    );
+    const bookings = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+    renderBookings(bookings, await loadTreatmentNotes(bookings));
     setMessage(adminMessage, "");
   } catch (error) {
-    if (/admin session|authentication|required|access required/i.test(error.message)) {
-      logout();
-      setMessage(loginMessage, "Your admin session expired. Please sign in again.");
-      return;
-    }
     setMessage(adminMessage, error.message);
   }
 }
 
 async function loadRevenue() {
-  const token = sessionStorage.getItem(ADMIN_TOKEN_KEY);
-  if (!token) return;
+  if (!auth.currentUser) return;
   revenueTotal.textContent = "Loading…";
   revenueTransactions.textContent = "—";
   setMessage(revenueMessage, "");
-
   try {
-    const result = await request("/api/admin/revenue", { token });
-    revenueTotal.textContent = formatMoney(result.revenue.total_paise);
-    revenueTransactions.textContent = String(
-      result.revenue.paid_transactions
+    const snapshot = await getDocs(
+      query(collection(db, "payments"), where("status", "==", "paid"))
     );
+    const total = snapshot.docs.reduce(
+      (sum, item) => sum + Number(item.data().amount_paise || 0),
+      0
+    );
+    revenueTotal.textContent = formatMoney(total);
+    revenueTransactions.textContent = String(snapshot.size);
   } catch (error) {
     revenueTotal.textContent = "Unavailable";
     revenueTransactions.textContent = "—";
     setMessage(revenueMessage, error.message);
-    if (/admin session|authentication|required|access required/i.test(error.message)) {
-      logout();
-      setMessage(loginMessage, "Your admin session expired. Please sign in again.");
-    }
   }
 }
 
@@ -260,16 +222,28 @@ async function saveTreatment(event) {
   const button = form.querySelector('button[type="submit"]');
   button.disabled = true;
   try {
-    const values = new FormData(form);
-    await request(
-      `/api/admin/appointments/${encodeURIComponent(form.dataset.appointmentId)}/treatment`,
+    const appointmentSnapshot = await getDocs(
+      query(
+        collection(db, "appointments"),
+        where("appointment_id", "==", form.dataset.appointmentId),
+        limit(1)
+      )
+    );
+    if (appointmentSnapshot.empty) throw new Error("Appointment not found");
+    const appointment = appointmentSnapshot.docs[0];
+    const details = String(new FormData(form).get("treatment_details") || "").trim();
+    await setDoc(
+      doc(db, "treatments", appointment.id),
       {
-        token: sessionStorage.getItem(ADMIN_TOKEN_KEY),
-        method: "PATCH",
-        body: {
-          treatment_details: String(values.get("treatment_details") || ""),
-        },
-      }
+        patient_doc_id: appointment.data().patient_doc_id,
+        patient_id: appointment.data().patient_id,
+        appointment_doc_id: appointment.id,
+        appointment_id: form.dataset.appointmentId,
+        treatment_details: details || null,
+        status: "updated",
+        updated_at: serverTimestamp(),
+      },
+      { merge: true }
     );
     setMessage(adminMessage, "Treatment details saved for the patient portal.", true);
   } catch (error) {
@@ -286,19 +260,23 @@ async function configurePortalAccess(event) {
   portalAccessResult.hidden = true;
   document.getElementById("portalAccessPin").textContent = "";
   setMessage(portalAccessMessage, "");
-
   try {
-    const patientId = String(
-      new FormData(portalAccessForm).get("patient_id") || ""
-    )
+    const patientId = String(new FormData(portalAccessForm).get("patient_id") || "")
       .trim()
       .toUpperCase();
-    const result = await request(
+    const idToken = await getIdToken(auth.currentUser);
+    const response = await fetch(
       `/api/admin/patients/${encodeURIComponent(patientId)}/portal-access`,
-      { token: sessionStorage.getItem(ADMIN_TOKEN_KEY), method: "POST" }
+      {
+        method: "POST",
+        headers: { Authorization: `Bearer ${idToken}` },
+      }
     );
-    document.getElementById("portalAccessPin").textContent =
-      result.patient.pin;
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || `Request failed (HTTP ${response.status})`);
+    }
+    document.getElementById("portalAccessPin").textContent = result.patient.pin;
     portalAccessResult.hidden = false;
     portalAccessForm.reset();
     setMessage(portalAccessMessage, result.message, true);
@@ -309,8 +287,8 @@ async function configurePortalAccess(event) {
   }
 }
 
-function logout() {
-  sessionStorage.removeItem(ADMIN_TOKEN_KEY);
+async function logout() {
+  await signOut(auth);
   dashboard.hidden = true;
   loginPanel.hidden = false;
   bookingList.replaceChildren();
@@ -324,12 +302,18 @@ loginForm.addEventListener("submit", async (event) => {
   button.disabled = true;
   setMessage(loginMessage, "");
   try {
-    const password = new FormData(loginForm).get("password");
-    const result = await request("/api/admin/login", {
-      method: "POST",
-      body: { password: String(password) },
-    });
-    sessionStorage.setItem(ADMIN_TOKEN_KEY, result.token);
+    const values = new FormData(loginForm);
+    const credential = await signInWithEmailAndPassword(
+      auth,
+      String(values.get("email") || "").trim(),
+      String(values.get("password") || "")
+    );
+    const token = await getIdTokenResult(credential.user);
+    if (token.claims.admin !== true) {
+      await signOut(auth);
+      throw new Error("This Firebase account is not authorized as clinic admin.");
+    }
+    document.getElementById("adminEmail").value = "";
     document.getElementById("adminPassword").value = "";
     loginPanel.hidden = true;
     dashboard.hidden = false;
@@ -348,9 +332,24 @@ document.getElementById("refreshAppointments").addEventListener("click", () => {
 });
 portalAccessForm.addEventListener("submit", configurePortalAccess);
 
-if (sessionStorage.getItem(ADMIN_TOKEN_KEY)) {
-  loginPanel.hidden = true;
-  dashboard.hidden = false;
-  loadBookings();
-  loadRevenue();
-}
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    dashboard.hidden = true;
+    loginPanel.hidden = false;
+    return;
+  }
+  try {
+    const token = await getIdTokenResult(user);
+    if (token.claims.admin !== true) {
+      await signOut(auth);
+      setMessage(loginMessage, "This Firebase account is not authorized as clinic admin.");
+      return;
+    }
+    loginPanel.hidden = true;
+    dashboard.hidden = false;
+    await Promise.all([loadBookings(), loadRevenue()]);
+  } catch (error) {
+    await signOut(auth);
+    setMessage(loginMessage, error.message);
+  }
+});

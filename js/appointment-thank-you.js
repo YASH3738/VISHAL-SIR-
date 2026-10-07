@@ -3,7 +3,8 @@ const receiptMessage = document.getElementById("receiptMessage");
 const receiptError = document.getElementById("receiptError");
 const patientLoginDetails = document.getElementById("patientLoginDetails");
 const receiptActions = document.getElementById("receiptActions");
-const appointmentDetails = document.getElementById("appointmentDetails");
+const receiptContent = document.getElementById("receiptContent");
+const saveAppointment = document.getElementById("saveAppointment");
 
 try {
   const receiptText = sessionStorage.getItem(receiptStorageKey);
@@ -22,23 +23,51 @@ try {
     if (
       !receipt ||
       typeof receipt.patient_id !== "string" ||
-      typeof receipt.appointment_id !== "string"
+      typeof receipt.appointment_id !== "string" ||
+      typeof receipt.patient_name !== "string" ||
+      typeof receipt.appointment_date !== "string" ||
+      typeof receipt.appointment_time !== "string" ||
+      typeof receipt.service_type !== "string" ||
+      !Number.isFinite(Number(receipt.amount)) ||
+      Number(receipt.amount) <= 0 ||
+      receipt.payment_status !== "PAID"
     ) {
       throw new Error("Appointment confirmation details are incomplete");
     }
 
     document.getElementById("receiptEyebrow").textContent =
-      "Payment confirmed · appointment booked";
+      "✓ Appointment confirmed";
+    document.getElementById("receiptHeading").textContent =
+      `Thank you, ${receipt.patient_name || "patient"}!`;
     document.getElementById("receiptPatientId").textContent = receipt.patient_id;
+    document.getElementById("receiptCredentialPatientId").textContent =
+      receipt.patient_id;
+    document.getElementById("receiptPatientName").textContent =
+      receipt.patient_name || "Patient";
     document.getElementById("receiptService").textContent =
       receipt.service_type || "Appointment";
+    const appointmentDate = new Date(`${receipt.appointment_date}T00:00:00`);
     document.getElementById("receiptDate").textContent =
-      receipt.appointment_date || "To be confirmed by the clinic";
+      receipt.appointment_date && !Number.isNaN(appointmentDate.getTime())
+        ? new Intl.DateTimeFormat("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }).format(appointmentDate)
+        : "To be confirmed by the clinic";
     document.getElementById("receiptTime").textContent =
       receipt.appointment_time || "To be confirmed by the clinic";
+    document.getElementById("receiptFee").textContent =
+      new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: receipt.currency || "INR",
+        maximumFractionDigits: 0,
+      }).format(Number(receipt.amount || 0));
+    document.getElementById("receiptPaymentStatus").textContent =
+      receipt.payment_status || "PAID";
     document.getElementById("receiptAppointmentId").textContent =
       receipt.appointment_id;
-    appointmentDetails.hidden = false;
+    receiptContent.hidden = false;
 
     if (receipt.pin) {
       document.getElementById("receiptPin").textContent = receipt.pin;
@@ -52,47 +81,17 @@ try {
     }
 
     receiptMessage.textContent =
-      `You’re all set! Your appointment ${receipt.appointment_id} is confirmed. We look forward to helping you move better.`;
+      "Your appointment has been successfully booked.";
     patientLoginDetails.hidden = false;
     receiptActions.hidden = false;
+    const isOnlineConsultation =
+      receipt.service_type === "Online Consultation";
     document.getElementById("onlineConsultationNote").hidden =
-      receipt.service_type !== "Online Consultation";
+      !isOnlineConsultation;
+    document.getElementById("onlineNextStep").hidden =
+      !isOnlineConsultation;
+    document.getElementById("receiptPrintNote").hidden = false;
 
-    const whatsappStatus = document.getElementById("receiptWhatsappStatus");
-    const whatsappMessages = {
-      queued: "Your WhatsApp appointment confirmation has been queued.",
-      sending: "Your WhatsApp appointment confirmation is being prepared.",
-      not_opted_in:
-        "Your appointment is confirmed. WhatsApp confirmation was not requested.",
-      not_configured:
-        "Your appointment is confirmed. The clinic will follow up with your booking details.",
-      failed:
-        "Your appointment is confirmed. The WhatsApp message could not be queued; please contact the clinic if you need a copy.",
-      needs_review:
-        "Your appointment is confirmed. The clinic will verify your WhatsApp update.",
-      tracking_failed:
-        "Your appointment is confirmed. The clinic will follow up with your booking details.",
-    };
-    const whatsappMessage =
-      whatsappMessages[receipt.whatsapp_confirmation_status];
-    if (whatsappMessage) {
-      whatsappStatus.textContent = whatsappMessage;
-      whatsappStatus.classList.toggle(
-        "portal-message--success",
-        receipt.whatsapp_confirmation_status === "queued"
-      );
-      whatsappStatus.hidden = false;
-    }
-
-    const details = [
-      `Appointment: ${receipt.appointment_id}`,
-      `Patient: ${receipt.patient_id}`,
-      `Service: ${receipt.service_type}`,
-      `Date: ${receipt.appointment_date}`,
-      `Time: ${receipt.appointment_time}`,
-    ].join("\n");
-    document.getElementById("whatsappReceipt").href =
-      `https://wa.me/917014138261?text=${encodeURIComponent(details)}`;
   }
 } catch (error) {
   console.error("Appointment receipt display error:", error);
@@ -105,3 +104,7 @@ try {
   receiptError.textContent =
     "Please contact the clinic and provide your payment receipt.";
 }
+
+saveAppointment?.addEventListener("click", function () {
+  window.print();
+});

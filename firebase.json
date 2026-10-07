@@ -11,6 +11,7 @@
       "**/.*",
       "**/node_modules/**",
       "backend/**",
+      "functions/**",
       "package.json",
       "package-lock.json",
       "README.md",
@@ -21,8 +22,8 @@
     "rewrites": [
       {
         "source": "/api/**",
-        "run": {
-          "serviceId": "vishal-clinic-api",
+        "function": {
+          "functionId": "api",
           "region": "asia-south1"
         }
       }
@@ -48,6 +49,18 @@
     ]
   },
   "firestore": {
-    "rules": "firestore.rules"
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs22",
+    "ignore": [
+      "node_modules",
+      ".git",
+      ".env",
+      ".runtimeconfig.json",
+      "firebase-debug.log"
+    ]
   }
 }

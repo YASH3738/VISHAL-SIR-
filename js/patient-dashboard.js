@@ -1,17 +1,18 @@
-const API_BASE_URL = (() => {
-  const configured =
-    window.__VY_API_BASE_URL__ ||
-    document.querySelector('meta[name="api-base-url"]')?.content?.trim() ||
-    "";
-  if (configured) return configured.replace(/\/+$/, "");
-  return window.location.protocol === "file:" ? "http://localhost:5000" : "";
-})();
-const PATIENT_TOKEN_KEY = "vyPatientToken";
-
-function resolveApiUrl(path) {
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return API_BASE_URL ? `${API_BASE_URL}${normalizedPath}` : normalizedPath;
-}
+import { auth, db } from "../firebase-config.js";
+import {
+  onAuthStateChanged,
+  signInWithCustomToken,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  where,
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 const loginPanel = document.getElementById("patientLoginPanel");
 const dashboard = document.getElementById("patientDashboard");
@@ -20,49 +21,6 @@ const loginMessage = document.getElementById("loginMessage");
 const dashboardMessage = document.getElementById("dashboardMessage");
 const visitList = document.getElementById("visitList");
 const patientStats = document.getElementById("patientStats");
-
-async function request(path, { token, method = "GET", body } = {}) {
-  const headers = {};
-  if (body !== undefined) headers["Content-Type"] = "application/json";
-  if (token) headers.Authorization = `Bearer ${token}`;
-
-  let response;
-  try {
-    response = await fetch(resolveApiUrl(path), {
-      method,
-      headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
-  } catch (error) {
-    if (error instanceof TypeError) {
-      throw new Error(
-        API_BASE_URL
-          ? "Could not connect to the clinic server. Start the local clinic backend and try again."
-          : "Could not connect to the clinic server. Please try again later or contact the clinic."
-      );
-    }
-    throw error;
-  }
-
-  const responseText = await response.text();
-  let data = {};
-  if (responseText) {
-    try {
-      data = JSON.parse(responseText);
-    } catch {
-      throw new Error(
-        `The clinic server returned an unreadable response (HTTP ${response.status}). Please contact the clinic.`
-      );
-    }
-  }
-
-  if (!response.ok || data.success === false) {
-    throw new Error(
-      data.message || data.error || `The request could not be completed (HTTP ${response.status})`
-    );
-  }
-  return data;
-}
 
 function setMessage(element, message, success = false) {
   element.textContent = message;
@@ -114,7 +72,6 @@ function renderStats(data) {
     ["Upcoming visits", upcoming],
     ["Previous visits", appointments.length - upcoming],
   ];
-
   patientStats.replaceChildren();
   for (const [label, value] of stats) {
     const card = document.createElement("div");
@@ -131,11 +88,12 @@ function renderStats(data) {
 function renderVisits(data) {
   visitList.replaceChildren();
   const appointments = data.appointments || [];
-  if (appointments.length === 0) {
-    visitList.append(emptyState("Your visit details will appear here when the clinic adds them."));
+  if (!appointments.length) {
+    visitList.append(
+      emptyState("Your visit details will appear here when the clinic adds them.")
+    );
     return;
   }
-
   for (const appointment of appointments) {
     const card = document.createElement("article");
     card.className = "portal-record";
@@ -151,8 +109,8 @@ function renderVisits(data) {
     card.append(top);
     addDetail(card, "Date", formatDate(appointment.appointment_date));
     addDetail(card, "Time", appointment.appointment_time);
+    addDetail(card, "Payment", appointment.payment_status);
     addDetail(card, "Treatment & care plan", appointment.patient_note);
-
     if (appointment.online_meeting_url) {
       try {
         const meetingUrl = new URL(appointment.online_meeting_url);
@@ -176,6 +134,50 @@ function renderVisits(data) {
   }
 }
 
+async function loadDashboard() {
+  const user = auth.currentUser;
+  if (!user) return;
+  setMessage(dashboardMessage, "Loading your visits…");
+  try {
+    const [patientSnapshot, appointmentSnapshot, treatmentSnapshot] =
+      await Promise.all([
+        getDoc(doc(db, "patients", user.uid)),
+        getDocs(
+          query(
+            collection(db, "appointments"),
+            where("patient_doc_id", "==", user.uid),
+            orderBy("appointment_date", "desc")
+          )
+        ),
+        getDocs(
+          query(
+            collection(db, "treatments"),
+            where("patient_doc_id", "==", user.uid)
+          )
+        ),
+      ]);
+    if (!patientSnapshot.exists()) throw new Error("Patient record not found.");
+    const notes = new Map(
+      treatmentSnapshot.docs.map((item) => [
+        item.data().appointment_id,
+        item.data().treatment_details || null,
+      ])
+    );
+    const appointments = appointmentSnapshot.docs.map((item) => ({
+      id: item.id,
+      ...item.data(),
+      patient_note: notes.get(item.data().appointment_id) || null,
+    }));
+    renderDashboard({
+      patient: patientSnapshot.data(),
+      appointments,
+    });
+    setMessage(dashboardMessage, "");
+  } catch (error) {
+    setMessage(dashboardMessage, error.message);
+  }
+}
+
 function renderDashboard(data) {
   document.getElementById("patientGreeting").textContent =
     `Welcome, ${data.patient.full_name}`;
@@ -187,37 +189,28 @@ function renderDashboard(data) {
   dashboard.hidden = false;
 }
 
-async function loadDashboard() {
-  const token = sessionStorage.getItem(PATIENT_TOKEN_KEY);
-  if (!token) return;
-  try {
-    renderDashboard(await request("/api/patient/me", { token }));
-  } catch (error) {
-    sessionStorage.removeItem(PATIENT_TOKEN_KEY);
-    dashboard.hidden = true;
-    loginPanel.hidden = false;
-    setMessage(loginMessage, error.message);
-  }
-}
-
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const submitButton = loginForm.querySelector('button[type="submit"]');
   submitButton.disabled = true;
   setMessage(loginMessage, "");
-
   try {
     const formData = new FormData(loginForm);
-    const result = await request("/api/patient/login", {
+    const response = await fetch("/api/patient/login", {
       method: "POST",
-      body: {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         patient_id: String(formData.get("patient_id")).trim(),
         pin: String(formData.get("pin")),
-      },
+      }),
     });
-    sessionStorage.setItem(PATIENT_TOKEN_KEY, result.token);
+    const result = await response.json();
+    if (!response.ok || !result.success || !result.custom_token) {
+      throw new Error(result.message || `Sign-in failed (HTTP ${response.status})`);
+    }
+    await signInWithCustomToken(auth, result.custom_token);
     document.getElementById("patientPin").value = "";
-    renderDashboard(await request("/api/patient/me", { token: result.token }));
+    await loadDashboard();
   } catch (error) {
     setMessage(loginMessage, error.message);
   } finally {
@@ -225,12 +218,30 @@ loginForm.addEventListener("submit", async (event) => {
   }
 });
 
-document.getElementById("patientLogout").addEventListener("click", () => {
-  sessionStorage.removeItem(PATIENT_TOKEN_KEY);
+document.getElementById("patientLogout").addEventListener("click", async () => {
+  await signOut(auth);
   dashboard.hidden = true;
   loginPanel.hidden = false;
-  loginForm.reset();
-  setMessage(loginMessage, "");
 });
 
-loadDashboard();
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    dashboard.hidden = true;
+    loginPanel.hidden = false;
+    return;
+  }
+  try {
+    const tokenResult = await user.getIdTokenResult();
+    if (
+      tokenResult.claims.role !== "patient" ||
+      tokenResult.claims.patient_uuid !== user.uid
+    ) {
+      await signOut(auth);
+      setMessage(loginMessage, "This Firebase account is not linked to a patient portal.");
+      return;
+    }
+    await loadDashboard();
+  } catch (error) {
+    setMessage(loginMessage, error.message);
+  }
+});

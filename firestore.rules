@@ -1,6 +1,114 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function isPatient(patientId) {
+      return signedIn()
+        && request.auth.token.role == 'patient'
+        && request.auth.token.patient_uuid == patientId
+        && request.auth.uid == patientId;
+    }
+
+    match /patients/{patientId} {
+      allow get: if isAdmin() || isPatient(patientId);
+      allow list: if isAdmin();
+      allow create, update, delete: if false;
+    }
+
+    match /patient_credentials/{patientId} {
+      allow read, write: if false;
+    }
+
+    match /appointment_bookings/{bookingId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /appointments/{appointmentId} {
+      allow get, list: if isAdmin()
+        || (signedIn()
+          && request.auth.token.role == 'patient'
+          && resource.data.patient_doc_id == request.auth.uid
+          && request.auth.token.patient_uuid == request.auth.uid);
+      allow write: if false;
+    }
+
+    match /treatments/{treatmentId} {
+      allow get, list: if isAdmin()
+        || (signedIn()
+          && request.auth.token.role == 'patient'
+          && resource.data.patient_doc_id == request.auth.uid
+          && request.auth.token.patient_uuid == request.auth.uid);
+      allow create: if isAdmin()
+        && validTreatmentWrite()
+        && exists(/databases/$(database)/documents/appointments/$(request.resource.data.appointment_doc_id))
+        && get(/databases/$(database)/documents/appointments/$(request.resource.data.appointment_doc_id)).data.patient_doc_id == request.resource.data.patient_doc_id
+        && get(/databases/$(database)/documents/appointments/$(request.resource.data.appointment_doc_id)).data.appointment_id == request.resource.data.appointment_id;
+      allow update: if isAdmin()
+        && validTreatmentWrite()
+        && request.resource.data.patient_doc_id == resource.data.patient_doc_id
+        && request.resource.data.patient_id == resource.data.patient_id
+        && request.resource.data.appointment_doc_id == resource.data.appointment_doc_id
+        && request.resource.data.appointment_id == resource.data.appointment_id
+        && exists(/databases/$(database)/documents/appointments/$(resource.data.appointment_doc_id))
+        && get(/databases/$(database)/documents/appointments/$(resource.data.appointment_doc_id)).data.patient_doc_id == request.resource.data.patient_doc_id;
+      allow delete: if false;
+
+      function validTreatmentWrite() {
+        return request.resource.data.keys().hasOnly([
+            'patient_doc_id',
+            'patient_id',
+            'appointment_doc_id',
+            'appointment_id',
+            'treatment_details',
+            'status',
+            'updated_at'
+          ])
+          && request.resource.data.keys().hasAll([
+            'patient_doc_id',
+            'patient_id',
+            'appointment_doc_id',
+            'appointment_id',
+            'treatment_details',
+            'status',
+            'updated_at'
+          ])
+          && request.resource.data.patient_doc_id is string
+          && request.resource.data.patient_id is string
+          && request.resource.data.appointment_doc_id is string
+          && request.resource.data.appointment_id is string
+          && (request.resource.data.treatment_details == null
+            || (request.resource.data.treatment_details is string
+              && request.resource.data.treatment_details.size() <= 2000))
+          && request.resource.data.status == 'updated'
+          && request.resource.data.updated_at is timestamp;
+      }
+    }
+
+    match /payments/{paymentId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /system_counters/{counterId} {
+      allow read, write: if false;
+    }
+
+    match /appointment_slot_reservations/{reservationId} {
+      allow read, write: if false;
+    }
+
+    match /security_rate_limits/{limitId} {
+      allow read, write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

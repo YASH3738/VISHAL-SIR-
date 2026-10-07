@@ -29,10 +29,10 @@
             "7:00 AM – 12:00 PM & 6:00 PM – 11:00 PM",
 
         consultationFee:
-            "₹300",
+            "₹200",
 
         homeVisitFee:
-            "₹700",
+            "₹500",
 
         onlineConsultationFee:
             "₹200"
@@ -65,17 +65,11 @@
     }
 
     function getAppointmentApiBase() {
-        const configuredBase = document.querySelector(
-            'meta[name="api-base-url"]'
-        )?.content.trim();
+        const isLocal =
+            window.location.hostname === "localhost" ||
+            window.location.hostname === "127.0.0.1";
 
-        if (configuredBase) {
-            return configuredBase.replace(/\/+$/, "");
-        }
-
-        return window.location.protocol === "file:"
-            ? "http://localhost:5000"
-            : "";
+        return isLocal ? "" : "https://drvishalyogi.in";
     }
 
 
@@ -1474,7 +1468,7 @@
             );
 
             const service = selectedService?.value || "Clinic Consultation";
-            const price = selectedService?.dataset.price || "300";
+            const price = selectedService?.dataset.price || "200";
             const originalPrice = selectedService?.dataset.originalPrice || price;
             const serviceSummary = form.querySelector("[data-service-summary]");
 
@@ -1873,11 +1867,12 @@
                         }
 
                         const values = new FormData(form);
+                        const patientName = String(values.get("patientName") || "").trim();
                         const requestBody = {
-                            full_name: String(values.get("patientName") || "").trim(),
+                            full_name: patientName,
+                            patient_name: patientName,
+                            patientName,
                             phone: String(values.get("patientPhone") || "").trim(),
-                            whatsapp_confirmation_consent:
-                                values.get("whatsappConfirmationConsent") === "yes",
                             email: String(values.get("patientEmail") || "").trim(),
                             age: String(values.get("patientAge") || "").trim() || null,
                             address: String(values.get("patientAddress") || "").trim(),
@@ -1892,6 +1887,14 @@
                                 values.get("appointmentTime") || ""
                             )
                         };
+
+                        if (
+                            !requestBody.full_name ||
+                            requestBody.full_name.length > 120
+                        ) {
+                            showStatus("Enter a patient name under 120 characters.");
+                            return;
+                        }
 
                         const apiBase = getAppointmentApiBase();
 
@@ -1922,19 +1925,29 @@
 
                             if (!orderResponse.ok || !orderData.success) {
                                 throw new Error(
+                                    typeof orderData.error === "string" ||
                                     typeof orderData.message === "string"
-                                        ? `Payment setup failed (HTTP ${orderResponse.status}): ${orderData.message}`
+                                        ? `Payment setup failed (HTTP ${orderResponse.status}): ${orderData.error || orderData.message}`
                                         : `Payment setup failed (HTTP ${orderResponse.status}). The server returned an unexpected response; please try again or call the clinic.`
+                                );
+                            }
+
+                            const orderId = orderData.orderId || orderData.order?.id;
+                            const amount = orderData.amount ?? orderData.order?.amount;
+                            const currency = orderData.currency || orderData.order?.currency;
+                            if (!orderId || !amount || !currency || !orderData.key_id) {
+                                throw new Error(
+                                    "Payment setup returned incomplete order details. Please try again or call the clinic."
                                 );
                             }
 
                             const checkout = new window.Razorpay({
                                 key: orderData.key_id,
-                                amount: orderData.order.amount,
-                                currency: orderData.order.currency,
+                                amount,
+                                currency,
                                 name: "Dr. Vishal Yogi Physiotherapy",
                                 description: requestBody.service_type,
-                                order_id: orderData.order.id,
+                                order_id: orderId,
                                 prefill: {
                                     name: requestBody.full_name,
                                     email: requestBody.email,

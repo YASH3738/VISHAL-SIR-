@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Book Appointment | Dr. Vishal Yogi Physiotherapy & Wellness</title>
-    <meta name="api-base-url" content="">
-
     <meta
         name="description"
         content="Book a physiotherapy consultation with Dr. Vishal Yogi in Jaipur. Choose clinic consultation, home physiotherapy or online consultation."
@@ -360,11 +358,11 @@
                                         </span>
 
                                         <strong class="appointment-sidebar__price">
-                                            Clinic <del>₹500</del> ₹300
+                                            Clinic <del>₹500</del> ₹200
                                         </strong>
 
                                         <strong class="appointment-sidebar__price">
-                                            Home visit <del>₹900</del> ₹700
+                                            Home visit <del>₹900</del> ₹500
                                         </strong>
 
                                         <strong class="appointment-sidebar__price">
@@ -534,7 +532,7 @@
                                             name="serviceType"
                                             value="Clinic Consultation"
                                             data-service-type
-                                            data-price="300"
+                                            data-price="200"
                                             data-original-price="500"
                                             checked
                                         >
@@ -559,7 +557,7 @@
 
                                                 <b class="consultation-option__price">
                                                     <del>₹500</del>
-                                                    <span>₹300</span>
+                                                    <span>₹200</span>
                                                 </b>
 
                                             </span>
@@ -584,7 +582,7 @@
                                             name="serviceType"
                                             value="Home Physiotherapy"
                                             data-service-type
-                                            data-price="700"
+                                            data-price="500"
                                             data-original-price="900"
                                         >
 
@@ -608,7 +606,7 @@
 
                                                 <b class="consultation-option__price">
                                                     <del>₹900</del>
-                                                    <span>₹700</span>
+                                                    <span>₹500</span>
                                                 </b>
 
                                             </span>
@@ -1140,6 +1138,7 @@
                                                 class="form-control"
                                                 placeholder="Enter patient name"
                                                 autocomplete="name"
+                                                maxlength="120"
                                                 required
                                             >
 
@@ -1172,27 +1171,13 @@
                                                 placeholder="Enter phone number"
                                                 autocomplete="tel"
                                                 inputmode="tel"
+                                                maxlength="25"
                                                 required
                                             >
 
                                         </div>
 
                                     </div>
-
-                                    <label class="form-checkbox" for="whatsapp-confirmation-consent">
-                                        <input
-                                            type="checkbox"
-                                            id="whatsapp-confirmation-consent"
-                                            name="whatsappConfirmationConsent"
-                                            value="yes"
-                                        >
-                                        <span class="form-checkbox__box" aria-hidden="true">✓</span>
-                                        <span class="form-checkbox__text">
-                                            Send my appointment confirmation and visit details to this number on WhatsApp.
-                                        </span>
-                                    </label>
-
-
 
                                     <!-- EMAIL -->
 
@@ -1276,6 +1261,7 @@
                                         class="form-control"
                                         rows="3"
                                         placeholder="Enter your address"
+                                        maxlength="500"
                                     ></textarea>
 
                                 </div>
@@ -1300,6 +1286,7 @@
                                         class="form-control"
                                         rows="4"
                                         placeholder="Briefly describe your concern or reason for consultation"
+                                        maxlength="2000"
                                     ></textarea>
 
                                 </div>
@@ -1381,7 +1368,7 @@
 
                                             <strong class="booking-summary__price" data-summary-price>
                                                 <del data-summary-original>₹500</del>
-                                                <span data-summary-current>₹300</span>
+                                                <span data-summary-current>₹200</span>
                                             </strong>
 
                                         </div>
@@ -1450,7 +1437,7 @@
                                     >
 
                                         <span>
-                                            Pay ₹300 &amp; Confirm
+                                            Pay ₹200 &amp; Confirm
                                         </span>
 
                                         <i class="fa-solid fa-lock"></i>
@@ -2111,7 +2098,7 @@
     <script src="js/navigation.js" defer></script>
     <script src="js/animations.js" defer></script>
     <script src="js/gallery.js" defer></script>
-    <script src="js/main.js" defer></script>
+    <script src="js/main.js?v=20261007-patient-name-fix2" defer></script>
 
 </body>
 </html>

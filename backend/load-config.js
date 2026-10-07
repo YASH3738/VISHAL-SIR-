@@ -82,8 +82,6 @@ if (fs.existsSync(configPath)) {
   process.env.ADMIN_PASSWORD = config.adminPassword;
   process.env.RAZORPAY_KEY_ID = config.razorpayKeyId || "";
   process.env.RAZORPAY_KEY_SECRET = config.razorpayKeySecret || "";
-  process.env.WUAPI_API_KEY = config.wuapiApiKey || "";
-  process.env.WUAPI_ACCOUNT_ID = config.wuapiAccountId || "";
   process.env.FRONTEND_ORIGINS = Array.isArray(config.frontendOrigins)
     ? config.frontendOrigins.join(",")
     : "";
@@ -140,14 +138,6 @@ if (process.env.NODE_ENV === "production") {
   ) {
     throw new Error(
       "Configure both RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET, or leave both blank"
-    );
-  }
-  if (
-    Boolean(process.env.WUAPI_API_KEY) !==
-    Boolean(process.env.WUAPI_ACCOUNT_ID)
-  ) {
-    throw new Error(
-      "Configure both WUAPI_API_KEY and WUAPI_ACCOUNT_ID, or leave both blank"
     );
   }
 }

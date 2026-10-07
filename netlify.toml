@@ -1,0 +1,16 @@
+[build]
+  command = "npm --prefix functions ci && npm --prefix functions run lint"
+  publish = "."
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "functions/netlify"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/api/:splat"
+  status = 200
+  force = true

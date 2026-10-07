@@ -2070,28 +2070,185 @@
                     </h2>
 
                     <p>
-                        Google reviews and patient feedback can be
-                        displayed here once connected to the live review source.
+                        Real experiences shared by patients after their
+                        physiotherapy and rehabilitation journeys.
                     </p>
 
                 </div>
 
 
-                <div class="reviews-placeholder">
-
-                    <div class="review-placeholder-icon">
-                        <i class="fa-brands fa-google"></i>
+                <div class="reviews-overview">
+                    <div class="reviews-score">
+                        <strong>5.0</strong>
+                        <span class="reviews-score__stars" aria-label="5 out of 5 stars">
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                        </span>
+                        <span class="reviews-score__source">
+                            Based on 139 Google reviews
+                        </span>
                     </div>
 
-                    <strong>
-                        Google Reviews
-                    </strong>
-
-                    <span>
-                        Live review integration coming soon.
+                    <span class="reviews-overview__note">
+                        <i class="fa-brands fa-google" aria-hidden="true"></i>
+                        Patient stories, shared with care
                     </span>
-
                 </div>
+
+
+                <div class="reviews-toolbar">
+                    <div class="reviews-filters" role="group" aria-label="Filter patient reviews">
+                        <button class="reviews-filter is-active" type="button" data-review-filter="all" aria-pressed="true">
+                            All stories
+                        </button>
+                        <button class="reviews-filter" type="button" data-review-filter="orthopaedic" aria-pressed="false">
+                            Orthopaedic
+                        </button>
+                        <button class="reviews-filter" type="button" data-review-filter="back-neck" aria-pressed="false">
+                            Back &amp; neck
+                        </button>
+                        <button class="reviews-filter" type="button" data-review-filter="neuro-rehab" aria-pressed="false">
+                            Neuro &amp; rehab
+                        </button>
+                    </div>
+                    <span class="reviews-results" data-review-results aria-live="polite"></span>
+                </div>
+
+
+                <div class="patient-reviews-grid" data-review-list>
+                    <article class="patient-review" data-review-category="orthopaedic">
+                        <div class="patient-review__topline">
+                            <span class="patient-review__category">ACL rehabilitation</span>
+                            <span class="patient-review__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                        </div>
+                        <blockquote>
+                            “After my ACL surgery, I completed my rehabilitation here and had a very good recovery. I’m doing well now.”
+                        </blockquote>
+                        <div class="patient-review__author">
+                            <span class="patient-review__avatar" aria-hidden="true">V</span>
+                            <span><strong>Vikram J.</strong><small>2 months ago</small></span>
+                        </div>
+                    </article>
+
+                    <article class="patient-review" data-review-category="back-neck">
+                        <div class="patient-review__topline">
+                            <span class="patient-review__category">Back pain</span>
+                            <span class="patient-review__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                        </div>
+                        <blockquote>
+                            “I had been suffering from back pain for two months. After 15 days of sessions, I felt considerable relief.”
+                        </blockquote>
+                        <div class="patient-review__author">
+                            <span class="patient-review__avatar" aria-hidden="true">A</span>
+                            <span><strong>Amit J.</strong><small>2 months ago</small></span>
+                        </div>
+                    </article>
+
+                    <article class="patient-review" data-review-category="orthopaedic">
+                        <div class="patient-review__topline">
+                            <span class="patient-review__category">Knee mobility</span>
+                            <span class="patient-review__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                        </div>
+                        <blockquote>
+                            “After my patella fracture, I couldn’t bend my knee. Following physiotherapy, I regained full bending in 3–4 weeks.”
+                        </blockquote>
+                        <div class="patient-review__author">
+                            <span class="patient-review__avatar" aria-hidden="true">M</span>
+                            <span><strong>Monta S.</strong><small>2 years ago</small></span>
+                        </div>
+                    </article>
+
+                    <article class="patient-review" data-review-category="back-neck">
+                        <div class="patient-review__topline">
+                            <span class="patient-review__category">Back pain</span>
+                            <span class="patient-review__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                        </div>
+                        <blockquote>
+                            “I had back pain for a long time. After 8–10 visits, my pain improved, and I appreciated the kind and attentive care.”
+                        </blockquote>
+                        <div class="patient-review__author">
+                            <span class="patient-review__avatar" aria-hidden="true">A</span>
+                            <span><strong>Akansha P.</strong><small>2 years ago</small></span>
+                        </div>
+                    </article>
+
+                    <article class="patient-review" data-review-category="neuro-rehab">
+                        <div class="patient-review__topline">
+                            <span class="patient-review__category">Neuro rehabilitation</span>
+                            <span class="patient-review__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                        </div>
+                        <blockquote>
+                            “Highly recommend for neuro rehabilitation.”
+                        </blockquote>
+                        <div class="patient-review__author">
+                            <span class="patient-review__avatar" aria-hidden="true">S</span>
+                            <span><strong>Shila P.</strong><small>1 year ago</small></span>
+                        </div>
+                    </article>
+
+                    <article class="patient-review" data-review-category="neuro-rehab">
+                        <div class="patient-review__topline">
+                            <span class="patient-review__category">Movement rehabilitation</span>
+                            <span class="patient-review__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                        </div>
+                        <blockquote>
+                            “After a burn injury, my sister had lost movement in her hand. Physiotherapy helped her regain movement.”
+                        </blockquote>
+                        <div class="patient-review__author">
+                            <span class="patient-review__avatar" aria-hidden="true">N</span>
+                            <span><strong>Nikhil S.</strong><small>3 years ago</small></span>
+                        </div>
+                    </article>
+
+                    <article class="patient-review" data-review-category="orthopaedic">
+                        <div class="patient-review__topline">
+                            <span class="patient-review__category">Knee replacement rehab</span>
+                            <span class="patient-review__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                        </div>
+                        <blockquote>
+                            “After knee replacement, physiotherapy helped me recover well. I can walk, manage daily tasks and ride my scooter.”
+                        </blockquote>
+                        <div class="patient-review__author">
+                            <span class="patient-review__avatar" aria-hidden="true">S</span>
+                            <span><strong>S. C. Sharma</strong><small>3 years ago</small></span>
+                        </div>
+                    </article>
+
+                    <article class="patient-review" data-review-category="back-neck">
+                        <div class="patient-review__topline">
+                            <span class="patient-review__category">Lower back care</span>
+                            <span class="patient-review__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                        </div>
+                        <blockquote>
+                            “Dr. Vishal listened carefully and was very helpful in diagnosing and treating my lower-back problem.”
+                        </blockquote>
+                        <div class="patient-review__author">
+                            <span class="patient-review__avatar" aria-hidden="true">R</span>
+                            <span><strong>Rajani C.</strong><small>4 years ago</small></span>
+                        </div>
+                    </article>
+
+                    <article class="patient-review" data-review-category="neuro-rehab">
+                        <div class="patient-review__topline">
+                            <span class="patient-review__category">Upper-limb rehabilitation</span>
+                            <span class="patient-review__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                        </div>
+                        <blockquote>
+                            “After breast-cancer surgery, my arm movement had stopped. Physiotherapy helped me get the movement back.”
+                        </blockquote>
+                        <div class="patient-review__author">
+                            <span class="patient-review__avatar" aria-hidden="true">A</span>
+                            <span><strong>Asha M.</strong><small>2 years ago</small></span>
+                        </div>
+                    </article>
+                </div>
+
+                <p class="reviews-disclaimer">
+                    Patient experiences are individual; results vary. Reviews are shared as submitted.
+                </p>
 
             </div>
 
@@ -2598,6 +2755,8 @@
     <script src="js/animations.js"></script>
 
     <script src="js/gallery.js"></script>
+
+    <script src="js/reviews.js"></script>
 
     <script src="js/main.js"></script>
 

@@ -23,46 +23,89 @@
     <section class="portal-panel portal-login thank-you-panel">
       <span class="portal-icon thank-you-check" aria-hidden="true">✓</span>
       <p class="portal-eyebrow" id="receiptEyebrow">Appointment update</p>
-      <h1 id="receiptHeading">Thank you<span>.</span></h1>
-      <p class="thank-you-lead" id="receiptMessage">Confirming your appointment and preparing your patient login…</p>
-      <section class="thank-you-details" id="appointmentDetails" aria-label="Appointment details" hidden>
-        <div>
-          <span>Service</span>
-          <strong id="receiptService"></strong>
-        </div>
-        <div>
-          <span>Date</span>
-          <strong id="receiptDate"></strong>
-        </div>
-        <div>
-          <span>Time</span>
-          <strong id="receiptTime"></strong>
-        </div>
-        <div>
-          <span>Appointment reference</span>
-          <strong id="receiptAppointmentId"></strong>
-        </div>
-      </section>
-      <aside class="thank-you-online-note" id="onlineConsultationNote" hidden>
-        <span class="thank-you-online-note__icon" aria-hidden="true">01</span>
-        <p><strong>Your online consultation</strong><br>Your secure video-call link will be shared by the clinic about one hour before your appointment.</p>
-      </aside>
-      <p class="portal-message thank-you-whatsapp-status" id="receiptWhatsappStatus" role="status" aria-live="polite" hidden></p>
-      <div class="credential-result" id="patientLoginDetails" hidden>
-        <p>Your Patient ID</p>
-        <strong id="receiptPatientId"></strong>
-        <p class="receipt-pin-label" id="receiptPinLabel">Your one-time 4-digit dashboard PIN</p>
-        <strong id="receiptPin"></strong>
-        <p id="receiptNote"></p>
-      </div>
-      <div class="thank-you-actions" id="receiptActions" hidden>
-        <a class="portal-button" href="patient-dashboard.html">Open patient dashboard</a>
-        <a class="portal-button portal-button--quiet" id="whatsappReceipt" target="_blank" rel="noopener noreferrer">Share booking on WhatsApp</a>
+      <h1 id="receiptHeading">Payment confirmation</h1>
+      <p class="thank-you-lead" id="receiptMessage">Checking your payment and appointment confirmation…</p>
+      <div class="receipt-content" id="receiptContent" hidden>
+        <section class="receipt-section" aria-labelledby="patientDetailsHeading">
+          <h2 id="patientDetailsHeading">Patient details</h2>
+          <div class="thank-you-details">
+            <div>
+              <span>Patient name</span>
+              <strong id="receiptPatientName"></strong>
+            </div>
+            <div>
+              <span>Patient ID</span>
+              <strong id="receiptPatientId"></strong>
+            </div>
+          </div>
+        </section>
+        <section class="receipt-section" aria-labelledby="appointmentDetailsHeading">
+          <h2 id="appointmentDetailsHeading">Appointment details</h2>
+          <div class="thank-you-details">
+            <div>
+              <span>Appointment date</span>
+              <strong id="receiptDate"></strong>
+            </div>
+            <div>
+              <span>Appointment time</span>
+              <strong id="receiptTime"></strong>
+            </div>
+            <div>
+              <span>Service type</span>
+              <strong id="receiptService"></strong>
+            </div>
+            <div>
+              <span>Consultation fee</span>
+              <strong id="receiptFee"></strong>
+            </div>
+            <div>
+              <span>Payment status</span>
+              <strong class="receipt-payment-status" id="receiptPaymentStatus"></strong>
+            </div>
+            <div>
+              <span>Appointment reference</span>
+              <strong id="receiptAppointmentId"></strong>
+            </div>
+          </div>
+        </section>
+        <section class="receipt-section receipt-credentials" id="patientLoginDetails" aria-labelledby="patientCredentialsHeading" hidden>
+          <h2 id="patientCredentialsHeading">Your patient login credentials</h2>
+          <div class="credential-result">
+            <p>Patient ID</p>
+            <strong id="receiptCredentialPatientId"></strong>
+            <p class="receipt-pin-label" id="receiptPinLabel">Your one-time 4-digit Patient PIN</p>
+            <strong class="receipt-pin-value" id="receiptPin"></strong>
+            <p id="receiptNote"></p>
+          </div>
+          <p class="receipt-security-note">
+            <strong>Important:</strong> Your PIN is stored securely and cannot be recovered if lost.
+            Save your Patient ID and PIN securely, and do not share your PIN.
+          </p>
+        </section>
+        <aside class="thank-you-online-note" id="onlineConsultationNote" hidden>
+          <span class="thank-you-online-note__icon" aria-hidden="true">01</span>
+          <p><strong>Your online consultation</strong><br>Your secure video-call link will be shared by the clinic before your appointment.</p>
+        </aside>
+        <section class="receipt-section receipt-next-steps" aria-labelledby="nextStepsHeading">
+          <h2 id="nextStepsHeading">What’s next?</h2>
+          <ul>
+            <li>Your paid appointment has been added to the clinic system.</li>
+            <li>The clinic may contact you on your registered WhatsApp or mobile number.</li>
+            <li>Use your Patient ID and PIN to access your patient dashboard.</li>
+            <li id="onlineNextStep" hidden>Your online consultation joining link will be shared before the appointment.</li>
+          </ul>
+        </section>
       </div>
       <p class="portal-message" id="receiptError" role="status" aria-live="polite"></p>
-      <a class="thank-you-back" href="index.html">Back to website</a>
+      <div class="thank-you-actions" id="receiptActions" hidden>
+        <a class="portal-button" href="patient-dashboard.html">View patient dashboard</a>
+        <button class="portal-button portal-button--quiet" id="saveAppointment" type="button">Download / save appointment</button>
+      </div>
+      <p class="receipt-print-note" id="receiptPrintNote" hidden>The saved/printed receipt contains your one-time PIN. Keep it private and secure.</p>
+      <a class="thank-you-back" href="tel:+917014138261">Need help? Call the clinic: 070141 38261</a>
+      <a class="thank-you-back thank-you-back--website" href="index.html">Back to website</a>
     </section>
   </main>
-  <footer class="portal-footer">Keep your Patient ID and PIN private.</footer>
+  <footer class="portal-footer">Keep your Patient ID and PIN private. Do not share your PIN.</footer>
 </body>
 </html>
