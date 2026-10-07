@@ -64,8 +64,22 @@ app.use(
   })
 );
 
-app.get("/api/health", (_req, res) => {
-  return res.json({ success: true });
+app.get("/api/health", async (_req, res) => {
+  try {
+    await collections.bookings.limit(1).get();
+    return res.json({ success: true, database: "connected" });
+  } catch (error) {
+    console.error("API readiness database check failed:", {
+      code: error?.code || "unknown",
+      message: error?.message || "Unknown Firestore error",
+    });
+    return res.status(503).json({
+      success: false,
+      database: "unavailable",
+      message:
+        "Database unavailable. Check the Netlify Function credentials and Firestore IAM permissions.",
+    });
+  }
 });
 
 class HttpError extends Error {
@@ -769,10 +783,14 @@ app.get("/api/appointment/availability", async (req, res) => {
       booked_times: [...bookedTimes],
     });
   } catch (error) {
-    console.error("Appointment availability lookup error:", error);
-    return res.status(500).json({
+    console.error("Appointment availability lookup error:", {
+      code: error?.code || "unknown",
+      message: error?.message || "Unknown Firestore error",
+    });
+    return res.status(503).json({
       success: false,
-      message: "Unable to load appointment availability",
+      message:
+        "Appointment database unavailable. Check the Netlify Function credentials and Firestore IAM permissions.",
     });
   }
 });
@@ -899,11 +917,14 @@ app.post("/api/appointment/payment-order", async (req, res) => {
       );
     }
   } catch (error) {
-    console.error("Appointment slot validation error:", error);
+    console.error("Appointment slot validation error:", {
+      code: error?.code || "unknown",
+      message: error?.message || "Unknown Firestore error",
+    });
     return sendPaymentError(
       res,
-      500,
-      "Unable to confirm that appointment slot is available"
+      503,
+      "Appointment database unavailable. Check the Netlify Function credentials and Firestore IAM permissions."
     );
   }
 

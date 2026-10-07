@@ -69,7 +69,7 @@
             window.location.hostname === "localhost" ||
             window.location.hostname === "127.0.0.1";
 
-        return isLocal ? "" : "https://drvishalyogi.in";
+        return isLocal ? "" : window.location.origin;
     }
 
 

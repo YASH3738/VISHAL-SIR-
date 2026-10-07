@@ -5,7 +5,7 @@ The production website and payment API are hosted together on Netlify: static pa
 ## One-time setup
 
 1. In Firebase Console, enable Firestore and Authentication → Email/Password, then create the clinic administrator account and assign its existing `admin: true` custom claim.
-2. Create a Firebase service account for the Netlify Function. Grant only the permissions needed to access Firestore and Firebase Authentication, and enable service-account token creation if the function's Firebase custom-token login requires it. Keep the complete service-account JSON private.
+2. Create a Firebase service account for the Netlify Function. Grant it the **Cloud Datastore User** (`roles/datastore.user`) role on the `dr-vishal-clinic` project so it can read and write Firestore. Firebase Admin SDK calls bypass Firestore Security Rules; Google Cloud IAM permissions still apply. Enable service-account token creation only if the function's Firebase custom-token login requires it. Keep the complete service-account JSON private.
 3. In Netlify site settings → Environment variables, configure these **Functions-only** variables:
 
    - `GOOGLE_APPLICATION_CREDENTIALS`: complete Firebase service-account JSON as one JSON value
@@ -44,7 +44,7 @@ Then verify the public proxy:
 Invoke-RestMethod https://vishalyogi.in/api/health
 ```
 
-Both requests should return JSON with `success: true`, not an HTML 404 page. The appointment form posts JSON to `https://vishalyogi.in/api/appointment/payment-order`; payment confirmation posts to `/api/appointment/payment-complete`.
+Both requests should return JSON with `success: true` and `database: "connected"`, not an HTML 404 page. If health returns `503` with `database: "unavailable"`, check the Netlify Function logs for the Firestore error code and confirm that the service account in `GOOGLE_APPLICATION_CREDENTIALS` has `roles/datastore.user` on `dr-vishal-clinic`. The appointment form posts JSON to `https://vishalyogi.in/api/appointment/payment-order`; payment confirmation posts to `/api/appointment/payment-complete`.
 
 ## Appointment dashboard flow
 
